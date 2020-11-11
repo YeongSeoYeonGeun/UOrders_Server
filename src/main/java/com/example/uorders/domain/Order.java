@@ -16,6 +16,14 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cafe_id")
+    private Cafe cafe;
+
     private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
@@ -27,5 +35,7 @@ public class Order {
     // 타입 맞는지
     private LocalDateTime estimated_time;
 
-    private List<Cart> orderItems = new ArrayList<>();
+    private Cart cart;
+
+
 }
