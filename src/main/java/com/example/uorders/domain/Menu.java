@@ -22,4 +22,13 @@ public class Menu {
 
     @Enumerated(EnumType.STRING)
     private MenuStatus status; // AVAILABLE, UNAVAILABLE
+
+    @Enumerated(EnumType.STRING)
+    private MenuTemperature temperature; // HOT, ICED
+
+    @Enumerated(EnumType.STRING)
+    private MenuSize size; // SMALL, REGULAR, LARGE
+
+    @Enumerated(EnumType.STRING)
+    private MenuPacking packing; // HERE, TO_GO
 }
