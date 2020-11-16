@@ -16,6 +16,8 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    private String name;
+
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
 
