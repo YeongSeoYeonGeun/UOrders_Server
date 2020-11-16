@@ -22,12 +22,11 @@ public class Cafe {
     private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
-    private List<Menu> menu = new ArrayList<>();
+    private List<Menu> menus = new ArrayList<>();
 
     private String name;
 
     private String location;
 
-    // Image
-    // private ?? image;
+    private String image;
 }
