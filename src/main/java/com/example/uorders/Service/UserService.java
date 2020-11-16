@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,7 +20,7 @@ public class UserService {
     /**
      * 회원 조회
      */
-    public User findOne(Long userId) { return userRepository.findOne(userId); }
+    public Optional<User> findOne(Long userId) { return userRepository.findById(userId); }
 
     /**
      *  회원 전체 조회

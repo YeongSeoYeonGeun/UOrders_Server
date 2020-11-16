@@ -31,9 +31,9 @@ public class OrderService {
     @Transactional
     public Long order(Long userId, Long cafeId , Long cartId){
         // 엔티티 조회
-        User user = userRepository.findOne(userId);
-        Cafe cafe = cafeRepository.findOne(cafeId);
-        Cart cart = cartRepository.findOne(cartId);
+        User user = userRepository.findById(userId).get();
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+        Cart cart = cartRepository.findById(cartId).get();
 
         // 주문 생성
         Order order = Order.createOrder(user, cafe, cart);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,11 +27,15 @@ public class CafeService {
     /**
      * 단일 카페 조회
      */
-    public Cafe findOne(Long cafeId) { return cafeRepository.findOne(cafeId); }
+    public Optional<Cafe> findOne(Long cafeId) { return cafeRepository.findById(cafeId); }
 
     /**
      * 카페 메뉴 조회
      * 맞나..?
      */
-    public List<Menu> findMenus(Long cafeId) { return cafeRepository.findOne(cafeId).getMenus(); }
+    public List<Menu> findMenus(Long cafeId) {
+        Cafe cafe = cafeRepository.findById(cafeId).get();
+        List<Menu> menuList = cafe.getMenus();
+        return menuList;
+    }
 }

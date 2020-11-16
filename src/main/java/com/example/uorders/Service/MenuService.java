@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,5 +21,5 @@ public class MenuService {
 
     public List<Menu> findMenus() { return menuRepository.findAll(); }
 
-    public Menu findOne(Long menuId) { return menuRepository.findOne(menuId); }
+    public Optional<Menu> findOne(Long menuId) { return menuRepository.findById(menuId); }
 }
