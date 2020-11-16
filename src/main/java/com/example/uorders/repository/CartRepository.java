@@ -1,18 +1,10 @@
 package com.example.uorders.repository;
 
 import com.example.uorders.domain.Cart;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
 
-@Repository
-@RequiredArgsConstructor
-public class CartRepository {
+public interface CartRepository extends JpaRepository<Cart, Long> {
 
-    private final EntityManager em;
-
-    public void save(Cart cart) {em.persist(cart); }
-
-    public Cart findOne(Long id) { return em.find(Cart.class,id); }
 }
