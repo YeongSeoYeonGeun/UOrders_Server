@@ -11,9 +11,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,5 +74,45 @@ public class UserApiController {
         private String cafeName;
         private String cafeLocation;
         private String cafeImage;
+    }
+
+    /**
+     *  즐겨찾는 매장 등록
+     */
+    @PutMapping("/users/favorite")
+    public ResponseEntity<Message> setFavoriteCafe (@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId){
+
+        User user = userService.findOne(userId).orElse(null);
+
+        if(user == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
+
+        /// 복합키 구조로 리팩토링 필요
+        List<Favorite> favoriteList = user.getFavorites();
+        for (Favorite favorite: favoriteList ) {
+
+            Cafe cafe = favorite.getCafe();
+
+            if (cafe.getId() == cafeId) {
+                favorite.setFavorite_value(1);
+
+                Message message = new Message();
+                message.setStatus(StatusCode.OK);
+                message.setMessage(ResponseMessage.SET_FAVORITE);
+
+                return new ResponseEntity<>(message,null,HttpStatus.OK);
+            }
+        }
+
+        Message message = new Message();
+        message.setStatus(StatusCode.BAD_REQUEST);
+        message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
+
+        return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
     }
 }
