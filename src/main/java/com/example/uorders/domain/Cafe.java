@@ -24,6 +24,9 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
     private List<Menu> menus = new ArrayList<>();
 
+    @OneToMany(mappedBy = "favorite")
+    private List<Favorite> favorites = new ArrayList<>();
+
     private String name;
 
     private String location;

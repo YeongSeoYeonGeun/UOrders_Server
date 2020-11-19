@@ -24,4 +24,7 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    private List<Favorite> favorites = new ArrayList<>();
 }
