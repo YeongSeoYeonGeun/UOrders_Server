@@ -1,5 +1,6 @@
 package com.example.uorders.api;
 
+import com.example.uorders.Service.CartMenuService;
 import com.example.uorders.Service.CartService;
 import com.example.uorders.Service.MenuService;
 import com.example.uorders.Service.UserService;
@@ -24,6 +25,7 @@ public class CartApiController {
     private final CartService cartService;
     private final UserService userService;
     private final MenuService menuService;
+    private final CartMenuService cartMenuService;
 
     /**
      * 장바구니 메뉴 조회
@@ -129,5 +131,40 @@ public class CartApiController {
         private MenuTakeType menuTakeType;
         private int menuCount;
         private int menuPrice;
+    }
+
+    /**
+     *  장바구니 메뉴 삭제
+     */
+    @DeleteMapping("users/cart")
+    public ResponseEntity<Message> deleteCartMenu(@RequestHeader("userIndex") Long  userId, @RequestHeader("menuIndex") Long menuId) {
+
+        User user = userService.findOne(userId).orElse(null);
+        if(user == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
+
+        Cart cart = user.getCart();
+        CartMenu deleteMenu = cartMenuService.findOne(menuId).orElse(null);
+
+        if(deleteMenu == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_MENU);
+
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
+
+        cartMenuService.deleteOne(menuId);
+
+        Message message = new Message();
+        message.setStatus(StatusCode.OK);
+        message.setMessage(ResponseMessage.DELETE_CARTMENU);
+
+        return new ResponseEntity<>(message, null, HttpStatus.OK);
     }
 }
