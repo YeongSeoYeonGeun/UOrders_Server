@@ -32,12 +32,11 @@ public class OrderMenu {
     }
 
     //==생성 메서드//
-    public static OrderMenu createOrderMenu(Menu menu, int orderPrice, int count, Order order) {
+    public static OrderMenu createOrderMenu(Menu menu, int orderPrice, int count) {
         OrderMenu orderMenu = new OrderMenu();
         orderMenu.setMenu(menu);
         orderMenu.setOrderPrice(orderPrice);
         orderMenu.setCount(count);
-        orderMenu.setOrder(order);
 
         return orderMenu;
     }
