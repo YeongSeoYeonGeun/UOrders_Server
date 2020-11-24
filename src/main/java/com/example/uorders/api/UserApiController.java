@@ -1,11 +1,9 @@
 package com.example.uorders.api;
 
 import com.example.uorders.Service.CafeService;
+import com.example.uorders.Service.FavoriteService;
 import com.example.uorders.Service.UserService;
-import com.example.uorders.domain.Cafe;
-import com.example.uorders.domain.CartMenu;
-import com.example.uorders.domain.Favorite;
-import com.example.uorders.domain.User;
+import com.example.uorders.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,6 +22,12 @@ public class UserApiController {
 
     private final UserService userService;
     private final CafeService cafeService;
+    private final FavoriteService favoriteService;
+
+    /**
+     *  회원 등록
+     */
+    //@PostMapping
 
     /**
      *  즐겨찾는 매장 조회
@@ -39,18 +44,20 @@ public class UserApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        List<Favorite> favorites = user.getFavorites();
-        List<Cafe> favoriteCafeList = new ArrayList<>();
+
+        //Set<Favorite> favorites = user.getFavorites();
+        //List<Cafe> favoriteCafeList = favoriteService.findCafes(favorites);
+/*        List<Cafe> favoriteCafeList = new ArrayList<>();
 
         for (Favorite favorite: favorites) {
-            if(favorite.getFavorite_value() == 1) {
-                favoriteCafeList.add(favorite.getCafe());
-            }
-        }
+            favoriteCafeList.add(favorite.getCafe());
+        }*/
+
+        List<Long> favoriteCafeList = userService.findFavoriteCafeListEager(user);
 
         // 엔티티 -> DTO 변환
         List<CafeDto> collect = favoriteCafeList.stream()
-                .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
+                .map(c -> new CafeDto(cafeService.findOne(c).orElse(null).getId(), cafeService.findOne(c).orElse(null).getName(), cafeService.findOne(c).orElse(null).getLocation(), cafeService.findOne(c).orElse(null).getImage()))
                 .collect(Collectors.toList());
 
         MessageWithData message = new MessageWithData();
@@ -69,7 +76,7 @@ public class UserApiController {
 
     @Data
     @AllArgsConstructor
-    class CafeDto {
+    public static class CafeDto {
         private Long cafeIndex;
         private String cafeName;
         private String cafeLocation;
@@ -79,10 +86,11 @@ public class UserApiController {
     /**
      *  즐겨찾는 매장 등록
      */
-    @PutMapping("/users/favorite")
-    public ResponseEntity<Message> setFavoriteCafe (@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId){
+    @PostMapping("/users/favorite")
+    public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody createFavoriteRequest request){
 
         User user = userService.findOne(userId).orElse(null);
+        Cafe cafe = cafeService.findOne(request.cafeIndex).orElse(null);
 
         if(user == null) {
             Message message = new Message();
@@ -92,27 +100,51 @@ public class UserApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        /// 복합키 구조로 리팩토링 필요
-        List<Favorite> favoriteList = user.getFavorites();
-        for (Favorite favorite: favoriteList ) {
+        if(cafe == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
 
-            Cafe cafe = favorite.getCafe();
-
-            if (cafe.getId() == cafeId) {
-                favorite.setFavorite_value(1);
-
-                Message message = new Message();
-                message.setStatus(StatusCode.OK);
-                message.setMessage(ResponseMessage.SET_FAVORITE);
-
-                return new ResponseEntity<>(message,null,HttpStatus.OK);
-            }
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
+        Favorite favorite = new Favorite();
+        favorite.setUser(user);
+        favorite.setCafe(cafe);
+        favoriteService.saveFavorite(favorite);
+
+        Message message = new Message();
+        message.setStatus(StatusCode.OK);
+        message.setMessage(ResponseMessage.CREATE_FAVORITE);
+
+        return new ResponseEntity<>(message,null,HttpStatus.OK);
+        }
+
+    @Data
+    static class createFavoriteRequest {
+        private Long cafeIndex;
+    }
+
+    /**
+     *  즐겨찾는 매장 등록 해제 (삭제)
+     */
+    @DeleteMapping("users/favorite")
+    public ResponseEntity<Message> deleteFavorite(@RequestHeader("userIndex") Long userId, @RequestHeader("cafeIndex") Long cafeId) {
+
+    Favorite favorite = favoriteService.findOne(userId, cafeId).orElse(null);
+    if(favorite == null) {
         Message message = new Message();
         message.setStatus(StatusCode.BAD_REQUEST);
-        message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
+        message.setMessage(ResponseMessage.NOT_FOUND_USER_OR_CAFE);
 
         return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+    }
+
+    favoriteService.deleteOne(favorite);
+    Message message = new Message();
+    message.setStatus(StatusCode.OK);
+    message.setMessage(ResponseMessage.DELETE_FAVORITE);
+
+    return new ResponseEntity<>(message,null,HttpStatus.OK);
     }
 }
