@@ -1,6 +1,7 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.CartMenu;
+import com.example.uorders.domain.CartMenuId;
 import com.example.uorders.repository.CartMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CartMenuService {
-    CartMenuRepository cartMenuRepository;
 
-    public Optional<CartMenu> findOne(Long id) { return cartMenuRepository.findById(id); }
+    private final CartMenuRepository cartMenuRepository;
+
+    public Optional<CartMenu> findOne(Long cartId, Long menuId) {
+        CartMenuId cartMenuId = new CartMenuId(cartId, menuId);
+        return cartMenuRepository.findById(cartMenuId);
+    }
 
     @Transactional
-    public void deleteOne(Long menuId) { cartMenuRepository.deleteById(menuId); }
+    public void deleteOne(CartMenu cartMenu) { cartMenuRepository.delete(cartMenu); }
 }
