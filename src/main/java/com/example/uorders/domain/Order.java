@@ -3,26 +3,25 @@ package com.example.uorders.domain;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.tomcat.jni.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "ORDERS")
 @Getter @Setter
 public class Order {
 
     @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -31,6 +30,9 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
+
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    Set<OrderMenu> orderMenus = new HashSet<>();
 
     private LocalDateTime dateTime;
 
@@ -42,16 +44,26 @@ public class Order {
     // 타입 맞는지
     private LocalDateTime estimatedTime;
 
+    //== 연관관계 메서드==//
+    public void addOrderMenu(OrderMenu orderMenu) {
+        orderMenu.setOrder(this);
+        orderMenus.add(orderMenu);
+    }
+
+
     //== 생성 메서드 ==//
     // 완료 시간은 주문 접수 후에
-    public static Order createOrder(User user, Cafe cafe, Cart cart) {
+    public static Order createOrder(User user, Cafe cafe, Cart cart, LocalDateTime dateTime, Set<OrderMenu> orderMenus) {
         Order order = new Order();
         order.setUser(user);
         order.setCafe(cafe);
-        order.setCart(cart);
-        order.setDateTime(LocalDateTime.now());
+        order.setDateTime(dateTime);
         order.setStatus(OrderStatus.PLACED);
         order.setTotalPrice(cart.getTotalPrice());
+
+        for(OrderMenu orderMenu : orderMenus) {
+            order.addOrderMenu(orderMenu);
+        }
         return order;
     }
 

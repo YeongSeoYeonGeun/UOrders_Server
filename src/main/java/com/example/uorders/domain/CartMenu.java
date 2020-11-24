@@ -8,16 +8,16 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@IdClass(CartMenuId.class)
+@Table(name = "CART_MENU")
 public class CartMenu {
 
-    @Id @GeneratedValue
-    @Column(name = "cart_menu_id")
-    private Long id;
-
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
@@ -40,8 +40,13 @@ public class CartMenu {
         cart.getCartMenus().add(this);
     }
 
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+        menu.getCartMenus().add(this);
+    }
+
     //==생성 메서드//
-    public static CartMenu createCartMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, MenuTakeType menuTakeType) {
+    public static CartMenu createCartMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, MenuTakeType menuTakeType, Cart cart) {
         CartMenu cartMenu = new CartMenu();
         cartMenu.setMenu(menu);
         cartMenu.setOrderPrice(orderPrice);
@@ -50,19 +55,8 @@ public class CartMenu {
         cartMenu.setMenuSize(menuSize);
         cartMenu.setMenuTakeType(menuTakeType);
 
+        cartMenu.setCart(cart);
         return cartMenu;
     }
-
-    //==비즈니스 로직==//
-    /**
-     *  장바구니 메뉴 삭제
-     */
-    //public void deleteCartMenu() { }
-
-    //==조회 로직==//
-    /**
-     * 전체 장바구니 가격 조회
-     */
-    public int getTotalPrice() { return getOrderPrice() * getCount(); }
 
 }

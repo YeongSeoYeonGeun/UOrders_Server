@@ -1,18 +1,14 @@
 package com.example.uorders.repository;
 
+import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Order;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import com.example.uorders.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Set;
 
-@Repository
-@RequiredArgsConstructor
-public class OrderRepository {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    private final EntityManager em;
-
-    public void save(Order order) { em.persist(order); }
-
-    public Order findOne(Long id) { return em.find(Order.class,id); }
+    Set<Order> findByUser(User user);
 }

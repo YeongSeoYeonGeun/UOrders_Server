@@ -5,10 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
+@Table(name = "MENU")
 public class Menu {
 
     @Id @GeneratedValue
@@ -19,8 +22,11 @@ public class Menu {
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
-    @OneToMany(mappedBy = "menu")
-    private List<CartMenu> cartMenu = new ArrayList<>();
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+    private Set<CartMenu> cartMenus = new HashSet<>();
+
+    @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+    private Set<OrderMenu> orderMenus = new HashSet<>();
 
     private String name;
 

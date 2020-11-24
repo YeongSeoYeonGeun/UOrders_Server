@@ -5,10 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
+@Table(name = "CAFE")
 public class Cafe {
 
     @Id @GeneratedValue
@@ -18,11 +21,14 @@ public class Cafe {
     @OneToOne(mappedBy = "cafe", fetch = FetchType.LAZY)
     private Owner owner;
 
-    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Order> orders = new HashSet<>();
 
-    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
-    private List<Menu> menus = new ArrayList<>();
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Menu> menus = new HashSet<>();
+
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch= FetchType.EAGER)
+    private Set<Favorite> favorites = new HashSet<>();
 
     private String name;
 

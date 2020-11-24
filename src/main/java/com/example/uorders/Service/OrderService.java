@@ -1,18 +1,15 @@
 package com.example.uorders.Service;
 
-import com.example.uorders.domain.Cafe;
-import com.example.uorders.domain.Cart;
-import com.example.uorders.domain.Order;
-import com.example.uorders.domain.User;
-import com.example.uorders.repository.CafeRepository;
-import com.example.uorders.repository.CartRepository;
-import com.example.uorders.repository.OrderRepository;
-import com.example.uorders.repository.UserRepository;
+import com.example.uorders.domain.*;
+import com.example.uorders.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true)
@@ -23,33 +20,35 @@ public class OrderService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final CafeRepository cafeRepository;
+    private final CartService cartService;
+    private final OrderMenuService orderMenuService;
 
+
+    @Transactional
+    public void saveOrder(Order order){ orderRepository.save(order); }
+
+    public Set<Order> findOrderByUser(User user){
+        return orderRepository.findByUser(user);
+    }
 
     /**
      * 주문
      */
     @Transactional
-    public Long order(Long userId, Long cafeId , Long cartId){
-        // 엔티티 조회
-        User user = userRepository.findById(userId).get();
-        Cafe cafe = cafeRepository.findById(cafeId).get();
-        Cart cart = cartRepository.findById(cartId).get();
+    public Order createOrder(User user, Cafe cafe, Cart cart, LocalDateTime dateTime,Set<OrderMenu> orderMenus){
 
-        // 주문 생성
-        Order order = Order.createOrder(user, cafe, cart);
-
-        // 주문 저장
-        orderRepository.save(order);
-
-        return order.getId();
+        Order order = Order.createOrder(user, cafe, cart, dateTime, orderMenus);
+        saveOrder(order);
+        return order;
     }
+
 
     /**
      *  주문 취소
      */
     @Transactional
     public void cancelOrder(Long orderId) {
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
         order.cancel();
     }
 
@@ -58,7 +57,7 @@ public class OrderService {
      */
     @Transactional
     public void acceptOrder(Long orderId, LocalDateTime estimatedTime) {
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
         order.accept(estimatedTime);
     }
 
@@ -67,7 +66,7 @@ public class OrderService {
      */
     @Transactional
     public void rejectOrder(Long orderId) {
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderRepository.findById(orderId).orElse(null);
         order.reject();
     }
 }
