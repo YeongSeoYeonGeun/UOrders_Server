@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  *  유저 1명
@@ -55,7 +57,7 @@ public class InitDb {
             Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe);
             Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe);
 
-            List<Menu> menus = new ArrayList<>();
+            Set<Menu> menus = new HashSet<>();
 
             menus.add(menu1);
             menus.add(menu2);
@@ -80,7 +82,6 @@ public class InitDb {
         public void dbInit1(){
 
             User user = createUser("시연");
-
             em.persist(user);
 
             Cafe cafe1 = createCafe("남산학사 cafe", "신공학관 1층", "남산학사_cafe 이미지 링크");
