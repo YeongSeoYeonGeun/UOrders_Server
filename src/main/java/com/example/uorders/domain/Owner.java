@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@Table(name = "OWNER")
 public class Owner {
 
     @Id @GeneratedValue
