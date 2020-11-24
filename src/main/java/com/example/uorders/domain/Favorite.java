@@ -7,20 +7,37 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@IdClass(FavoriteId.class)
+@Table(name = "FAVORITE")
 public class Favorite {
 
-    @Id @GeneratedValue
-    @Column(name = "favorite_id")
-    private Long id;
-
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
-    @Column(columnDefinition = "integer default 0")
-    private int favorite_value;
+    //== 연관관계 메서드 ==//
+    public void setUser(User user){
+        this.user = user;
+        user.getFavorites().add(this);
+    }
+
+    public void setCafe(Cafe cafe){
+        this.cafe = cafe;
+        cafe.getFavorites().add(this);
+    }
+
+    //== 생성 메서드 ==//
+    public static Favorite createFavorite(User user, Cafe cafe) {
+        Favorite favorite = new Favorite();
+        favorite.setUser(user);
+        favorite.setCafe(cafe);
+
+        return favorite;
+    }
 }
