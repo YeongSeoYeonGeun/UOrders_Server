@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -30,24 +31,7 @@ public class CafeApiController {
      *
      * 홈 화면
      */
-    /*
-    @GetMapping("/home")
-    public Result_home cafe() {
-
-        List<Cafe> findCafes = cafeService.findCafes();
-
-        //엔티티 -> DTO 변환
-        List<CafeDto> collect = findCafes.stream()
-                .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
-                .collect(Collectors.toList());
-
-        return new Result_home(collect);
-
-    }
-    */
-
     // 요청헤더 user_index?
-    // internal server error 필요
     @GetMapping("/home")
     public ResponseEntity<Message> cafe() {
 
@@ -71,13 +55,13 @@ public class CafeApiController {
 
     @Data
     @AllArgsConstructor
-    class Result_home<T> {
+    static class Result_home<T> {
         private T cafeInfo;
     }
 
     @Data
     @AllArgsConstructor
-    class CafeDto {
+    static class CafeDto {
         private Long cafeIndex;
         private String cafeName;
         private String cafeLocation;
@@ -88,16 +72,16 @@ public class CafeApiController {
      *
      * 매장 상세 조회
      */
-    // userIndex 가 요청헤더에 있어야 isFavorite을 알 수 있을 듯 ?
-    // cafeFavoriteNumber, isFavorite 임의 처리 중
     @GetMapping("/cafe/{cafeIndex}")
-    public ResponseEntity<Message> menu(@PathVariable("cafeIndex") Long id) {
+    public ResponseEntity<Message> menu(@PathVariable("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
+
+        // 유저 isFavorite
 
         MessageWithData messageWithData = new MessageWithData();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        Cafe cafe = cafeService.findOne(id).orElse(null);
+        Cafe cafe = cafeService.findOne(cafeId).orElse(null);
         if(cafe==null){
             Message message = new Message();
             message.setStatus(StatusCode.BAD_REQUEST);
@@ -105,13 +89,13 @@ public class CafeApiController {
             return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
         }
 
-        List<Menu> findMenus = cafeService.findMenus(id);
+        Set<Menu> findMenus = cafeService.findMenus(cafeId);
 
         List<MenuDto> collect = findMenus.stream()
                 .map(m -> new MenuDto(m.getId(), m.getName(), m.getPrice(), m.getImage()))
                 .collect(Collectors.toList());
 
-        Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), 100, true, collect);
+        Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), true, collect);
 
         messageWithData.setStatus(StatusCode.OK);
         messageWithData.setMessage(ResponseMessage.READ_CAFE);
@@ -123,36 +107,17 @@ public class CafeApiController {
 
     @Data
     @AllArgsConstructor
-    class Result_cafeIndex<T> {
+    static class Result_cafeIndex<T> {
         private String cafeName;
         private String cafeLocation;
-        private int cafeFavoriteNumber;
         private Boolean isFavorite;
 
         private T menuInfo;
     }
 
-    /*
     @Data
     @AllArgsConstructor
-    class CafeDetailDto {
-        private String cafeName;
-        private String cafeLocation;
-        private int cafeFavoriteNumber;
-        private Boolean isFavorite;
-
-        public CafeDetailDto(Cafe cafe) {
-            cafeName = cafe.getName();
-            cafeLocation = cafe.getLocation();
-            cafeFavoriteNumber = 100;
-            isFavorite = true;
-        }
-    }
-*/
-
-    @Data
-    @AllArgsConstructor
-    class MenuDto {
+    static class MenuDto {
         private Long menuIndex;
         private String menuName;
         private int menuPrice;
