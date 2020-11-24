@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,7 +35,7 @@ public class CartApiController {
     public ResponseEntity<Message> getCartMenu(@RequestHeader("userIndex") Long id) {
 
         User user = userService.findOne(id).orElse(null);
-        if(user==null){
+        if(user == null){
             Message message = new Message();
             message.setStatus(StatusCode.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
@@ -42,16 +43,30 @@ public class CartApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        Cart cart = user.getCart();
-        List<CartMenu> findCartMenus = cart.getCartMenus();
+        Cart cart = userService.findCart(id);
+
+        if(cart == null){
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
+
+        Set<CartMenu> findCartMenus = cart.getCartMenus();
 
         //엔티티 -> DTO 변환
         List<CartMenuDto> collect = findCartMenus.stream()
-                .map(cm -> new CartMenuDto(cm.getId(), cm.getMenu().getName(), cm.getMenuTemperature(), cm.getMenuSize(), cm.getMenuTakeType(), cm.getCount(), cm.getOrderPrice()))
+                .map(cm -> new CartMenuDto(cm.getMenu().getId(), cm.getMenu().getName(), cm.getMenuTemperature(), cm.getMenuSize(), cm.getMenuTakeType(), cm.getCount(), cm.getOrderPrice()))
                 .collect(Collectors.toList());
 
+        // 장바구니 비어있음
+        String cafeName;
+        if(collect.size() == 0) { cafeName = ""; }
+        else { cafeName = menuService.findOne(collect.get(0).menuIndex).orElse(null).getCafe().getName(); }
+
+
         int totalPrice = cart.getTotalPrice();
-        Result result = new Result(collect, totalPrice);
+        Result result = new Result(cafeName, collect, totalPrice);
 
         MessageWithData message = new MessageWithData();
         message.setStatus(StatusCode.OK);
@@ -90,12 +105,10 @@ public class CartApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        // Total이 order로 바뀌어야??
-        // TotalPrice 사용 안하는 중
-        CartMenu cartMenu = CartMenu.createCartMenu(menu, menu.getPrice(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType());
+        CartMenu cartMenu = CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
 
-        cartMenu.setCart(cart);
         cartService.saveCart(cart);
+
         Message message = new Message();
         message.setStatus(StatusCode.OK);
         message.setMessage(ResponseMessage.CREATE_CARTMENU);
@@ -116,7 +129,8 @@ public class CartApiController {
 
     @Data
     @AllArgsConstructor
-    class Result<T> {
+    static class Result<T> {
+        private String cafeName;
         private T cartInfo;
         private int totalPrice;
     }
@@ -148,18 +162,17 @@ public class CartApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        Cart cart = user.getCart();
-        CartMenu deleteMenu = cartMenuService.findOne(menuId).orElse(null);
-
-        if(deleteMenu == null) {
+        Cart cart = userService.findCart(userId);
+        CartMenu cartMenu = cartMenuService.findOne(cart.getId(), menuId).orElse(null);
+        if(cartMenu == null) {
             Message message = new Message();
             message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_MENU);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER_OR_MENU);
 
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        cartMenuService.deleteOne(menuId);
+        cartMenuService.deleteOne(cartMenu);
 
         Message message = new Message();
         message.setStatus(StatusCode.OK);
