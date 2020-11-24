@@ -5,10 +5,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
+@Table(name = "CART")
 public class Cart {
 
     @Id
@@ -16,14 +19,12 @@ public class Cart {
     @Column(name = "cart_id")
     private Long id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartMenu> cartMenus = new ArrayList<>();
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<CartMenu> cartMenus = new HashSet<>();
 
-    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
-    private Order order;
 
     //==연관관계 메서드==//
     public void setUser(User user) {
@@ -31,26 +32,14 @@ public class Cart {
         user.setCart(this);
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
-        order.setCart(this);
-    }
-
-    //== 비즈니스 로직 ==//
-    /**
-     * 장바구니 메뉴 삭제
-     */
-    //public void deleteCartMenu(Long id) {}
-
     //== 조회 로직 ==//
-
     /**
      * 전체 주문 가격 조회
      */
     public int getTotalPrice() {
         int totalPrice = 0;
         for (CartMenu cartMenu : cartMenus) {
-            totalPrice += cartMenu.getTotalPrice();
+            totalPrice += cartMenu.getOrderPrice();
         }
         return totalPrice;
     }
