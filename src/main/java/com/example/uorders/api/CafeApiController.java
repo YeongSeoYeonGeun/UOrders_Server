@@ -1,8 +1,12 @@
 package com.example.uorders.api;
 
 import com.example.uorders.Service.CafeService;
+import com.example.uorders.Service.FavoriteService;
+import com.example.uorders.Service.UserService;
 import com.example.uorders.domain.Cafe;
+import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.Menu;
+import com.example.uorders.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +31,25 @@ import java.util.stream.Collectors;
 public class CafeApiController {
 
     private final CafeService cafeService;
+    private final UserService userService;
+    private final FavoriteService favoriteService;
 
     /**
      *
      * 홈 화면
      */
-    // 요청헤더 user_index?
     @GetMapping("/home")
-    public ResponseEntity<Message> cafe() {
+    public ResponseEntity<Message> cafe(@RequestHeader("userIndex") Long userId) {
+
+        User user = userService.findOne(userId).orElse(null);
+        if(user == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
+        String userName = user.getName();
 
         List<Cafe> findCafes = cafeService.findCafes();
 
@@ -49,7 +64,7 @@ public class CafeApiController {
 
         message.setStatus(StatusCode.OK);
         message.setMessage(ResponseMessage.READ_CAFE_LIST);
-        message.setData(new Result_home(collect));
+        message.setData(new Result_home(userName, collect));
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
 
     }
@@ -57,6 +72,7 @@ public class CafeApiController {
     @Data
     @AllArgsConstructor
     static class Result_home<T> {
+        private String userName;
         private T cafeInfo;
     }
 
@@ -77,6 +93,14 @@ public class CafeApiController {
     public ResponseEntity<Message> menu(@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
 
         // 유저 isFavorite
+        User user = userService.findOne(userId).orElse(null);
+        if(user == null) {
+            Message message = new Message();
+            message.setStatus(StatusCode.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
 
         MessageWithData messageWithData = new MessageWithData();
         HttpHeaders headers = new HttpHeaders();
@@ -90,13 +114,17 @@ public class CafeApiController {
             return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
         }
 
+        boolean isFavorite = false;
+        Favorite findFavorite = favoriteService.findOne(user.getId(), cafe.getId()).orElse(null);
+        if(findFavorite != null) { isFavorite = true; }
+
         Set<Menu> findMenus = cafeService.findMenus(cafeId);
 
         List<MenuDto> collect = findMenus.stream()
                 .map(m -> new MenuDto(m.getId(), m.getName(), m.getPrice(), m.getImage()))
                 .collect(Collectors.toList());
 
-        Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), true, collect);
+        Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), isFavorite, collect);
 
         messageWithData.setStatus(StatusCode.OK);
         messageWithData.setMessage(ResponseMessage.READ_CAFE);
