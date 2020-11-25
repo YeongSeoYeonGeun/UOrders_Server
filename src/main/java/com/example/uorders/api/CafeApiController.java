@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
@@ -73,7 +74,7 @@ public class CafeApiController {
      * 매장 상세 조회
      */
     @GetMapping("/cafe/{cafeIndex}")
-    public ResponseEntity<Message> menu(@PathVariable("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
+    public ResponseEntity<Message> menu(@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
 
         // 유저 isFavorite
 
