@@ -69,7 +69,7 @@ public class OrderApiController {
         Message message = new Message();
         message.setStatus(StatusCode.OK);
         message.setMessage(ResponseMessage.CREATE_ORDER);
-        return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, null, HttpStatus.OK);
     }
 
     @Data

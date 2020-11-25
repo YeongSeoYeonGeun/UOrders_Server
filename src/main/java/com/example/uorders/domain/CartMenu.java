@@ -3,21 +3,23 @@ package com.example.uorders.domain;
 import com.example.uorders.Service.MenuService;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-@IdClass(CartMenuId.class)
 @Table(name = "CART_MENU")
 public class CartMenu {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "cart_menu_id")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
