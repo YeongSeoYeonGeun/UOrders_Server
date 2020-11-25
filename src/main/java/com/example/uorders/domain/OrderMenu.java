@@ -7,16 +7,17 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "order_menu")
-@IdClass(OrderMenuId.class)
 @Getter @Setter
 public class OrderMenu {
 
-    @Id
+    @Id @GeneratedValue
+    @Column(name = "order_menu_id")
+    private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
