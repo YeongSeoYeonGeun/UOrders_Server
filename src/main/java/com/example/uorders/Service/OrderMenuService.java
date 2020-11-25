@@ -31,6 +31,7 @@ public class OrderMenuService {
         for(CartMenu cartMenu: cartMenus) {
             OrderMenu orderMenu = OrderMenu.createOrderMenu(cartMenu.getMenu(), cartMenu.getOrderPrice(), cartMenu.getCount());
             orderMenus.add(orderMenu);
+            saveOrderMenu(orderMenu);
         }
 
         return orderMenus;

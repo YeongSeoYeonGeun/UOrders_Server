@@ -61,6 +61,10 @@ public class OrderApiController {
         Set<OrderMenu> orderMenus = orderMenuService.createOrderMenus(cart);
         Order order = orderService.createOrder(user, cafe, cart, orderDateTime, orderMenus);
 
+        for(OrderMenu orderMenu : orderMenus) {
+            orderMenu.setOrder(order);
+        }
+
         orderService.saveOrder(order);
 
         // 장바구니 비우기
