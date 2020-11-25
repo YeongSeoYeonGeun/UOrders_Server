@@ -61,12 +61,16 @@ public class CartApiController {
 
         // 장바구니 비어있음
         String cafeName;
-        if(collect.size() == 0) { cafeName = ""; }
-        else { cafeName = menuService.findOne(collect.get(0).menuIndex).orElse(null).getCafe().getName(); }
-
+        Long cafeIndex;
+        if(collect.size() == 0) { cafeName = ""; cafeIndex = 0L;}
+        else {
+            Cafe cafe = menuService.findOne(collect.get(0).menuIndex).orElse(null).getCafe();
+            cafeName = cafe.getName();
+            cafeIndex = cafe.getId();
+        }
 
         int totalPrice = cart.getTotalPrice();
-        Result result = new Result(cafeName, collect, totalPrice);
+        Result result = new Result(cafeIndex, cafeName, collect, totalPrice);
 
         MessageWithData message = new MessageWithData();
         message.setStatus(StatusCode.OK);
@@ -130,6 +134,7 @@ public class CartApiController {
     @Data
     @AllArgsConstructor
     static class Result<T> {
+        private Long cafeIndex;
         private String cafeName;
         private T cartInfo;
         private int totalPrice;
