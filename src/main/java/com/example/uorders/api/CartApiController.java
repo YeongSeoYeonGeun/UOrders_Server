@@ -56,7 +56,7 @@ public class CartApiController {
 
         //엔티티 -> DTO 변환
         List<CartMenuDto> collect = findCartMenus.stream()
-                .map(cm -> new CartMenuDto(cm.getMenu().getId(), cm.getMenu().getName(), cm.getMenuTemperature(), cm.getMenuSize(), cm.getMenuTakeType(), cm.getCount(), cm.getOrderPrice()))
+                .map(cm -> new CartMenuDto(cm.getId(), cm.getMenu().getId(), cm.getMenu().getName(), cm.getMenuTemperature(), cm.getMenuSize(), cm.getMenuTakeType(), cm.getCount(), cm.getOrderPrice()))
                 .collect(Collectors.toList());
 
         // 장바구니 비어있음
@@ -109,9 +109,42 @@ public class CartApiController {
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
-        CartMenu cartMenu = CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
+        Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
+        boolean duplicateFlag = false;
 
-        cartService.saveCart(cart);
+        if(findCartMenus.size() == 0) // 장바구니에 해당 메뉴가 없다면
+        {
+            // 장바구니_메뉴 생성
+            CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
+        }
+        else { // 장바구니에 해당 메뉴가 있다면
+
+            for(CartMenu cartMenu: findCartMenus) { // 해당 장바구니 메뉴 중
+
+
+
+                // 사이즈, 온도, 포장 여부까지 동일한 메뉴가 있다면
+                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == request.getMenuTemperature() && cartMenu.getMenuTakeType() == request.getMenuTakeType())
+                {
+                    // 메뉴 count, TotalPrice만 증가
+                    cartMenu.setCount(cartMenu.getCount() + request.getMenuCount());
+                    cartMenu.setOrderPrice(cartMenu.getOrderPrice() + request.getMenuTotalPrice());
+
+                    System.out.println("aaaaaaa");
+                    duplicateFlag = true;
+                    break;
+                }
+            }
+
+            if(!duplicateFlag) // 장바구니에 메뉴가 있지만 사이즈, 온도, 포장 여부가 다르다면
+            {
+                // 장바구니_메뉴 생성
+                CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
+            }
+
+        }
+
+       cartService.saveCart(cart);
 
         Message message = new Message();
         message.setStatus(StatusCode.OK);
@@ -144,6 +177,7 @@ public class CartApiController {
     @AllArgsConstructor
     static
     class CartMenuDto {
+        private Long cartMenuIndex;
         private Long menuIndex;
         private String menuName;
         private MenuTemperature menuTemperature;
@@ -157,7 +191,7 @@ public class CartApiController {
      *  장바구니 메뉴 삭제
      */
     @DeleteMapping("users/cart")
-    public ResponseEntity<Message> deleteCartMenu(@RequestHeader("userIndex") Long  userId, @RequestHeader("menuIndex") Long menuId) {
+    public ResponseEntity<Message> deleteCartMenu(@RequestHeader("userIndex") Long  userId, @RequestHeader("cartMenuIndex") Long cartMenuId) {
 
         User user = userService.findOne(userId).orElse(null);
         if(user == null) {
@@ -169,7 +203,7 @@ public class CartApiController {
         }
 
         Cart cart = userService.findCart(userId);
-        CartMenu cartMenu = cartMenuService.findOne(cart.getId(), menuId).orElse(null);
+        CartMenu cartMenu = cartMenuService.findOne(cartMenuId).orElse(null);
         if(cartMenu == null) {
             Message message = new Message();
             message.setStatus(StatusCode.BAD_REQUEST);

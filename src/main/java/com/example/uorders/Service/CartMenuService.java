@@ -16,8 +16,7 @@ public class CartMenuService {
 
     private final CartMenuRepository cartMenuRepository;
 
-    public Optional<CartMenu> findOne(Long cartId, Long menuId) {
-        CartMenuId cartMenuId = new CartMenuId(cartId, menuId);
+    public Optional<CartMenu> findOne(Long cartMenuId) {
         return cartMenuRepository.findById(cartMenuId);
     }
 
