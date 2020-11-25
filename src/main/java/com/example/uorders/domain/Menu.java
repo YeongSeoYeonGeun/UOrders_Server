@@ -2,6 +2,7 @@ package com.example.uorders.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -34,6 +35,21 @@ public class Menu {
 
     private String image;
 
+    @Column(columnDefinition = "boolean default true")
+    private boolean temperatureSelect;
+
+    @Column(columnDefinition = "boolean default true")
+    private boolean sizeSelect;
+
     @Enumerated(EnumType.STRING)
     private MenuStatus status; // AVAILABLE, UNAVAILABLE
+
+
+    public boolean getTemperatureSelect() { return this.temperatureSelect; }
+
+    public void setTemperatureSelect(boolean value) { this.temperatureSelect = value; }
+
+    public boolean getSizeSelect() { return this.sizeSelect; }
+
+    public void setSizeSelect(boolean value) { this.sizeSelect = value; }
 }

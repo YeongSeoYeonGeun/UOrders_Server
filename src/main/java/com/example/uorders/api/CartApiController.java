@@ -137,6 +137,7 @@ public class CartApiController {
 
     @Data
     @AllArgsConstructor
+    static
     class CartMenuDto {
         private Long menuIndex;
         private String menuName;

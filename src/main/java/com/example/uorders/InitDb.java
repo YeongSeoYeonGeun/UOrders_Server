@@ -53,9 +53,9 @@ public class InitDb {
             cafe.setLocation(location);
             cafe.setImage(imageLink);
 
-            Menu menu1 = createMenu("아메리카노", 1500, name+"_아메리카노 이미지 링크", cafe);
-            Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe);
-            Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe);
+            Menu menu1 = createMenu("아메리카노", 1500, name+"_아메리카노 이미지 링크", cafe, true, true);
+            Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe, true, true);
+            Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe, true, true);
 
             Set<Menu> menus = new HashSet<>();
 
@@ -68,12 +68,14 @@ public class InitDb {
             return cafe;
         }
 
-        private Menu createMenu(String name, int price, String imageLink, Cafe cafe){
+        private Menu createMenu(String name, int price, String imageLink, Cafe cafe, boolean temperatureSelect, boolean sizeSelect){
             Menu menu = new Menu();
             menu.setName(name);
             menu.setPrice(price);
             menu.setImage(imageLink);
             menu.setCafe(cafe);
+            menu.setTemperatureSelect(temperatureSelect);
+            menu.setSizeSelect(sizeSelect);
 
             return menu;
         }
