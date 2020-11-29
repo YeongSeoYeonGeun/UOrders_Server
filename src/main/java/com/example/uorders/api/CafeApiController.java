@@ -4,31 +4,23 @@ import com.example.uorders.Service.CafeService;
 import com.example.uorders.Service.FavoriteService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
+import com.example.uorders.api.constants.ResponseMessage;
+import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Favorite;
-import com.example.uorders.domain.Menu;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.CafeDto;
-import com.example.uorders.dto.cafe.CafeResponse;
 import com.example.uorders.dto.home.HomeResponse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.util.Chars;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController

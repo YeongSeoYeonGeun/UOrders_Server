@@ -4,10 +4,10 @@ import com.example.uorders.Service.CafeService;
 import com.example.uorders.Service.FavoriteService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
+import com.example.uorders.api.constants.ResponseMessage;
+import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.favorite.FavoriteDto;
-import com.example.uorders.dto.user.UserDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

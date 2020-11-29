@@ -1,4 +1,4 @@
-package com.example.uorders.api;
+package com.example.uorders.api.constants;
 
 public class StatusCode {
         public static final int OK = 200;

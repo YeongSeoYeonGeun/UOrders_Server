@@ -1,7 +1,7 @@
 package com.example.uorders.exception;
 
-import com.example.uorders.api.ResponseMessage;
-import com.example.uorders.api.StatusCode;
+import com.example.uorders.api.constants.ResponseMessage;
+import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.api.constants.Message;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;

@@ -5,23 +5,17 @@ import com.example.uorders.Service.CartService;
 import com.example.uorders.Service.MenuService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
+import com.example.uorders.api.constants.ResponseMessage;
+import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.cart.CartDto;
-import com.example.uorders.dto.cartMenu.CartMenuDto;
 import com.example.uorders.dto.cartMenu.CartMenuRequest;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

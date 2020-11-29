@@ -1,6 +1,5 @@
 package com.example.uorders.api.constants;
 
-import com.example.uorders.api.StatusCode;
 import lombok.Data;
 
 @Data

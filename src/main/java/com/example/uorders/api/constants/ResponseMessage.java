@@ -1,4 +1,4 @@
-package com.example.uorders.api;
+package com.example.uorders.api.constants;
 
 public class ResponseMessage {
     public static final String READ_CAFE_LIST = "홈 화면 조회 성공";
