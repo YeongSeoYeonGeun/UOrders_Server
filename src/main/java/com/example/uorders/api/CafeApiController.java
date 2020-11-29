@@ -42,14 +42,8 @@ public class CafeApiController {
     @GetMapping("/home")
     public ResponseEntity<Message> cafe(@RequestHeader("userIndex") Long userId) {
 
-        User user = userService.findOne(userId).orElse(null);
-        if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+        User user = userService.findById(userId);
 
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
-        }
         String userName = user.getName();
 
         List<Cafe> findCafes = cafeService.findCafes();
@@ -87,18 +81,8 @@ public class CafeApiController {
     @GetMapping("/cafe/{cafeIndex}")
     public ResponseEntity<Message> menu(@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
 
-        // 유저 isFavorite
-        User user = userService.findOne(userId).orElse(null);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-
-        Cafe cafe = cafeService.findOne(cafeId).orElse(null);
-        if(cafe==null){
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(userId);
+        Cafe cafe = cafeService.findById(cafeId);
 
         boolean isFavorite = false;
         Favorite findFavorite = favoriteService.findOne(user.getId(), cafe.getId()).orElse(null);

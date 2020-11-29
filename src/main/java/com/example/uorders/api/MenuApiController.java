@@ -27,13 +27,8 @@ public class MenuApiController {
 
     @GetMapping("/menu")
     public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
-        Cafe cafe = cafeService.findOne(cafeId).orElse(null);
-        if(cafe == null){
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-
-        Menu menu = menuService.findOne(menuId).orElse(null);
+        Cafe cafe = cafeService.findById(cafeId);
+        Menu menu = menuService.findById(menuId);
         if(menu == null) {
             Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

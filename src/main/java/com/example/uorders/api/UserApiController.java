@@ -36,7 +36,7 @@ public class UserApiController {
     @GetMapping("/users/favorite")
     public ResponseEntity<Message> getFavoriteCafe (@RequestHeader("userIndex") Long id) {
 
-        User user = userService.findOne(id).orElse(null);
+        User user = userService.findById(id);
         if(user == null) {
             Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
@@ -46,7 +46,7 @@ public class UserApiController {
 
         // 엔티티 -> DTO 변환
         List<CafeDto> collect = favoriteCafeList.stream()
-                .map(c -> new CafeDto(cafeService.findOne(c).orElse(null).getId(), cafeService.findOne(c).orElse(null).getName(), cafeService.findOne(c).orElse(null).getLocation(), cafeService.findOne(c).orElse(null).getImage()))
+                .map(c -> new CafeDto(cafeService.findById(c).getId(), cafeService.findById(c).getName(), cafeService.findById(c).getLocation(), cafeService.findById(c).getImage()))
                 .collect(Collectors.toList());
 
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_FAVORITE, new Result_cafe(collect));
@@ -74,18 +74,8 @@ public class UserApiController {
     @PostMapping("/users/favorite")
     public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody createFavoriteRequest request){
 
-        User user = userService.findOne(userId).orElse(null);
-        Cafe cafe = cafeService.findOne(request.cafeIndex).orElse(null);
-
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
-        }
-
-        if(cafe == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(userId);
+        Cafe cafe = cafeService.findById(request.cafeIndex);
 
         Favorite favorite = new Favorite();
         favorite.setUser(user);

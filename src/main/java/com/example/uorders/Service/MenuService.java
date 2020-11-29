@@ -1,6 +1,7 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.Menu;
+import com.example.uorders.exception.MenuNotFoundException;
 import com.example.uorders.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,5 @@ public class MenuService {
 
     public List<Menu> findMenus() { return menuRepository.findAll(); }
 
-    public Optional<Menu> findOne(Long menuId) { return menuRepository.findById(menuId); }
+    public Menu findById(Long menuId) { return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFoundException(menuId)); }
 }

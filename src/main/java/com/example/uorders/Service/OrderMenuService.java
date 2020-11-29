@@ -4,6 +4,7 @@ import com.example.uorders.domain.Cart;
 import com.example.uorders.domain.CartMenu;
 import com.example.uorders.domain.Order;
 import com.example.uorders.domain.OrderMenu;
+import com.example.uorders.exception.OrderMenuNotFoundException;
 import com.example.uorders.repository.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ import java.util.Set;
 public class OrderMenuService {
 
     private final OrderMenuRepository orderMenuRepository;
+
+    public OrderMenu findById(Long orderMenuId) {
+        return orderMenuRepository.findById(orderMenuId).orElseThrow(()->new OrderMenuNotFoundException(orderMenuId));
+    }
 
     @Transactional
     public void saveOrderMenu(OrderMenu orderMenu) { orderMenuRepository.save(orderMenu); }

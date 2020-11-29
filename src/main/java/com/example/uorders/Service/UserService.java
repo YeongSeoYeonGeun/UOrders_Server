@@ -2,6 +2,7 @@ package com.example.uorders.Service;
 
 import com.example.uorders.api.UserApiController;
 import com.example.uorders.domain.*;
+import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -25,7 +26,7 @@ public class UserService {
     /**
      * 회원 조회
      */
-    public Optional<User> findOne(Long userId) { return userRepository.findById(userId); }
+    public User findById(Long userId) { return userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId)); }
 
     /**
      *  회원 전체 조회
@@ -45,13 +46,13 @@ public class UserService {
     }
 
     public Cart findCart(Long userId) {
-        User user = findOne(userId).orElse(null);
+        User user = findById(userId);
 
         return user.getCart();
     }
 
     public Set<Order> findOrders(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
+        User user = findById(userId);
         Set<Order> orders = user.getOrders();
         return orders;
     }

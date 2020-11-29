@@ -19,6 +19,7 @@ public class ResponseMessage {
     public static final String NOT_FOUND_MENU = "menuIndex 에 해당하는 값이 유효하지 않습니다. menuIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_USER_OR_CAFE = "userIndex 혹은 cafeIndex 에 해당하는 값이 유효하지 않습니다. userIndex 혹은 cafeIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_USER_OR_MENU = "userIndex 혹은 menuIndex 에 해당하는 값이 유효하지 않습니다. userIndex 혹은 menuIndex 값을 확인해주세요.";
+    public static final String NOT_FOUND_VALUE = "유효하지 않은 값이 포함되어있습니다.";
 
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL = "로그인 실패";
