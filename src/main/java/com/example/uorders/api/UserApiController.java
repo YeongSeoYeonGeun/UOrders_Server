@@ -5,6 +5,8 @@ import com.example.uorders.Service.FavoriteService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.favorite.FavoriteDto;
+import com.example.uorders.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -37,35 +39,17 @@ public class UserApiController {
     public ResponseEntity<Message> getFavoriteCafe (@RequestHeader("userIndex") Long id) {
 
         User user = userService.findById(id);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+
+        List<Cafe> favoriteCafeList = userService.findFavoriteCafeList(user);
+
+        List<FavoriteDto.FavoriteCafeDto> favoriteCafeDtoList = new ArrayList<>();
+        for(Cafe cafe: favoriteCafeList) {
+            FavoriteDto.FavoriteCafeDto favoriteCafeDto = FavoriteDto.FavoriteCafeDto.of(cafe);
+            favoriteCafeDtoList.add(favoriteCafeDto);
         }
 
-        List<Long> favoriteCafeList = userService.findFavoriteCafeListEager(user);
-
-        // 엔티티 -> DTO 변환
-        List<CafeDto> collect = favoriteCafeList.stream()
-                .map(c -> new CafeDto(cafeService.findById(c).getId(), cafeService.findById(c).getName(), cafeService.findById(c).getLocation(), cafeService.findById(c).getImage()))
-                .collect(Collectors.toList());
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_FAVORITE, new Result_cafe(collect));
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_FAVORITE, favoriteCafeDtoList);
         return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @Data
-    @AllArgsConstructor
-    class Result_cafe<T> {
-        private T cafeInfo;
-    }
-
-    @Data
-    @AllArgsConstructor
-    public static class CafeDto {
-        private Long cafeIndex;
-        private String cafeName;
-        private String cafeLocation;
-        private String cafeImage;
     }
 
     /**

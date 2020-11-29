@@ -6,6 +6,9 @@ import com.example.uorders.Service.MenuService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.cart.CartDto;
+import com.example.uorders.dto.cartMenu.CartMenuDto;
+import com.example.uorders.dto.cartMenu.CartMenuRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -40,25 +43,19 @@ public class CartApiController {
 
         Set<CartMenu> findCartMenus = cart.getCartMenus();
 
-        //엔티티 -> DTO 변환
-        List<CartMenuDto> collect = findCartMenus.stream()
-                .map(cm -> new CartMenuDto(cm.getId(), cm.getMenu().getId(), cm.getMenu().getName(), cm.getMenuTemperature(), cm.getMenuSize(), cm.getMenuTakeType(), cm.getCount(), cm.getOrderPrice()))
-                .collect(Collectors.toList());
-
         // 장바구니 비어있음
-        String cafeName;
-        Long cafeIndex;
-        if(collect.size() == 0) { cafeName = ""; cafeIndex = 0L;}
+        String cafeName = "";
+        Long cafeIndex = 0L;
+        if(findCartMenus.size() == 0) { cafeName = ""; cafeIndex = 0L;}
         else {
-            Cafe cafe = menuService.findById(collect.get(0).menuIndex).getCafe();
-            cafeName = cafe.getName();
-            cafeIndex = cafe.getId();
+            //Cafe cafe = menuService.findById(findCartMenus.get.get(0).menuIndex).getCafe();
+            //cafeName = cafe.getName();
+            //cafeIndex = cafe.getId();
         }
 
-        int totalPrice = cart.getTotalPrice();
-        Result result = new Result(cafeIndex, cafeName, collect, totalPrice);
+        CartDto response = CartDto.of(cart, cafeIndex, cafeName);
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CARTMENU, result);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CARTMENU, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -67,7 +64,7 @@ public class CartApiController {
      *  장바구니 메뉴 추가
      */
     @PostMapping("/users/cart")
-    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long id, @RequestBody CreateCartMenuRequest request) {
+    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long id, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
 
         User user = userService.findById(id);
 
@@ -112,40 +109,6 @@ public class CartApiController {
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_CARTMENU);
         return new ResponseEntity<>(message,  HttpStatus.OK);
-    }
-
-    @Data
-    static class CreateCartMenuRequest {
-        private Long menuIndex;
-        private String menuName;
-        private int menuCount;
-        private MenuTemperature menuTemperature;
-        private MenuSize menuSize;
-        private MenuTakeType menuTakeType;
-        private int menuTotalPrice;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private Long cafeIndex;
-        private String cafeName;
-        private T cartInfo;
-        private int totalPrice;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static
-    class CartMenuDto {
-        private Long cartMenuIndex;
-        private Long menuIndex;
-        private String menuName;
-        private MenuTemperature menuTemperature;
-        private MenuSize menuSize;
-        private MenuTakeType menuTakeType;
-        private int menuCount;
-        private int menuPrice;
     }
 
     /**

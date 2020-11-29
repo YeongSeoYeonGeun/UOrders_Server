@@ -5,6 +5,8 @@ import com.example.uorders.Service.MenuService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Menu;
+import com.example.uorders.dto.menu.MenuDto;
+import com.example.uorders.dto.menu.MenuResponse;
 import com.example.uorders.repository.CafeRepository;
 import com.example.uorders.repository.MenuRepository;
 import lombok.AllArgsConstructor;
@@ -34,27 +36,10 @@ public class MenuApiController {
             return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
-        MenuDto menuDto = new MenuDto(menu.getName(), menu.getPrice(), menu.getImage(), menu.getTemperatureSelect(), menu.getSizeSelect());
+        MenuDto menuDto = MenuDto.of(menu);
+        MenuResponse response = new MenuResponse(menuDto);
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_MENU, new Result(menuDto));
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_MENU, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static
-    class MenuDto {
-        private String menuName;
-        private int menuPrice;
-        private String menuImage;
-        private boolean selectTemperature;
-        private boolean selectSize;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static
-    class Result<T> {
-        private T menuInfo;
     }
 }
