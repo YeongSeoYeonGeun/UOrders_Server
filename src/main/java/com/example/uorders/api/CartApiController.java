@@ -4,6 +4,7 @@ import com.example.uorders.Service.CartMenuService;
 import com.example.uorders.Service.CartService;
 import com.example.uorders.Service.MenuService;
 import com.example.uorders.Service.UserService;
+import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,20 +37,15 @@ public class CartApiController {
 
         User user = userService.findOne(id).orElse(null);
         if(user == null){
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Cart cart = userService.findCart(id);
 
         if(cart == null){
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Set<CartMenu> findCartMenus = cart.getCartMenus();
@@ -72,15 +68,8 @@ public class CartApiController {
         int totalPrice = cart.getTotalPrice();
         Result result = new Result(cafeIndex, cafeName, collect, totalPrice);
 
-        MessageWithData message = new MessageWithData();
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.READ_CARTMENU);
-        message.setData(result);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CARTMENU, result);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 
@@ -92,21 +81,15 @@ public class CartApiController {
 
         User user = userService.findOne(id).orElse(null);
         if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Cart cart = user.getCart();
         Menu menu = menuService.findOne(request.getMenuIndex()).orElse(null);
         if(menu == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_MENU);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
+            return new ResponseEntity<>(message,  HttpStatus.BAD_REQUEST);
         }
 
         Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
@@ -130,7 +113,6 @@ public class CartApiController {
                     cartMenu.setCount(cartMenu.getCount() + request.getMenuCount());
                     cartMenu.setOrderPrice(cartMenu.getOrderPrice() + request.getMenuTotalPrice());
 
-                    System.out.println("aaaaaaa");
                     duplicateFlag = true;
                     break;
                 }
@@ -146,11 +128,8 @@ public class CartApiController {
 
        cartService.saveCart(cart);
 
-        Message message = new Message();
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.CREATE_CARTMENU);
-
-        return new ResponseEntity<>(message, null, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_CARTMENU);
+        return new ResponseEntity<>(message,  HttpStatus.OK);
     }
 
     @Data
@@ -195,29 +174,20 @@ public class CartApiController {
 
         User user = userService.findOne(userId).orElse(null);
         if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Cart cart = userService.findCart(userId);
         CartMenu cartMenu = cartMenuService.findOne(cartMenuId).orElse(null);
         if(cartMenu == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER_OR_MENU);
-
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER_OR_MENU);
             return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
         }
 
         cartMenuService.deleteOne(cartMenu);
 
-        Message message = new Message();
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.DELETE_CARTMENU);
-
-        return new ResponseEntity<>(message, null, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_CARTMENU);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

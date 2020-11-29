@@ -2,6 +2,7 @@ package com.example.uorders.api;
 
 import com.example.uorders.Service.CafeService;
 import com.example.uorders.Service.MenuService;
+import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Menu;
 import com.example.uorders.repository.CafeRepository;
@@ -28,30 +29,20 @@ public class MenuApiController {
     public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
         Cafe cafe = cafeService.findOne(cafeId).orElse(null);
         if(cafe == null){
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Menu menu = menuService.findOne(menuId).orElse(null);
         if(menu == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_MENU);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         MenuDto menuDto = new MenuDto(menu.getName(), menu.getPrice(), menu.getImage(), menu.getTemperatureSelect(), menu.getSizeSelect());
 
-        MessageWithData message = new MessageWithData();
-
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.READ_MENU);
-        message.setData(new Result(menuDto));
-        return new ResponseEntity<>(message, null, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_MENU, new Result(menuDto));
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @Data

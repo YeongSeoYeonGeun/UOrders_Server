@@ -3,6 +3,7 @@ package com.example.uorders.api;
 import com.example.uorders.Service.CafeService;
 import com.example.uorders.Service.FavoriteService;
 import com.example.uorders.Service.UserService;
+import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.Menu;
@@ -58,14 +59,8 @@ public class CafeApiController {
                 .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
                 .collect(Collectors.toList());
 
-        MessageWithData message = new MessageWithData();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.READ_CAFE_LIST);
-        message.setData(new Result_home(userName, collect));
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new Result_home(userName, collect));
+        return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
 
@@ -95,23 +90,14 @@ public class CafeApiController {
         // 유저 isFavorite
         User user = userService.findOne(userId).orElse(null);
         if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
-
-        MessageWithData messageWithData = new MessageWithData();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
         Cafe cafe = cafeService.findOne(cafeId).orElse(null);
         if(cafe==null){
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, headers, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         boolean isFavorite = false;
@@ -126,11 +112,9 @@ public class CafeApiController {
 
         Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), isFavorite, collect);
 
-        messageWithData.setStatus(StatusCode.OK);
-        messageWithData.setMessage(ResponseMessage.READ_CAFE);
-        messageWithData.setData(result);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
 
-        return new ResponseEntity<>(messageWithData, headers, HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
 
