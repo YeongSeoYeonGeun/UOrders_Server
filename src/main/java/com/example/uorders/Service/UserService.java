@@ -33,13 +33,13 @@ public class UserService {
      */
     public List<User> findUsers() { return userRepository.findAll(); }
 
-    public List<Long> findFavoriteCafeListEager(User user) {
+    public List<Cafe> findFavoriteCafeList(User user) {
 
         Set<Favorite> favorites = user.getFavorites();
-        List<Long> favoriteCafeList = new ArrayList<>();
+        List<Cafe> favoriteCafeList = new ArrayList<>();
 
         for (Favorite favorite: favorites) {
-            favoriteCafeList.add(favorite.getCafe().getId());
+            favoriteCafeList.add(favorite.getCafe());
         }
 
         return favoriteCafeList;

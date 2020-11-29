@@ -8,6 +8,10 @@ import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.Menu;
 import com.example.uorders.domain.User;
+import com.example.uorders.dto.cafe.CafeDetailDto;
+import com.example.uorders.dto.cafe.CafeDto;
+import com.example.uorders.dto.cafe.CafeResponse;
+import com.example.uorders.dto.home.HomeResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -53,25 +57,9 @@ public class CafeApiController {
                 .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
                 .collect(Collectors.toList());
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new Result_home(userName, collect));
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new HomeResponse(userName, collect));
         return new ResponseEntity<>(message, HttpStatus.OK);
 
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result_home<T> {
-        private String userName;
-        private T cafeInfo;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class CafeDto {
-        private Long cafeIndex;
-        private String cafeName;
-        private String cafeLocation;
-        private String cafeImage;
     }
 
     /**
@@ -88,38 +76,9 @@ public class CafeApiController {
         Favorite findFavorite = favoriteService.findOne(user.getId(), cafe.getId()).orElse(null);
         if(findFavorite != null) { isFavorite = true; }
 
-        Set<Menu> findMenus = cafeService.findMenus(cafeId);
-
-        List<MenuDto> collect = findMenus.stream()
-                .map(m -> new MenuDto(m.getId(), m.getName(), m.getPrice(), m.getImage()))
-                .collect(Collectors.toList());
-
-        Result_cafeIndex result = new Result_cafeIndex(cafe.getName(), cafe.getLocation(), isFavorite, collect);
+        CafeDetailDto result = CafeDetailDto.of(cafe, isFavorite);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
-
         return new ResponseEntity<>(message, HttpStatus.OK);
-
     }
-
-    @Data
-    @AllArgsConstructor
-    static class Result_cafeIndex<T> {
-        private String cafeName;
-        private String cafeLocation;
-        private Boolean isFavorite;
-
-        private T menuInfo;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class MenuDto {
-        private Long menuIndex;
-        private String menuName;
-        private int menuPrice;
-        private String menuImage;
-    }
-
-
 }
