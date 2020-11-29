@@ -1,6 +1,7 @@
 package com.example.uorders.api;
 
 import com.example.uorders.Service.*;
+import com.example.uorders.api.constants.Message;
 import com.example.uorders.domain.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -40,19 +41,14 @@ public class OrderApiController {
 
         User user = userService.findOne(userId).orElse(null);
         if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Cafe cafe = cafeService.findOne(cafeId).orElse(null);
         if(cafe==null){
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         // 주문 추가
@@ -70,10 +66,8 @@ public class OrderApiController {
         // 장바구니 비우기
         cartService.initializeCart(cart);
 
-        Message message = new Message();
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.CREATE_ORDER);
-        return new ResponseEntity<>(message, null, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @Data
@@ -91,11 +85,8 @@ public class OrderApiController {
     public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
         User user = userService.findOne(id).orElse(null);
         if(user == null) {
-            Message message = new Message();
-            message.setStatus(StatusCode.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
         Set<Order> orders = userService.findOrders(id);
@@ -108,15 +99,8 @@ public class OrderApiController {
                         ,o.getTotalPrice()))
                 .collect(Collectors.toList());
 
-        MessageWithData message = new MessageWithData();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-
-        message.setStatus(StatusCode.OK);
-        message.setMessage(ResponseMessage.READ_ORDER_LIST);
-        message.setData(new Result(collect));
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, new Result(collect));
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @Data
