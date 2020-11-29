@@ -3,6 +3,7 @@ package com.example.uorders.Service;
 import com.example.uorders.domain.Cart;
 import com.example.uorders.domain.CartMenu;
 import com.example.uorders.domain.Menu;
+import com.example.uorders.exception.CartNotFoundException;
 import com.example.uorders.repository.CartMenuRepository;
 import com.example.uorders.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class CartService {
     @Transactional
     public void saveCart(Cart cart) {cartRepository.save(cart); }
 
-    public Optional<Cart> findOne(Long cartId) { return cartRepository.findById(cartId); }
+    public Cart findById(Long cartId) { return cartRepository.findById(cartId).orElseThrow(()-> new CartNotFoundException(cartId)); }
 
     @Transactional
     public void initializeCart(Cart cart) {

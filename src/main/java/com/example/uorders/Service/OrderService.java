@@ -1,6 +1,7 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.*;
+import com.example.uorders.exception.OrderNotFoundException;
 import com.example.uorders.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,10 @@ public class OrderService {
 
     @Transactional
     public void saveOrder(Order order){ orderRepository.save(order); }
+
+    public Order findById(Long orderId) {
+        return orderRepository.findById(orderId).orElseThrow(()-> new OrderNotFoundException(orderId));
+    }
 
     public Set<Order> findOrderByUser(User user){
         return orderRepository.findByUser(user);

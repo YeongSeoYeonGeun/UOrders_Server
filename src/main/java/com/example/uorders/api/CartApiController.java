@@ -35,18 +35,8 @@ public class CartApiController {
     @GetMapping("/users/cart")
     public ResponseEntity<Message> getCartMenu(@RequestHeader("userIndex") Long id) {
 
-        User user = userService.findOne(id).orElse(null);
-        if(user == null){
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-
+        User user = userService.findById(id);
         Cart cart = userService.findCart(id);
-
-        if(cart == null){
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
 
         Set<CartMenu> findCartMenus = cart.getCartMenus();
 
@@ -60,7 +50,7 @@ public class CartApiController {
         Long cafeIndex;
         if(collect.size() == 0) { cafeName = ""; cafeIndex = 0L;}
         else {
-            Cafe cafe = menuService.findOne(collect.get(0).menuIndex).orElse(null).getCafe();
+            Cafe cafe = menuService.findById(collect.get(0).menuIndex).getCafe();
             cafeName = cafe.getName();
             cafeIndex = cafe.getId();
         }
@@ -79,18 +69,10 @@ public class CartApiController {
     @PostMapping("/users/cart")
     public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long id, @RequestBody CreateCartMenuRequest request) {
 
-        User user = userService.findOne(id).orElse(null);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(id);
 
         Cart cart = user.getCart();
-        Menu menu = menuService.findOne(request.getMenuIndex()).orElse(null);
-        if(menu == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
-            return new ResponseEntity<>(message,  HttpStatus.BAD_REQUEST);
-        }
+        Menu menu = menuService.findById(request.getMenuIndex());
 
         Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
         boolean duplicateFlag = false;
@@ -172,18 +154,10 @@ public class CartApiController {
     @DeleteMapping("users/cart")
     public ResponseEntity<Message> deleteCartMenu(@RequestHeader("userIndex") Long  userId, @RequestHeader("cartMenuIndex") Long cartMenuId) {
 
-        User user = userService.findOne(userId).orElse(null);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(userId);
 
         Cart cart = userService.findCart(userId);
-        CartMenu cartMenu = cartMenuService.findOne(cartMenuId).orElse(null);
-        if(cartMenu == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER_OR_MENU);
-            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
-        }
+        CartMenu cartMenu = cartMenuService.findById(cartMenuId);
 
         cartMenuService.deleteOne(cartMenu);
 

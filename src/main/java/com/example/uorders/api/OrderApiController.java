@@ -39,17 +39,8 @@ public class OrderApiController {
         Long cafeId = createOrderRequest.cafeIndex;
         LocalDateTime orderDateTime = createOrderRequest.orderDateTime;
 
-        User user = userService.findOne(userId).orElse(null);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
-
-        Cafe cafe = cafeService.findOne(cafeId).orElse(null);
-        if(cafe==null){
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_CAFE);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(userId);
+        Cafe cafe = cafeService.findById(cafeId);
 
         // 주문 추가
         Cart cart = userService.findCart(userId);
@@ -83,11 +74,7 @@ public class OrderApiController {
      */
     @GetMapping("/orders")
     public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
-        User user = userService.findOne(id).orElse(null);
-        if(user == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
+        User user = userService.findById(id);
 
         Set<Order> orders = userService.findOrders(id);
 
