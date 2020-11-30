@@ -33,8 +33,7 @@ public class CartMenu {
     @Enumerated(EnumType.STRING)
     private MenuSize menuSize; // SMALL, REGULAR, LARGE
 
-    @Enumerated(EnumType.STRING)
-    private MenuTakeType menuTakeType; // HERE, TO_GO
+    private String menuTakeType; // HERE, TO GO
 
     //==연관관계 메서드==//
     public void setCart(Cart cart) {
@@ -48,7 +47,7 @@ public class CartMenu {
     }
 
     //==생성 메서드//
-    public static CartMenu createCartMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, MenuTakeType menuTakeType, Cart cart) {
+    public static CartMenu createCartMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, String menuTakeType, Cart cart) {
         CartMenu cartMenu = new CartMenu();
         cartMenu.setMenu(menu);
         cartMenu.setOrderPrice(orderPrice);
