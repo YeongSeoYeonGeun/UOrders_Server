@@ -5,8 +5,9 @@ import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.order.AcceptOrderRequest;
+import com.example.uorders.dto.order.CreateOrderRequest;
 import com.example.uorders.dto.order.OrderDto;
-import com.example.uorders.dto.order.OrderRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,13 @@ public class OrderController {
     private final UserService userService;
     private final CafeService cafeService;
     private final CartService cartService;
+    private final OwnerService ownerService;
 
     /**
      *  주문 추가
      */
     @PostMapping
-    public ResponseEntity<Message> createOrderApi(@RequestBody OrderRequest.CreateOrderRequest createOrderRequest) {
+    public ResponseEntity<Message> createOrderApi(@RequestBody CreateOrderRequest createOrderRequest) {
         Long userId = createOrderRequest.getUserIndex();
         Long cafeId = createOrderRequest.getCafeIndex();
         LocalDateTime orderDateTime = createOrderRequest.getOrderDateTime();
@@ -76,6 +78,21 @@ public class OrderController {
         }
 
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, orderListDtoList);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    /**
+     *  주문 접수
+     */
+    @PutMapping("{orderIndex}")
+    public ResponseEntity<Message> acceptOrder(@RequestHeader("ownerIndex") Long ownerId, @RequestHeader("cafeIndex") Long cafeId, @PathVariable("orderIndex") Long orderId, @RequestBody AcceptOrderRequest request) {
+        Owner owner = ownerService.findById(ownerId);
+        Cafe cafe = cafeService.findById(cafeId);
+        Order order = orderService.findById(orderId);
+
+        orderService.acceptOrder(order, request);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.ACCEPT_ORDER);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

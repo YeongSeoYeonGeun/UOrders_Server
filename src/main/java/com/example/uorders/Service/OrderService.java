@@ -1,6 +1,7 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.order.AcceptOrderRequest;
 import com.example.uorders.exception.OrderNotFoundException;
 import com.example.uorders.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -47,31 +46,18 @@ public class OrderService {
         return order;
     }
 
-
     /**
-     *  주문 취소
+     *  주문 접수
      */
     @Transactional
-    public void cancelOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        order.cancel();
-    }
+    public void acceptOrder(Order order, AcceptOrderRequest request) {
 
-    /**
-     *  주문 승인
-     */
-    @Transactional
-    public void acceptOrder(Long orderId, LocalDateTime estimatedTime) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        order.accept(estimatedTime);
-    }
+        if (order.getStatus() != OrderStatus.PLACED) {
+            throw new IllegalStateException("이미 승인되었거나 완료된 주문입니다.");
+        }
+        order.setEstimateTime(LocalDateTime.now().plusMinutes(request.getEstimateTime()));
+        order.setStatus(OrderStatus.ACCEPTED);
 
-    /**
-     *  주문 거절
-     */
-    @Transactional
-    public void rejectOrder(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElse(null);
-        order.reject();
+        saveOrder(order);
     }
 }
