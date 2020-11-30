@@ -3,6 +3,7 @@ package com.example.uorders.Service;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Menu;
 import com.example.uorders.dto.cafe.CafeDto;
+import com.example.uorders.dto.cafe.UpdateCafeRequest;
 import com.example.uorders.dto.home.HomeResponse;
 import com.example.uorders.exception.CafeNotFoundException;
 import com.example.uorders.repository.CafeRepository;
@@ -27,20 +28,8 @@ public class CafeService {
     public Cafe findById(Long cafeId) {
         return cafeRepository.findById(cafeId).orElseThrow(() -> new CafeNotFoundException(cafeId));
     }
-    /**
-     * 전체 카페 조회
-     */
-    public List<Cafe> findCafes() { return cafeRepository.findAll(); }
 
-    /**
-     * 카페 메뉴 조회
-     * 맞나..?
-     */
-    public Set<Menu> findMenus(Long cafeId) {
-        Cafe cafe = cafeRepository.findById(cafeId).orElse(null);
-        Set<Menu> menuList = cafe.getMenuSet();
-        return menuList;
-    }
+    public List<Cafe> findCafes() { return cafeRepository.findAll(); }
 
     public List<CafeDto> readCafeList() {
 
@@ -51,5 +40,13 @@ public class CafeService {
             cafeDtoList.add(CafeDto.of(cafe));
         }
         return cafeDtoList;
+    }
+
+    @Transactional
+    public void updateCafe(Cafe cafe, UpdateCafeRequest request) {
+        cafe.setName(request.getCafeName());
+        cafe.setLocation(request.getCafeLocation());
+
+        saveCafe(cafe);
     }
 }
