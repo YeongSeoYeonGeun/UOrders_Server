@@ -21,7 +21,7 @@ public class CafeDetailDto {
 
     public static CafeDetailDto of(Cafe cafe, Boolean isFavorite) {
         List<CafeDetail_menuDto> menuDtoList = new ArrayList<>();
-        for(Menu menu: cafe.getMenus()) {
+        for(Menu menu: cafe.getMenuSet()) {
             CafeDetail_menuDto menuDto = CafeDetail_menuDto.of(menu);
             menuDtoList.add(menuDto);
         }

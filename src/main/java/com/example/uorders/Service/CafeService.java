@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -36,7 +35,7 @@ public class CafeService {
      */
     public Set<Menu> findMenus(Long cafeId) {
         Cafe cafe = cafeRepository.findById(cafeId).orElse(null);
-        Set<Menu> menuList = cafe.getMenus();
+        Set<Menu> menuList = cafe.getMenuSet();
         return menuList;
     }
 }

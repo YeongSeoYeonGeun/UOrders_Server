@@ -26,10 +26,19 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cafe_id")
+    private Cafe cafe;
+
     //==연관관계 메서드==//
     public void setUser(User user) {
         this.user = user;
         user.setCart(this);
+    }
+
+    public void setCafe(Cafe cafe) {
+        this.cafe = cafe;
+        cafe.getCartSet().add(this);
     }
 
     //== 조회 로직 ==//
