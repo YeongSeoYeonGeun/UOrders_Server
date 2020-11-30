@@ -9,6 +9,8 @@ import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.cafe.CafeDto;
 import com.example.uorders.dto.home.HomeResponse;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.Translation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +27,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping(path = "/home")
 public class HomeController {
-
     private final UserService userService;
     private final CafeService cafeService;
 
@@ -34,20 +36,11 @@ public class HomeController {
      */
     @GetMapping
     public ResponseEntity<Message> cafe(@RequestHeader("userIndex") Long userId) {
-
         User user = userService.findById(userId);
-
         String userName = user.getName();
+        List<CafeDto> cafeDtoList = cafeService.readCafeList();
 
-        List<Cafe> findCafes = cafeService.findCafes();
-
-        //엔티티 -> DTO 변환
-        List<CafeDto> collect = findCafes.stream()
-                .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
-                .collect(Collectors.toList());
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new HomeResponse(userName, collect));
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new HomeResponse(userName, cafeDtoList));
         return new ResponseEntity<>(message, HttpStatus.OK);
-
     }
 }
