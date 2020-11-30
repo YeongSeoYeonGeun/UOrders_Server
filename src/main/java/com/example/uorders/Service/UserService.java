@@ -1,20 +1,15 @@
 package com.example.uorders.Service;
 
-import com.example.uorders.api.UserApiController;
 import com.example.uorders.domain.*;
 import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)

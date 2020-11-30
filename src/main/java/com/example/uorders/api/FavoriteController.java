@@ -6,7 +6,9 @@ import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
-import com.example.uorders.domain.*;
+import com.example.uorders.domain.Cafe;
+import com.example.uorders.domain.Favorite;
+import com.example.uorders.domain.User;
 import com.example.uorders.dto.favorite.FavoriteDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -19,21 +21,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class UserApiController {
+@RequestMapping(path = "/users/favorite")
+public class FavoriteController {
 
     private final UserService userService;
     private final CafeService cafeService;
     private final FavoriteService favoriteService;
 
     /**
-     *  회원 등록
-     */
-    //@PostMapping
-
-    /**
      *  즐겨찾는 매장 조회
      */
-    @GetMapping("/users/favorite")
+    @GetMapping
     public ResponseEntity<Message> getFavoriteCafe (@RequestHeader("userIndex") Long id) {
 
         User user = userService.findById(id);
@@ -53,7 +51,7 @@ public class UserApiController {
     /**
      *  즐겨찾는 매장 등록
      */
-    @PostMapping("/users/favorite")
+    @PostMapping
     public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody createFavoriteRequest request){
 
         User user = userService.findById(userId);
@@ -66,7 +64,7 @@ public class UserApiController {
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
         return new ResponseEntity<>(message,null,HttpStatus.OK);
-        }
+    }
 
     @Data
     static class createFavoriteRequest {
@@ -76,17 +74,17 @@ public class UserApiController {
     /**
      *  즐겨찾는 매장 등록 해제 (삭제)
      */
-    @DeleteMapping("users/favorite")
+    @DeleteMapping
     public ResponseEntity<Message> deleteFavorite(@RequestHeader("userIndex") Long userId, @RequestHeader("cafeIndex") Long cafeId) {
 
-    Favorite favorite = favoriteService.findOne(userId, cafeId).orElse(null);
-    if(favorite == null) {
-        Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER_OR_CAFE);
-        return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
-    }
+        Favorite favorite = favoriteService.findOne(userId, cafeId).orElse(null);
+        if(favorite == null) {
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER_OR_CAFE);
+            return new ResponseEntity<>(message, null, HttpStatus.BAD_REQUEST);
+        }
 
-    favoriteService.deleteOne(favorite);
-    Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_FAVORITE);
-    return new ResponseEntity<>(message, HttpStatus.OK);
+        favoriteService.deleteOne(favorite);
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_FAVORITE);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
