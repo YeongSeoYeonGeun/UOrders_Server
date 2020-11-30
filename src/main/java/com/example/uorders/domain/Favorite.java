@@ -29,7 +29,7 @@ public class Favorite {
 
     public void setCafe(Cafe cafe){
         this.cafe = cafe;
-        cafe.getFavorites().add(this);
+        cafe.getFavoriteSet().add(this);
     }
 
     //== 생성 메서드 ==//

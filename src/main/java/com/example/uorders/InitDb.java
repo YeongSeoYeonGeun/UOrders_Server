@@ -10,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -63,7 +61,7 @@ public class InitDb {
             menus.add(menu2);
             menus.add(menu3);
 
-            cafe.setMenus(menus);
+            cafe.setMenuSet(menus);
 
             return cafe;
         }

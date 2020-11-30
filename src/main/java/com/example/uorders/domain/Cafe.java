@@ -22,13 +22,16 @@ public class Cafe {
     private Owner owner;
 
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orderSet = new HashSet<>();
 
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Menu> menus = new HashSet<>();
+    private Set<Menu> menuSet = new HashSet<>();
 
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, fetch= FetchType.EAGER)
-    private Set<Favorite> favorites = new HashSet<>();
+    private Set<Favorite> favoriteSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL)
+    private Set<Cart>  cartSet = new HashSet<>();
 
     private String name;
 

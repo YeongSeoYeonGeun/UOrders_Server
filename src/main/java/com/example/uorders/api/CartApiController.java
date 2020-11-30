@@ -1,15 +1,13 @@
 package com.example.uorders.api;
 
-import com.example.uorders.Service.CartMenuService;
-import com.example.uorders.Service.CartService;
-import com.example.uorders.Service.MenuService;
-import com.example.uorders.Service.UserService;
+import com.example.uorders.Service.*;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.cart.CartDto;
 import com.example.uorders.dto.cartMenu.CartMenuRequest;
+import com.example.uorders.exception.CafeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +23,7 @@ public class CartApiController {
     private final UserService userService;
     private final MenuService menuService;
     private final CartMenuService cartMenuService;
+    private final CafeService cafeService;
 
     /**
      * 장바구니 메뉴 조회
@@ -42,9 +41,9 @@ public class CartApiController {
         Long cafeIndex = 0L;
         if(findCartMenus.size() == 0) { cafeName = ""; cafeIndex = 0L;}
         else {
-            //Cafe cafe = menuService.findById(findCartMenus.get.get(0).menuIndex).getCafe();
-            //cafeName = cafe.getName();
-            //cafeIndex = cafe.getId();
+            Cafe cafe = cart.getCafe();
+            cafeIndex = cafe.getId();
+            cafeName = cafe.getName();
         }
 
         CartDto response = CartDto.of(cart, cafeIndex, cafeName);
@@ -58,11 +57,18 @@ public class CartApiController {
      *  장바구니 메뉴 추가
      */
     @PostMapping("/users/cart")
-    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long id, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
+    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long userId, @RequestHeader("cafeIndex") Long cafeId, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
 
-        User user = userService.findById(id);
+        User user = userService.findById(userId);
+        Cafe cafe = cafeService.findById(cafeId);
+
 
         Cart cart = user.getCart();
+
+        if(cart.getCafe() != cafe) { // 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+            throw new CafeNotFoundException(cafeId);
+        }
+
         Menu menu = menuService.findById(request.getMenuIndex());
 
         Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
