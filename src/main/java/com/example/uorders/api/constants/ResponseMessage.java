@@ -12,6 +12,7 @@ public class ResponseMessage {
     public static final String CREATE_ORDER = "주문 추가 성공";
     public static final String READ_ORDER_LIST = "주문 내역 조회 성공";
     public static final String READ_MENU = "메뉴 상세 조회 성공";
+    public static final String CREATE_PAY = "결제 요청 성공";
 
 
     public static final String NOT_FOUND_USER = "userIndex 에 해당하는 값이 유효하지 않습니다. userIndex 값을 확인해주세요.";
@@ -21,6 +22,7 @@ public class ResponseMessage {
     public static final String NOT_FOUND_USER_OR_MENU = "userIndex 혹은 menuIndex 에 해당하는 값이 유효하지 않습니다. userIndex 혹은 menuIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_VALUE = "유효하지 않은 값이 포함되어있습니다.";
 
+    public static final String PAY_FAIL = "결제 요청 실패";
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL = "로그인 실패";
     public static final String READ_USER = "회원 정보 조회 성공";
