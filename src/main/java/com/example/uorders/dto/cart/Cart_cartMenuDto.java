@@ -12,7 +12,7 @@ public class Cart_cartMenuDto {
     private String menuName;
     private MenuTemperature menuTemperature;
     private MenuSize menuSize;
-    private MenuTakeType menuTakeType;
+    private String menuTakeType;
     private int menuCount;
     private int menuOrderPrice;
 
