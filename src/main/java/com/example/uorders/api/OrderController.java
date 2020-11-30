@@ -19,7 +19,8 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
-public class OrderApiController {
+@RequestMapping(path = "/orders")
+public class OrderController {
 
     private final OrderService orderService;
     private final OrderMenuService orderMenuService;
@@ -30,7 +31,7 @@ public class OrderApiController {
     /**
      *  주문 추가
      */
-    @PostMapping("/orders")
+    @PostMapping
     public ResponseEntity<Message> createOrderApi(@RequestBody OrderRequest.CreateOrderRequest createOrderRequest) {
         Long userId = createOrderRequest.getUserIndex();
         Long cafeId = createOrderRequest.getCafeIndex();
@@ -61,7 +62,7 @@ public class OrderApiController {
     /**
      *  주문 내역 조회
      */
-    @GetMapping("/orders")
+    @GetMapping
     public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
         User user = userService.findById(id);
 

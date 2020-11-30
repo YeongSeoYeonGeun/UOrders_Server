@@ -18,7 +18,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping(path = "/users/cartMenu")
 
-public class CartMenuApiController {
+public class CartMenuController {
 
     private final UserService userService;
     private final CartMenuService cartMenuService;

@@ -25,34 +25,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-public class CafeApiController {
+public class CafeController {
 
     private final CafeService cafeService;
     private final UserService userService;
     private final FavoriteService favoriteService;
 
-    /**
-     *
-     * 홈 화면
-     */
-    @GetMapping("/home")
-    public ResponseEntity<Message> cafe(@RequestHeader("userIndex") Long userId) {
-
-        User user = userService.findById(userId);
-
-        String userName = user.getName();
-
-        List<Cafe> findCafes = cafeService.findCafes();
-
-        //엔티티 -> DTO 변환
-        List<CafeDto> collect = findCafes.stream()
-                .map(c -> new CafeDto(c.getId(), c.getName(), c.getLocation(), c.getImage()))
-                .collect(Collectors.toList());
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new HomeResponse(userName, collect));
-        return new ResponseEntity<>(message, HttpStatus.OK);
-
-    }
 
     /**
      *
