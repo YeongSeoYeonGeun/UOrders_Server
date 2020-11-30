@@ -3,13 +3,14 @@ package com.example.uorders.dto.order;
 import com.example.uorders.domain.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class OrderDto {
     private Long orderIndex;
@@ -27,6 +28,6 @@ public class OrderDto {
             orderMenuDtoList.add(orderMenuDto);
         }
 
-        return new OrderDto(order.getId(), order.getCafe().getName(), order.getDateTime(), orderMenuDtoList, order.getTotalPrice());
+        return new OrderDto(order.getId(), order.getCafe().getName(), order.getOrderTime(), orderMenuDtoList, order.getTotalPrice());
     }
 }

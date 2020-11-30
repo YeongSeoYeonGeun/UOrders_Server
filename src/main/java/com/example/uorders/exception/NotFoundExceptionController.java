@@ -3,6 +3,7 @@ package com.example.uorders.exception;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.api.constants.Message;
+import com.example.uorders.domain.Owner;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,8 @@ public class NotFoundExceptionController {
             CartNotFoundException.class,
             MenuNotFoundException.class,
             OrderNotFoundException.class,
-            OrderNotFoundException.class,
+            OrderMenuNotFoundException.class,
+            OwnerNotFoundException.class,
     })
 
     public ResponseEntity<Message> BadRequestException(final ChangeSetPersister.NotFoundException exception){
