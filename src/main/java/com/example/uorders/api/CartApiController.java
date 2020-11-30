@@ -17,6 +17,7 @@ import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/users/cart")
 public class CartApiController {
 
     private final CartService cartService;
@@ -28,11 +29,11 @@ public class CartApiController {
     /**
      * 장바구니 메뉴 조회
      */
-    @GetMapping("/users/cart")
-    public ResponseEntity<Message> getCartMenu(@RequestHeader("userIndex") Long id) {
+    @GetMapping
+    public ResponseEntity<Message> getCartMenu(@RequestHeader("userIndex") Long userId) {
 
-        User user = userService.findById(id);
-        Cart cart = userService.findCart(id);
+        User user = userService.findById(userId);
+        Cart cart = userService.findCart(userId);
 
         Set<CartMenu> findCartMenus = cart.getCartMenus();
 
@@ -48,83 +49,19 @@ public class CartApiController {
 
         CartDto response = CartDto.of(cart, cafeIndex, cafeName);
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CARTMENU, response);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CART, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
     /**
-     *  장바구니 메뉴 추가
+     *  장바구니 비우기
      */
-    @PostMapping("/users/cart")
-    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long userId, @RequestHeader("cafeIndex") Long cafeId, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
-
+    @DeleteMapping
+    public ResponseEntity<Message> initializeCart(@RequestHeader("userIndex") Long userId, @RequestHeader("cartIndex") Long cartId) {
         User user = userService.findById(userId);
-        Cafe cafe = cafeService.findById(cafeId);
-
-
-        Cart cart = user.getCart();
-
-        if(cart.getCafe() != cafe) { // 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
-            throw new CafeNotFoundException(cafeId);
-        }
-
-        Menu menu = menuService.findById(request.getMenuIndex());
-
-        Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
-        boolean duplicateFlag = false;
-
-        if(findCartMenus.size() == 0) // 장바구니에 해당 메뉴가 없다면
-        {
-            // 장바구니_메뉴 생성
-            CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
-        }
-        else { // 장바구니에 해당 메뉴가 있다면
-
-            for(CartMenu cartMenu: findCartMenus) { // 해당 장바구니 메뉴 중
-
-
-
-                // 사이즈, 온도, 포장 여부까지 동일한 메뉴가 있다면
-                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == request.getMenuTemperature() && cartMenu.getMenuTakeType() == request.getMenuTakeType())
-                {
-                    // 메뉴 count, TotalPrice만 증가
-                    cartMenu.setCount(cartMenu.getCount() + request.getMenuCount());
-                    cartMenu.setOrderPrice(cartMenu.getOrderPrice() + request.getMenuTotalPrice());
-
-                    duplicateFlag = true;
-                    break;
-                }
-            }
-
-            if(!duplicateFlag) // 장바구니에 메뉴가 있지만 사이즈, 온도, 포장 여부가 다르다면
-            {
-                // 장바구니_메뉴 생성
-                CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
-            }
-
-        }
-
-       cartService.saveCart(cart);
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_CARTMENU);
-        return new ResponseEntity<>(message,  HttpStatus.OK);
-    }
-
-    /**
-     *  장바구니 메뉴 삭제
-     */
-    @DeleteMapping("users/cart")
-    public ResponseEntity<Message> deleteCartMenu(@RequestHeader("userIndex") Long  userId, @RequestHeader("cartMenuIndex") Long cartMenuId) {
-
-        User user = userService.findById(userId);
-
-        Cart cart = userService.findCart(userId);
-        CartMenu cartMenu = cartMenuService.findById(cartMenuId);
-
-        cartMenuService.deleteOne(cartMenu);
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_CARTMENU);
+        Cart cart = cartService.findById(cartId);
+        cartService.initializeCart(cart);
+        Message message = new Message(StatusCode.OK, ResponseMessage.INITIALIZE_CART);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
