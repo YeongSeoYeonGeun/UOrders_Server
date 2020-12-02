@@ -36,10 +36,18 @@ public class InitDb {
     static class InitService {
 
         private User createUser(String name){
-            User user = new User();
-            Cart cart = new Cart();
-            user.setName(name);
-            cart.setUser(user);
+            User user = User.builder()
+                    .cart(null)
+                    .name(name)
+                    .code(null)
+                    .build();
+
+            Cart cart = Cart.builder()
+                    .user(user)
+                    .cafe(null)
+                    .cartMenuSet(new HashSet<>())
+                    .build();
+
             em.persist(cart);
             return user;
         }
