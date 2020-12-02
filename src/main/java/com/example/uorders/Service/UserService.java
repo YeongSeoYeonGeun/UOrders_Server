@@ -1,7 +1,6 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.*;
-import com.example.uorders.dto.user.LoginRequest;
 import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +30,7 @@ public class UserService {
 
     public List<Cafe> findFavoriteCafeList(User user) {
 
-        Set<Favorite> favorites = user.getFavorites();
+        Set<Favorite> favorites = user.getFavoriteSet();
         List<Cafe> favoriteCafeList = new ArrayList<>();
 
         for (Favorite favorite: favorites) {

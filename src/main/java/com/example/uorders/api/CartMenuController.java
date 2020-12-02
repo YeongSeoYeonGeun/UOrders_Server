@@ -7,6 +7,7 @@ import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.cartMenu.CartMenuRequest;
 import com.example.uorders.exception.CafeNotFoundException;
+import com.example.uorders.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class CartMenuController {
     private final CafeService cafeService;
     private final MenuService menuService;
     private final CartService cartService;
+    private final CartRepository cartRepository;
 
     /**
      *  장바구니 메뉴 삭제
@@ -53,9 +55,10 @@ public class CartMenuController {
         User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(request.getCafeIndex());
 
-        Cart cart = user.getCart();
+        Cart cart = cartRepository.findByUser(user);
 
-        if(cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+
+        if(cart.getCartMenuSet().size() != 0 && cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
             throw new CafeNotFoundException(request.getCafeIndex());
         }
 
@@ -68,7 +71,15 @@ public class CartMenuController {
         if(findCartMenus.size() == 0) // 장바구니에 해당 메뉴가 없다면
         {
             // 장바구니_메뉴 생성
-            CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
+            CartMenu.builder()
+                    .menu(menu)
+                    .orderPrice(menu.getPrice()*request.getMenuCount())
+                    .count(request.getMenuCount())
+                    .menuTemperature(request.getMenuTemperature())
+                    .menuSize(request.getMenuSize())
+                    .menuTakeType(request.getMenuTakeType())
+                    .cart(cart)
+                    .build();
         }
         else { // 장바구니에 해당 메뉴가 있다면
 
@@ -89,7 +100,15 @@ public class CartMenuController {
             if(!duplicateFlag) // 장바구니에 메뉴가 있지만 사이즈, 온도, 포장 여부가 다르다면
             {
                 // 장바구니_메뉴 생성
-                CartMenu.createCartMenu(menu, menu.getPrice()*request.getMenuCount(), request.getMenuCount(), request.getMenuTemperature(), request.getMenuSize(), request.getMenuTakeType(), cart);
+                CartMenu.builder()
+                        .menu(menu)
+                        .orderPrice(menu.getPrice()*request.getMenuCount())
+                        .count(request.getMenuCount())
+                        .menuTemperature(request.getMenuTemperature())
+                        .menuSize(request.getMenuSize())
+                        .menuTakeType(request.getMenuTakeType())
+                        .cart(cart)
+                        .build();
             }
 
         }

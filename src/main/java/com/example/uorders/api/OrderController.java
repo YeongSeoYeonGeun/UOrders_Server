@@ -45,12 +45,8 @@ public class OrderController {
         // 주문 추가
         Cart cart = userService.findCart(userId);
 
-        Set<OrderMenu> orderMenus = orderMenuService.createOrderMenus(cart);
-        Order order = orderService.createOrder(user, cafe, cart, orderDateTime, orderMenus);
-
-        for(OrderMenu orderMenu : orderMenus) {
-            orderMenu.setOrder(order);
-        }
+        Order order = orderService.createOrder(user, cafe, orderDateTime, cart.getTotalPrice());
+        Set<OrderMenu> orderMenus = orderMenuService.createOrderMenus(cart, order);
 
         orderService.saveOrder(order);
 

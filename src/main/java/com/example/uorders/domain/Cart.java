@@ -1,7 +1,6 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +9,7 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @Table(name = "CART")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart {
 
     @Id
@@ -28,17 +28,6 @@ public class Cart {
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
-    //==연관관계 메서드==//
-    public void setUser(User user) {
-        this.user = user;
-        user.setCart(this);
-    }
-
-    public void setCafe(Cafe cafe) {
-        this.cafe = cafe;
-        cafe.getCartSet().add(this);
-    }
-
     //== 조회 로직 ==//
     /**
      * 전체 주문 가격 조회
@@ -49,5 +38,20 @@ public class Cart {
             totalPrice += cartMenu.getOrderPrice();
         }
         return totalPrice;
+    }
+
+    //== 빌더 ==//
+    @Builder
+    public Cart(Set<CartMenu> cartMenuSet, User user, Cafe cafe) {
+        this.cartMenuSet = cartMenuSet;
+        this.user = user;
+        user.setCart(this); //== 연관관계 ==//
+
+        this.cafe = cafe;
+        if (cafe != null){
+            cafe.getCartSet().add(this); //== 연관관계 ==//
+        }
+
+
     }
 }
