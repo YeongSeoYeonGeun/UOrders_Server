@@ -63,7 +63,7 @@ public class InitDb {
 
             Menu menu1 = createMenu("아메리카노", 1500, name+"_아메리카노 이미지 링크", cafe, true, true, MenuStatus.AVAILABLE);
             Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe, true, true, MenuStatus.AVAILABLE);
-            Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe, false, true, MenuStatus.AVAILABLE);
+            Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe, false, false, MenuStatus.AVAILABLE);
 
             return cafe;
         }
