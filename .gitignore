@@ -36,3 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 *.log
+src/main/java/com/example/uorders/api/constants/WeChat.java
