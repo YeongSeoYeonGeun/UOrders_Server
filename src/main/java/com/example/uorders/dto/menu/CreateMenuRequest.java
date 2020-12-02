@@ -1,15 +1,18 @@
 package com.example.uorders.dto.menu;
 
+import com.example.uorders.domain.MenuStatus;
 import lombok.Data;
 
 @Data
 public class CreateMenuRequest {
+
+    private Long cafeIndex;
     private Long menuIndex;
     private String menuName;
-    private String menuTemperature;
-    private String menuSize;
+    private boolean menuTemperature;
+    private boolean menuSize;
     private int menuPrice;
-    private boolean soldOut;
+    private MenuStatus soldOut;
     private String menuImage;
 
 
