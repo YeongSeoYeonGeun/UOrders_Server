@@ -9,8 +9,16 @@ import com.example.uorders.domain.*;
 import com.example.uorders.dto.order.AcceptOrderRequest;
 import com.example.uorders.dto.order.CreateOrderRequest;
 import com.example.uorders.dto.order.OrderDto;
+import com.example.uorders.dto.order.PayResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -23,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -105,91 +114,16 @@ public class OrderController {
      */
     @GetMapping("/pay")
     public ResponseEntity<Message> payApi(@RequestHeader("userIndex") Long userId) {
+
         User user = userService.findById(userId);
+        PayResponse response = orderService.pay(user);
 
-        String appid = WeChat.appid;
-        String secret = WeChat.secret;
-        Integer amount = user.getCart().getTotalPrice();
-        String js_code = user.getCode();
-
-        HashMap<String, Object> result = new HashMap<String, Object>();
-
-        String jsonInString = "";
-
-        String openid = "";
-        String session_key;
-        Integer unionid;
-        Integer errcode;
-        String errmsg;
-
-        try {
-            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-            factory.setConnectionRequestTimeout(5000);
-            factory.setReadTimeout(5000);
-            RestTemplate restTemplate = new RestTemplate(factory);
-
-            HttpHeaders header = new HttpHeaders();
-            HttpEntity<?> entity = new HttpEntity<>(header);
-
-            String url = "https://api.weixin.qq.com/sns/jscode2session";
-
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appid="+ appid +"&secret="+
-                    secret + "&js_code="+ js_code +"&grant_type=authorization_code").build();
-
-            ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
-            result.put("statusCode", resultMap.getStatusCodeValue());
-            result.put("header", resultMap.getHeaders());
-            result.put("body", resultMap.getBody());
-
-            ObjectMapper mapper = new ObjectMapper();
-            jsonInString = mapper.writeValueAsString(resultMap.getBody());
-
-            openid = (String)resultMap.getBody().get("openid");
-            System.out.println("opneiddddddddddddddddddddddddddddddddddddddddddd: " + openid);
-
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            result.put("statusCode", e.getRawStatusCode());
-            result.put("body", e.getStatusText());
-            System.out.println("dfdfdfd");
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            result.put("statusCode", "999");
-            result.put("body", "exception 오류");
-            System.out.println(e.toString());
+        if(response == null) {
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.PAY_FAIL);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
-            factory.setConnectionRequestTimeout(5000);
-            factory.setReadTimeout(5000);
-            RestTemplate restTemplate = new RestTemplate(factory);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
-            MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-            map.add("openId", openid);
-            map.add("amount", amount);
-
-
-            HttpEntity<Object> entity = new HttpEntity<>(map,headers);
-
-            String url = "https://open.ifprod.cc/api/v1/shoots/pay";
-
-            ResponseEntity<String> resultMap = restTemplate.postForEntity(url, entity, String.class);
-            result.put("statusCode", resultMap.getStatusCodeValue());
-            result.put("header", resultMap.getHeaders());
-            result.put("body", resultMap.getBody());
-
-            Message message = new Message(StatusCode.OK, ResponseMessage.PAY_SUCCESS, result);
-            return new ResponseEntity<>(message, HttpStatus.OK);
-
-        } catch (RestClientException e) {
-            e.printStackTrace();
-        }
-
-        Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.PAY_FAIL);
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-
+        Message message = new Message(StatusCode.OK, ResponseMessage.PAY_SUCCESS, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
