@@ -55,7 +55,7 @@ public class CartMenuController {
 
         Cart cart = user.getCart();
 
-        if(cart.getCafe() != null && cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+        if(cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
             throw new CafeNotFoundException(request.getCafeIndex());
         }
 
