@@ -25,19 +25,29 @@ public class OrderMenu {
     private int count;
     private int orderPrice;
 
+    @Enumerated(EnumType.STRING)
+    private MenuTemperature menuTemperature; // HOT, ICED
+
+    @Enumerated(EnumType.STRING)
+    private MenuSize menuSize; // SMALL, REGULAR, LARGE
+
+    private String menuTakeType; // HERE, TO GO
 
     //==연관관계 메서드==//
     public void setMenu(Menu menu) {
         this.menu = menu;
-        menu.getOrderMenus().add(this);
+        menu.getOrderMenuSet().add(this);
     }
 
     //==생성 메서드//
-    public static OrderMenu createOrderMenu(Menu menu, int orderPrice, int count) {
+    public static OrderMenu createOrderMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, String menuTakeType) {
         OrderMenu orderMenu = new OrderMenu();
         orderMenu.setMenu(menu);
         orderMenu.setOrderPrice(orderPrice);
         orderMenu.setCount(count);
+        orderMenu.setMenuTemperature(menuTemperature);
+        orderMenu.setMenuSize(menuSize);
+        orderMenu.setMenuTakeType(menuTakeType);
 
         return orderMenu;
     }

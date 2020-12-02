@@ -1,9 +1,7 @@
 package com.example.uorders.domain;
 
-import com.example.uorders.Service.MenuService;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -38,12 +36,12 @@ public class CartMenu {
     //==연관관계 메서드==//
     public void setCart(Cart cart) {
         this.cart = cart;
-        cart.getCartMenus().add(this);
+        cart.getCartMenuSet().add(this);
     }
 
     public void setMenu(Menu menu) {
         this.menu = menu;
-        menu.getCartMenus().add(this);
+        menu.getCartMenuSet().add(this);
     }
 
     //==생성 메서드//

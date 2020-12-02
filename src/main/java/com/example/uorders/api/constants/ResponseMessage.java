@@ -19,6 +19,8 @@ public class ResponseMessage {
     public static final String READ_ORDER_LIST = "주문 내역 조회 성공";
     public static final String ACCEPT_ORDER = "주문 접수 성공";
 
+    public static final String READ_MYPAGE = "마이페이지 조회 성공";
+
     public static final String NOT_FOUND_USER = "userIndex 에 해당하는 값이 유효하지 않습니다. userIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_CAFE = "cafeIndex 에 해당하는 값이 유효하지 않습니다. cafeIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_MENU = "menuIndex 에 해당하는 값이 유효하지 않습니다. menuIndex 값을 확인해주세요.";

@@ -27,7 +27,7 @@ public class Order {
     private Cafe cafe;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    Set<OrderMenu> orderMenus = new HashSet<>();
+    Set<OrderMenu> orderMenuSet = new HashSet<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime orderTime; // 주문 시간
@@ -45,7 +45,7 @@ public class Order {
     //== 연관관계 메서드==//
     public void addOrderMenu(OrderMenu orderMenu) {
         orderMenu.setOrder(this);
-        orderMenus.add(orderMenu);
+        orderMenuSet.add(orderMenu);
     }
 
 

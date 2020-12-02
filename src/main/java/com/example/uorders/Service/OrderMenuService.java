@@ -2,7 +2,6 @@ package com.example.uorders.Service;
 
 import com.example.uorders.domain.Cart;
 import com.example.uorders.domain.CartMenu;
-import com.example.uorders.domain.Order;
 import com.example.uorders.domain.OrderMenu;
 import com.example.uorders.exception.OrderMenuNotFoundException;
 import com.example.uorders.repository.OrderMenuRepository;
@@ -31,10 +30,10 @@ public class OrderMenuService {
     public Set<OrderMenu> createOrderMenus(Cart cart) {
 
         Set<OrderMenu> orderMenus = new HashSet<>();
-        Set<CartMenu> cartMenus = cart.getCartMenus();
+        Set<CartMenu> cartMenus = cart.getCartMenuSet();
 
         for(CartMenu cartMenu: cartMenus) {
-            OrderMenu orderMenu = OrderMenu.createOrderMenu(cartMenu.getMenu(), cartMenu.getOrderPrice(), cartMenu.getCount());
+            OrderMenu orderMenu = OrderMenu.createOrderMenu(cartMenu.getMenu(), cartMenu.getOrderPrice(), cartMenu.getCount(), cartMenu.getMenuTemperature(), cartMenu.getMenuSize(), cartMenu.getMenuTakeType());
             orderMenus.add(orderMenu);
             saveOrderMenu(orderMenu);
         }

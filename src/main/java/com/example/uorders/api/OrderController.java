@@ -68,7 +68,7 @@ public class OrderController {
     public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
         User user = userService.findById(id);
 
-        Set<Order> orders = userService.findOrders(id);
+        Set<Order> orders = userService.findOrderSet(id);
 
         List<OrderDto> orderListDtoList = new ArrayList<>();
 

@@ -1,14 +1,11 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.CartMenu;
-import com.example.uorders.domain.CartMenuId;
 import com.example.uorders.exception.CartMenuNotFoundException;
 import com.example.uorders.repository.CartMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

@@ -2,7 +2,6 @@ package com.example.uorders.dto.cart;
 
 import com.example.uorders.domain.Cart;
 import com.example.uorders.domain.CartMenu;
-import com.example.uorders.dto.cartMenu.CartMenuDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,7 +21,7 @@ public class CartDto {
 
         List<Cart_cartMenuDto> cartMenuDtoList = new ArrayList<>();
 
-        for (CartMenu cartMenu : cart.getCartMenus()) {
+        for (CartMenu cartMenu : cart.getCartMenuSet()) {
             Cart_cartMenuDto cartMenuDto = Cart_cartMenuDto.of(cartMenu);
             cartMenuDtoList.add(cartMenuDto);
         }

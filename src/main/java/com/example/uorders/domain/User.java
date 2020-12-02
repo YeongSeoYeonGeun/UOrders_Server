@@ -2,12 +2,9 @@ package com.example.uorders.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,7 +19,7 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orderSet = new HashSet<>();
 
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
