@@ -16,6 +16,7 @@ import com.example.uorders.dto.menu.MenuResponse;
 import com.example.uorders.dto.menu.CreateMenuRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.OnDelete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,17 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    //점주용 메뉴 삭제//
+    @DeleteMapping("owner/menu")
+    public ResponseEntity<Message> deleteMenu (@RequestHeader("menuIndex") Long menuId, @RequestHeader("cafeIndex") Long cafeId){
+
+        Menu menu = menuService.findById(menuId);
+        Cafe cafe = cafeService.findById(cafeId);
+        menuService.deleteMenu(menu, cafe);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_MENU);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
 //    @PostMapping
 //    public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody FavoriteController.createFavoriteRequest request){

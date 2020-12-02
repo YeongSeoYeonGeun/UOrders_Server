@@ -29,6 +29,7 @@ public class MenuService {
 
     public Menu findById(Long menuId) { return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFoundException(menuId)); }
 
+    @Transactional
     public void createMenu(CreateMenuRequest request){
 
         Cafe cafe = cafeService.findById(request.getCafeIndex());
@@ -44,7 +45,13 @@ public class MenuService {
                 .temperatureSelect(request.isMenuTemperature())
                 .status(request.getSoldOut())
                 .build();
+    }
 
+    @Transactional
+    public void deleteMenu(Menu menu, Cafe cafe) {
+        cafe.getMenuSet().remove(menu);
+        menu.setCafe(null);
+        menuRepository.delete(menu);
     }
 
 
