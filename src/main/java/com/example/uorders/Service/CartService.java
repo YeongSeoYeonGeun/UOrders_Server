@@ -36,6 +36,7 @@ public class CartService {
             cartMenuRepository.delete(cartMenu);
         }
 
+        cart.setCartMenuSet(new HashSet<>());
         cart.setCafe(null);
     }
 
