@@ -45,7 +45,6 @@ public class InitDb {
                     .cartMenuSet(new HashSet<>())
                     .build();
 
-            em.persist(cart);
             return user;
         }
 

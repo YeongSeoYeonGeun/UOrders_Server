@@ -36,7 +36,5 @@ public class UserController {
         CreateUserResponse response = userService.login(request);
         Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
-
-
     }
 }
