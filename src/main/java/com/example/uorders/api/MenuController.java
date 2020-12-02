@@ -13,6 +13,7 @@ import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.OwnerCafeDetail;
 import com.example.uorders.dto.menu.MenuDto;
 import com.example.uorders.dto.menu.MenuResponse;
+import com.example.uorders.dto.menu.CreateMenuRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,16 +54,13 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @Data
-    static class createMenuRequest {
-
-    }
-
-    //점주용 메뉴 변경//
+    //점주용 메뉴 생성//
     @PostMapping("owner/menu")
-    public ResponseEntity<Message> createMenu (@RequestBody MenuController.createMenuRequest request ){
-        Menu menu = new Menu();
-        menu.setName(request.getmenuName());
+    public ResponseEntity<Message> createMenu (@RequestBody CreateMenuRequest request ){
+        menuService.createMenu(request);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_MENU);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 
