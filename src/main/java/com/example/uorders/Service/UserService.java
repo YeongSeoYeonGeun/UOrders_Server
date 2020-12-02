@@ -37,7 +37,7 @@ public class UserService {
 
     public List<Cafe> findFavoriteCafeList(User user) {
 
-        Set<Favorite> favorites = user.getFavorites();
+        Set<Favorite> favorites = user.getFavoriteSet();
         List<Cafe> favoriteCafeList = new ArrayList<>();
 
         for (Favorite favorite: favorites) {

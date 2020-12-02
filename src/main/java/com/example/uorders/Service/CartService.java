@@ -30,11 +30,14 @@ public class CartService {
     @Transactional
     public void initializeCart(Cart cart) {
 
-        Set<CartMenu> cartMenus = cart.getCartMenuSet();
+        Set<CartMenu> cartMenuSet = cart.getCartMenuSet();
 
-        for(CartMenu cartMenu: cartMenus){
+        for(CartMenu cartMenu: cartMenuSet){
             cartMenuRepository.delete(cartMenu);
         }
+
+        cart.setCartMenuSet(new HashSet<>());
+        cart.setCafe(null);
     }
 
     public Set<CartMenu> findCartMenus(Cart cart, Menu menu) {

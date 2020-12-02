@@ -48,5 +48,4 @@ public class CafeController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
 }

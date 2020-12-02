@@ -57,9 +57,11 @@ public class FavoriteController {
         User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(request.cafeIndex);
 
-        Favorite favorite = new Favorite();
-        favorite.setUser(user);
-        favorite.setCafe(cafe);
+        Favorite favorite = Favorite.builder()
+                .user(user)
+                .cafe(cafe)
+                .build();
+
         favoriteService.saveFavorite(favorite);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
