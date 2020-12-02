@@ -129,8 +129,6 @@ public class OrderService {
             JSONObject jsonObj = (JSONObject) obj;
             openid = (String) jsonObj.get("openid");
 
-            System.out.println("opneiddddddddddddddddddddddddddddddddddddddddddd: " + openid);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,7 +146,6 @@ public class OrderService {
             ResponseEntity<String> resultMap = restTemplate.postForEntity(url, payRequestBody, String.class);
 
             String responseBody = resultMap.getBody();
-            System.out.println(responseBody);
             JSONParser parser = new JSONParser();
             Object obj = parser.parse( responseBody );
             JSONObject jsonObj = (JSONObject) obj;
