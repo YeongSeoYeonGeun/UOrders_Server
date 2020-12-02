@@ -26,7 +26,7 @@ public class MenuController {
     private final MenuService menuService;
 
 
-    @GetMapping("/menu")
+    @GetMapping
     public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
         Cafe cafe = cafeService.findById(cafeId);
         Menu menu = menuService.findById(menuId);

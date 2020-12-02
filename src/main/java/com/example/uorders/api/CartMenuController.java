@@ -48,15 +48,15 @@ public class CartMenuController {
      *  장바구니 메뉴 추가
      */
     @PostMapping
-    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long userId, @RequestHeader("cafeIndex") Long cafeId, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
+    public ResponseEntity<Message> addCartMenu(@RequestHeader("userIndex") Long userId, @RequestBody CartMenuRequest.CreateCartMenuRequest request) {
 
         User user = userService.findById(userId);
-        Cafe cafe = cafeService.findById(cafeId);
+        Cafe cafe = cafeService.findById(request.getCafeIndex());
 
         Cart cart = user.getCart();
 
-        if(cart.getCafe() != null && cart.getCafe() != cafe) { // 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
-            throw new CafeNotFoundException(cafeId);
+        if(cart.getCafe() != null && cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+            throw new CafeNotFoundException(request.getCafeIndex());
         }
 
         Menu menu = menuService.findById(request.getMenuIndex());
@@ -94,6 +94,7 @@ public class CartMenuController {
 
         }
 
+        cart.setCafe(cafe);
         cartService.saveCart(cart);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_CARTMENU);

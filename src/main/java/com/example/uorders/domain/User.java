@@ -18,6 +18,8 @@ public class User {
 
     private String name;
 
+    private String code;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> orderSet = new HashSet<>();
 
@@ -27,4 +29,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Favorite> favorites = new HashSet<>();
+
 }
