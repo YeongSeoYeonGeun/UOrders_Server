@@ -2,11 +2,10 @@ package com.example.uorders.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
+import lombok.RequiredArgsConstructor;
 
 @Data
-public class LoginRequest {
+@AllArgsConstructor
+public class CreateUserResponse {
     private Long userIndex;
-    private String userName;
-    private String js_code;
 }
