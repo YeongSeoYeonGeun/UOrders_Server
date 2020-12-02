@@ -21,9 +21,10 @@ public class ResponseMessage {
 
     public static final String READ_MYPAGE = "마이페이지 조회 성공";
 
+    public static final String PAY_SUCCESS = "결제 성공";
+    public static final String PAY_FAIL = "결제 실패";
     public static final String CREATE_MENU = "메뉴 생성 성공";
     public static final String DELETE_MENU = "메뉴 삭제 성공";
-
 
 
     public static final String NOT_FOUND_USER = "userIndex 에 해당하는 값이 유효하지 않습니다. userIndex 값을 확인해주세요.";
