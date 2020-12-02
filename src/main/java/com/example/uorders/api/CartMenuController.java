@@ -58,8 +58,10 @@ public class CartMenuController {
         Cart cart = cartRepository.findByUser(user);
 
 
-        if(cart.getCartMenuSet().size() != 0 && cart.getCafe() != cafe) { // 장바구니가 비어있거나 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
-            throw new CafeNotFoundException(request.getCafeIndex());
+        if(cart.getCartMenuSet().size() != 0 && cart.getCafe() != cafe) { // 장바구니가 비어있지않으면서 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+            
+            // 장바구니 초기화
+            cartService.initializeCart(cart);
         }
 
         Menu menu = menuService.findById(request.getMenuIndex());
