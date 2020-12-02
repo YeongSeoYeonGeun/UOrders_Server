@@ -45,12 +45,8 @@ public class OrderController {
         // 주문 추가
         Cart cart = userService.findCart(userId);
 
-        Set<OrderMenu> orderMenus = orderMenuService.createOrderMenus(cart);
-        Order order = orderService.createOrder(user, cafe, cart, orderDateTime, orderMenus);
-
-        for(OrderMenu orderMenu : orderMenus) {
-            orderMenu.setOrder(order);
-        }
+        Order order = orderService.createOrder(user, cafe, orderDateTime, cart.getTotalPrice());
+        Set<OrderMenu> orderMenus = orderMenuService.createOrderMenus(cart, order);
 
         orderService.saveOrder(order);
 
@@ -68,7 +64,7 @@ public class OrderController {
     public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
         User user = userService.findById(id);
 
-        Set<Order> orders = userService.findOrders(id);
+        Set<Order> orders = userService.findOrderSet(id);
 
         List<OrderDto> orderListDtoList = new ArrayList<>();
 

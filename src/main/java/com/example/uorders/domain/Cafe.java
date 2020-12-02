@@ -1,17 +1,15 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Table(name = "CAFE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cafe {
 
     @Id @GeneratedValue
@@ -38,4 +36,21 @@ public class Cafe {
     private String location;
 
     private String image;
+
+    //== 빌더 ==//
+    @Builder
+    public Cafe(Owner owner, Set<Order> orderSet, Set<Menu> menuSet, Set<Favorite> favoriteSet, Set<Cart> cartSet, String name, String location, String image) {
+
+        this.owner = owner;
+        owner.setCafe(this); //== 연관관계 ==//
+
+        this.orderSet = orderSet;
+        this.menuSet = menuSet;
+        this.favoriteSet = favoriteSet;
+        this.cartSet = cartSet;
+        this.name = name;
+        this.location = location;
+        this.image = image;
+    }
+
 }

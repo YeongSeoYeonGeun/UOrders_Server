@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+
+import static com.example.uorders.domain.OrderStatus.PLACED;
 
 @Service
 @Transactional(readOnly = true)
@@ -39,9 +42,19 @@ public class OrderService {
      * 주문
      */
     @Transactional
-    public Order createOrder(User user, Cafe cafe, Cart cart, LocalDateTime dateTime,Set<OrderMenu> orderMenus){
+    public Order createOrder(User user, Cafe cafe, LocalDateTime dateTime, int totalPrice){
 
-        Order order = Order.createOrder(user, cafe, cart, dateTime, orderMenus);
+        Order order = Order.builder()
+                .user(user)
+                .cafe(cafe)
+                .orderMenuSet(new HashSet<>())
+                .orderTime(dateTime)
+                .orderStatus(PLACED)
+                .estimateTime(dateTime.plusMinutes(20))
+                .acceptTime(null)
+                .totalPrice(totalPrice)
+                .build();
+
         saveOrder(order);
         return order;
     }
@@ -52,7 +65,7 @@ public class OrderService {
     @Transactional
     public void acceptOrder(Order order, AcceptOrderRequest request) {
 
-        if (order.getStatus() != OrderStatus.PLACED) {
+        if (order.getStatus() != PLACED) {
             throw new IllegalStateException("이미 승인되었거나 완료된 주문입니다.");
         }
         order.setEstimateTime(LocalDateTime.now().plusMinutes(request.getEstimateTime()));

@@ -8,6 +8,8 @@ import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.favorite.FavoriteDto;
+import com.example.uorders.dto.user.CreateUserResponse;
+import com.example.uorders.dto.user.LoginRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/users")
 public class UserController {
 
     private final UserService userService;
@@ -26,8 +29,12 @@ public class UserController {
     private final FavoriteService favoriteService;
 
     /**
-     *  회원 등록
+     *  로그인
      */
-    //@PostMapping
-
+    @PostMapping("/login")
+    public ResponseEntity<Message> login(@RequestBody LoginRequest request) {
+        CreateUserResponse response = userService.login(request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, response);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

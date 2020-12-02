@@ -1,8 +1,7 @@
 package com.example.uorders.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,8 +9,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "ORDERS")
 @Getter @Setter
+@Table(name = "ORDERS")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id @GeneratedValue
@@ -27,7 +27,7 @@ public class Order {
     private Cafe cafe;
 
     @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    Set<OrderMenu> orderMenus = new HashSet<>();
+    Set<OrderMenu> orderMenuSet = new HashSet<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime orderTime; // 주문 시간
@@ -41,27 +41,19 @@ public class Order {
 
     private int totalPrice;
 
+    @Builder
+    public Order(User user, Cafe cafe, Set<OrderMenu> orderMenuSet, LocalDateTime orderTime, LocalDateTime acceptTime, LocalDateTime estimateTime, OrderStatus orderStatus, int totalPrice) {
+        this.user = user;
+        user.getOrderSet().add(this); //== 연관관계 ==//
 
-    //== 연관관계 메서드==//
-    public void addOrderMenu(OrderMenu orderMenu) {
-        orderMenu.setOrder(this);
-        orderMenus.add(orderMenu);
-    }
+        this.cafe = cafe;
+        cafe.getOrderSet().add(this); //== 연관관계 ==//
 
-
-    //== 생성 메서드 ==//
-    // 완료 시간은 주문 접수 후에
-    public static Order createOrder(User user, Cafe cafe, Cart cart, LocalDateTime dateTime, Set<OrderMenu> orderMenus) {
-        Order order = new Order();
-        order.setUser(user);
-        order.setCafe(cafe);
-        order.setOrderTime(dateTime);
-        order.setStatus(OrderStatus.PLACED);
-        order.setTotalPrice(cart.getTotalPrice());
-
-        for(OrderMenu orderMenu : orderMenus) {
-            order.addOrderMenu(orderMenu);
-        }
-        return order;
+        this.orderMenuSet = orderMenuSet;
+        this.orderTime = orderTime;
+        this.acceptTime = acceptTime;
+        this.estimateTime = estimateTime;
+        this.status = orderStatus;
+        this.totalPrice = totalPrice;
     }
 }
