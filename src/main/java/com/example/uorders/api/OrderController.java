@@ -74,23 +74,16 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  주문 내역 조회
-     */
+    /** 주문 내역 조회 */
     @GetMapping
-    public ResponseEntity<Message> readOrderApi(@RequestHeader("userIndex") Long id) {
-        User user = userService.findById(id);
+    public ResponseEntity<Message> readOrderHistory(@RequestHeader("userIndex") Long userId) {
+        User user = userService.findById(userId);
+        List<OrderDto> response = orderService.readOrderHistory(userId);
+        Set<Order> orders = userService.findOrderSet(userId);
 
-        Set<Order> orders = userService.findOrderSet(id);
 
-        List<OrderDto> orderListDtoList = new ArrayList<>();
 
-        for(Order order: orders) {
-            OrderDto orderListDto = OrderDto.of(order);
-            orderListDtoList.add(orderListDto);
-        }
-
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, orderListDtoList);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -4,6 +4,7 @@ import com.example.uorders.api.OrderController;
 import com.example.uorders.api.constants.WeChat;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.order.AcceptOrderRequest;
+import com.example.uorders.dto.order.OrderDto;
 import com.example.uorders.dto.order.PayReqeust;
 import com.example.uorders.dto.order.PayResponse;
 import com.example.uorders.exception.OrderNotFoundException;
@@ -24,7 +25,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.example.uorders.domain.OrderStatus.PLACED;
@@ -53,9 +56,7 @@ public class OrderService {
         return orderRepository.findByUser(user);
     }
 
-    /**
-     * 주문
-     */
+    /** 주문 */
     @Transactional
     public Order createOrder(User user, Cafe cafe, LocalDateTime dateTime, int totalPrice){
 
@@ -74,9 +75,7 @@ public class OrderService {
         return order;
     }
 
-    /**
-     *  주문 접수
-     */
+    /** 주문 접수 */
     @Transactional
     public void acceptOrder(Order order, AcceptOrderRequest request) {
 
@@ -89,6 +88,20 @@ public class OrderService {
         saveOrder(order);
     }
 
+    /** 주문 내역 조회 */
+    public List<OrderDto> readOrderHistory(Long userId) {
+
+        List<Order> orders = orderRepository.findOrderByUserDESC(userId);
+        List<OrderDto> orderListDtoList = new ArrayList<>();
+        for(Order order: orders) {
+            OrderDto orderListDto = OrderDto.of(order);
+            orderListDtoList.add(orderListDto);
+        }
+
+        return orderListDtoList;
+    }
+
+    /** 결제 */
     public PayResponse pay(User user) {
 
         String appid = WeChat.appid;
