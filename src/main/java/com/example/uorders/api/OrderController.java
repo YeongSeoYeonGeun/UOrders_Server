@@ -133,8 +133,8 @@ public class OrderController {
 
             String url = "https://api.weixin.qq.com/sns/jscode2session";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appid="+ WeChat.appid +"&secret="+
-                    WeChat.secret + "&js_code="+ js_code +"&grant_type=authorization_code").build();
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appId="+ appid +"&secret="+
+                    secret + "&js_code="+ js_code +"&grant_type=authorization_code").build();
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
             result.put("statusCode", resultMap.getStatusCodeValue());
@@ -144,7 +144,7 @@ public class OrderController {
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(resultMap.getBody());
 
-            openid = (String)resultMap.getBody().get("openid");
+            openid = (String)resultMap.getBody().get("openId");
             System.out.println("opneiddddddddddddddddddddddddddddddddddddddddddd: " + openid);
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
