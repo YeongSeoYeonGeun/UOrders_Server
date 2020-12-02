@@ -133,7 +133,7 @@ public class OrderController {
 
             String url = "https://api.weixin.qq.com/sns/jscode2session";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appId="+ appid +"&secret="+
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appid="+ appid +"&secret="+
                     secret + "&js_code="+ js_code +"&grant_type=authorization_code").build();
 
             ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Map.class);
@@ -144,7 +144,7 @@ public class OrderController {
             ObjectMapper mapper = new ObjectMapper();
             jsonInString = mapper.writeValueAsString(resultMap.getBody());
 
-            openid = (String)resultMap.getBody().get("openId");
+            openid = (String)resultMap.getBody().get("openid");
             System.out.println("opneiddddddddddddddddddddddddddddddddddddddddddd: " + openid);
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
@@ -164,17 +164,19 @@ public class OrderController {
             factory.setReadTimeout(5000);
             RestTemplate restTemplate = new RestTemplate(factory);
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
             MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
             map.add("openId", openid);
             map.add("amount", amount);
-            HttpEntity<Object> entity = new HttpEntity<>(map);
+
+
+            HttpEntity<Object> entity = new HttpEntity<>(map,headers);
 
             String url = "https://open.ifprod.cc/api/v1/shoots/pay";
 
-            UriComponents uri = UriComponentsBuilder.fromHttpUrl(url+"?"+"appid="+ appid +"&secret="+
-                    secret +"&js_code="+ js_code +"&grant_type=authorization_code").build();
-
-            ResponseEntity<Map> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.POST, entity, Map.class);
+            ResponseEntity<String> resultMap = restTemplate.postForEntity(url, entity, String.class);
             result.put("statusCode", resultMap.getStatusCodeValue());
             result.put("header", resultMap.getHeaders());
             result.put("body", resultMap.getBody());
