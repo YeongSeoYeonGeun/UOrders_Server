@@ -47,33 +47,4 @@ public class MenuController {
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
-    @Data
-    static class createMenuRequest {
-
-    }
-
-    //점주용 메뉴 변경//
-    @PostMapping("owner/menu")
-    public ResponseEntity<Message> createMenu (@RequestBody MenuController.createMenuRequest request ){
-        Menu menu = new Menu();
-        menu.setName(request.getmenuName());
-    }
-
-
-//    @PostMapping
-//    public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody FavoriteController.createFavoriteRequest request){
-//
-//        User user = userService.findById(userId);
-//        Cafe cafe = cafeService.findById(request.cafeIndex);
-//
-//        Favorite favorite = new Favorite();
-//        favorite.setUser(user);
-//        favorite.setCafe(cafe);
-//        favoriteService.saveFavorite(favorite);
-//
-//        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
-//        return new ResponseEntity<>(message,null,HttpStatus.OK);
-//    }
-
 }
