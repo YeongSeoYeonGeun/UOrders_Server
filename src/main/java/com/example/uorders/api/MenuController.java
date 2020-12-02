@@ -11,6 +11,7 @@ import com.example.uorders.domain.Menu;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.OwnerCafeDetail;
+import com.example.uorders.dto.menu.CreateMenuRequest;
 import com.example.uorders.dto.menu.MenuDto;
 import com.example.uorders.dto.menu.MenuResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,17 +39,23 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /*점주용 메뉴 조회*/
+    /*점주용 메장 조회*/
     @GetMapping("/owner/cafe/{cafeIndex}")
     public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") Long cafeId ){
-        System.out.println("아무거나 ");
         Cafe cafe = cafeService.findById(cafeId);
 
-        System.out.println("아무거나 ");
         OwnerCafeDetail result = OwnerCafeDetail.of(cafe);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    /*점주용 메뉴 추가*/
+    @PostMapping("/owner/menu")
+    public ResponseEntity<Message> createMenu(@RequestBody CreateMenuRequest request){
+        menuService.createMenu(request);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_MENU);
+        return new ResponseEntity<>(message,HttpStatus.OK);
+    }
 
 }
