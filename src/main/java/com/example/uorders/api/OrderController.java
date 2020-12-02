@@ -169,7 +169,7 @@ public class OrderController {
 
             MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
             map.add("openId", openid);
-            map.add("amount", amount);
+            map.add("amount", "10000");
 
 
             HttpEntity<Object> entity = new HttpEntity<>(map,headers);
