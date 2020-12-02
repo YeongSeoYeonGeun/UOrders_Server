@@ -1,6 +1,7 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.user.LoginRequest;
 import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,4 +52,19 @@ public class UserService {
         Set<Order> orderSet = user.getOrderSet();
         return orderSet;
     }
+
+    /*
+    public Long login(LoginRequest request) {
+
+        Long userId = request.getUserIndex();
+        String code = request.getJs_code();
+
+        User user = new User();
+        Cart cart = new Cart();
+        user.setName(name);
+        cart.setUser(user);
+        set
+    }
+
+     */
 }

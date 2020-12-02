@@ -11,6 +11,7 @@ public class CartMenuRequest {
     @Getter
     @AllArgsConstructor
     public static class CreateCartMenuRequest {
+        private Long cafeIndex;
         private Long menuIndex;
         private String menuName;
         private int menuCount;
