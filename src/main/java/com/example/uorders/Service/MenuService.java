@@ -2,13 +2,11 @@ package com.example.uorders.Service;
 
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Menu;
-import com.example.uorders.dto.cartMenu.CartMenuRequest;
 import com.example.uorders.dto.menu.CreateMenuRequest;
 import com.example.uorders.exception.MenuNotFoundException;
 import com.example.uorders.repository.CafeRepository;
 import com.example.uorders.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,15 +29,14 @@ public class MenuService {
 
     public Menu findById(Long menuId) { return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFoundException(menuId)); }
 
-    @Transactional
-    public void createMenu (CreateMenuRequest request){
+    public void createMenu(CreateMenuRequest request){
 
         Cafe cafe = cafeService.findById(request.getCafeIndex());
 
         Menu menu = Menu.builder()
-                .cafe(cafe)
                 .name(request.getMenuName())
                 .price(request.getMenuPrice())
+                .cafe(cafe)
                 .image(request.getMenuImage())
                 .cartMenuSet(new HashSet<>())
                 .orderMenuSet(new HashSet<>())
@@ -48,7 +45,7 @@ public class MenuService {
                 .status(request.getSoldOut())
                 .build();
 
-
-
     }
+
+
 }

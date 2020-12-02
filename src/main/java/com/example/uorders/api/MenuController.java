@@ -11,9 +11,10 @@ import com.example.uorders.domain.Menu;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.OwnerCafeDetail;
-import com.example.uorders.dto.menu.CreateMenuRequest;
 import com.example.uorders.dto.menu.MenuDto;
 import com.example.uorders.dto.menu.MenuResponse;
+import com.example.uorders.dto.menu.CreateMenuRequest;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +28,14 @@ public class MenuController {
     private final MenuService menuService;
 
 
-    @GetMapping
+    @GetMapping("/menu")
     public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
         Cafe cafe = cafeService.findById(cafeId);
         Menu menu = menuService.findById(menuId);
+        if(menu == null) {
+            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
+            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        }
 
         MenuDto menuDto = MenuDto.of(menu);
         MenuResponse response = new MenuResponse(menuDto);
@@ -49,13 +54,29 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /*점주용 메뉴 추가*/
-    @PostMapping("/owner/menu")
-    public ResponseEntity<Message> createMenu(@RequestBody CreateMenuRequest request){
+    //점주용 메뉴 생성//
+    @PostMapping("owner/menu")
+    public ResponseEntity<Message> createMenu (@RequestBody CreateMenuRequest request ){
         menuService.createMenu(request);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_MENU);
-        return new ResponseEntity<>(message,HttpStatus.OK);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+
+//    @PostMapping
+//    public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody FavoriteController.createFavoriteRequest request){
+//
+//        User user = userService.findById(userId);
+//        Cafe cafe = cafeService.findById(request.cafeIndex);
+//
+//        Favorite favorite = new Favorite();
+//        favorite.setUser(user);
+//        favorite.setCafe(cafe);
+//        favoriteService.saveFavorite(favorite);
+//
+//        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
+//        return new ResponseEntity<>(message,null,HttpStatus.OK);
+//    }
 
 }
