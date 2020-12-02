@@ -46,9 +46,9 @@ public class UserService {
         return user.getCart();
     }
 
-    public Set<Order> findOrders(Long userId) {
+    public Set<Order> findOrderSet(Long userId) {
         User user = findById(userId);
-        Set<Order> orders = user.getOrders();
-        return orders;
+        Set<Order> orderSet = user.getOrderSet();
+        return orderSet;
     }
 }

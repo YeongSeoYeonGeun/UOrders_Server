@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +18,7 @@ public class Cart {
     private Long id;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<CartMenu> cartMenus = new HashSet<>();
+    private Set<CartMenu> cartMenuSet = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -47,7 +45,7 @@ public class Cart {
      */
     public int getTotalPrice() {
         int totalPrice = 0;
-        for (CartMenu cartMenu : cartMenus) {
+        for (CartMenu cartMenu : cartMenuSet) {
             totalPrice += cartMenu.getOrderPrice();
         }
         return totalPrice;

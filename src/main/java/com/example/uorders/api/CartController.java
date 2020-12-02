@@ -6,8 +6,6 @@ import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.cart.CartDto;
-import com.example.uorders.dto.cartMenu.CartMenuRequest;
-import com.example.uorders.exception.CafeNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +33,7 @@ public class CartController {
         User user = userService.findById(userId);
         Cart cart = userService.findCart(userId);
 
-        Set<CartMenu> findCartMenus = cart.getCartMenus();
+        Set<CartMenu> findCartMenus = cart.getCartMenuSet();
 
         // 장바구니 비어있음
         String cafeName = "";

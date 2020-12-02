@@ -53,10 +53,9 @@ public class CartMenuController {
         User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(cafeId);
 
-
         Cart cart = user.getCart();
 
-        if(cart.getCafe() != cafe) { // 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
+        if(cart.getCafe() != null && cart.getCafe() != cafe) { // 장바구니에 담겨있는 메뉴와 다른 카페의 메뉴를 담은 경우
             throw new CafeNotFoundException(cafeId);
         }
 
@@ -65,6 +64,7 @@ public class CartMenuController {
         Set<CartMenu> findCartMenus = cartService.findCartMenus(cart, menu);
         boolean duplicateFlag = false;
 
+        System.out.println(findCartMenus.size());
         if(findCartMenus.size() == 0) // 장바구니에 해당 메뉴가 없다면
         {
             // 장바구니_메뉴 생성
@@ -75,7 +75,7 @@ public class CartMenuController {
             for(CartMenu cartMenu: findCartMenus) { // 해당 장바구니 메뉴 중
 
                 // 사이즈, 온도, 포장 여부까지 동일한 메뉴가 있다면
-                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == request.getMenuTemperature() && cartMenu.getMenuTakeType() == request.getMenuTakeType())
+                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == request.getMenuTemperature() && cartMenu.getMenuTakeType().equals(request.getMenuTakeType()))
                 {
                     // 메뉴 count, TotalPrice만 증가
                     cartMenu.setCount(cartMenu.getCount() + request.getMenuCount());

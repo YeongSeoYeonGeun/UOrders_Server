@@ -24,10 +24,10 @@ public class Menu {
     private Cafe cafe;
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
-    private Set<CartMenu> cartMenus = new HashSet<>();
+    private Set<CartMenu> cartMenuSet = new HashSet<>();
 
     @OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
-    private Set<OrderMenu> orderMenus = new HashSet<>();
+    private Set<OrderMenu> orderMenuSet = new HashSet<>();
 
     private String name;
 

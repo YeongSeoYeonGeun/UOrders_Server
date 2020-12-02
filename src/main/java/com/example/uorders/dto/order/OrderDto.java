@@ -4,7 +4,6 @@ import com.example.uorders.domain.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class OrderDto {
     public static OrderDto of(Order order) {
         List<Order_orderMenuDto> orderMenuDtoList = new ArrayList<>();
 
-        for (OrderMenu orderMenu : order.getOrderMenus()) {
+        for (OrderMenu orderMenu : order.getOrderMenuSet()) {
             Order_orderMenuDto orderMenuDto = Order_orderMenuDto.of(orderMenu);
             orderMenuDtoList.add(orderMenuDto);
         }

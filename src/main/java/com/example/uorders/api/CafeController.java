@@ -25,16 +25,15 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(path = "/cafe")
 public class CafeController {
 
     private final CafeService cafeService;
     private final UserService userService;
     private final FavoriteService favoriteService;
-    private final OwnerService ownerService;
-
 
     /** 매장 상세 조회 */
-    @GetMapping("/cafe/{cafeIndex}")
+    @GetMapping("/{cafeIndex}")
     public ResponseEntity<Message> menu(@RequestHeader("userIndex") Long userId, @PathVariable("cafeIndex") Long cafeId) {
 
         User user = userService.findById(userId);
@@ -50,14 +49,4 @@ public class CafeController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /** 매장 정보 변경 */
-    @PutMapping("/cafe")
-    public ResponseEntity<Message> updateCafe(@RequestHeader("ownerIndex") Long ownerId, @RequestHeader("cafeIndex") Long cafeId, @RequestBody UpdateCafeRequest request) {
-        Owner owner = ownerService.findById(ownerId);
-        Cafe cafe = cafeService.findById(cafeId);
-
-        cafeService.updateCafe(cafe, request);
-        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_CAFE);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
 }
