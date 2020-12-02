@@ -13,6 +13,7 @@ import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.OwnerCafeDetail;
 import com.example.uorders.dto.menu.MenuDto;
 import com.example.uorders.dto.menu.MenuResponse;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,17 +43,42 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /*점주용 메뉴 조회*/
+    /*점주용 메장 조회*/
     @GetMapping("/owner/cafe/{cafeIndex}")
     public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") Long cafeId ){
-        System.out.println("아무거나 ");
         Cafe cafe = cafeService.findById(cafeId);
 
-        System.out.println("아무거나 ");
         OwnerCafeDetail result = OwnerCafeDetail.of(cafe);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @Data
+    static class createMenuRequest {
+
+    }
+
+    //점주용 메뉴 변경//
+    @PostMapping("owner/menu")
+    public ResponseEntity<Message> createMenu (@RequestBody MenuController.createMenuRequest request ){
+        Menu menu = new Menu();
+        menu.setName(request.getmenuName());
+    }
+
+
+//    @PostMapping
+//    public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody FavoriteController.createFavoriteRequest request){
+//
+//        User user = userService.findById(userId);
+//        Cafe cafe = cafeService.findById(request.cafeIndex);
+//
+//        Favorite favorite = new Favorite();
+//        favorite.setUser(user);
+//        favorite.setCafe(cafe);
+//        favoriteService.saveFavorite(favorite);
+//
+//        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
+//        return new ResponseEntity<>(message,null,HttpStatus.OK);
+//    }
 
 }

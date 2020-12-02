@@ -23,4 +23,7 @@ public class MenuService {
     public List<Menu> findMenus() { return menuRepository.findAll(); }
 
     public Menu findById(Long menuId) { return menuRepository.findById(menuId).orElseThrow(() -> new MenuNotFoundException(menuId)); }
+
+
+
 }
