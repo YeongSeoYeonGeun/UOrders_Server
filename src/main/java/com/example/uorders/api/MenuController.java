@@ -21,12 +21,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class MenuController {
-
     private final CafeService cafeService;
     private final MenuService menuService;
 
 
-    @GetMapping
+    @GetMapping("/menu")
     public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
         Cafe cafe = cafeService.findById(cafeId);
         Menu menu = menuService.findById(menuId);
