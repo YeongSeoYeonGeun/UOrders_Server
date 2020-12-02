@@ -8,6 +8,7 @@ import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.favorite.FavoriteDto;
+import com.example.uorders.dto.user.CreateUserResponse;
 import com.example.uorders.dto.user.LoginRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -30,16 +31,12 @@ public class UserController {
     /**
      *  로그인
      */
-    /*
     @PostMapping("/login")
     public ResponseEntity<Message> login(@RequestBody LoginRequest request) {
-
-        Long userId = userService.login(request);
-        Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS);
+        CreateUserResponse response = userService.login(request);
+        Message message = new Message(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
 
 
     }
-
-     */
 }

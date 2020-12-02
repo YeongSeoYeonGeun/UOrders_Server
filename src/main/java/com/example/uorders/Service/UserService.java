@@ -1,6 +1,8 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.*;
+import com.example.uorders.dto.user.CreateUserResponse;
+import com.example.uorders.dto.user.LoginRequest;
 import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +20,10 @@ import java.util.Set;
 public class UserService {
 
     private final UserRepository userRepository;
+
+
+    @Transactional
+    public void saveUser(User user) { userRepository.save(user); }
 
     /**
      * 회원 조회
@@ -52,18 +59,34 @@ public class UserService {
         return orderSet;
     }
 
-    /*
-    public Long login(LoginRequest request) {
+    @Transactional
+    public CreateUserResponse login(LoginRequest request) {
+        User user =  userRepository.findById(request.getUserIndex()).orElse(null);
 
-        Long userId = request.getUserIndex();
-        String code = request.getJs_code();
+        if(user == null) { // 신규 유저 등록
+            User new_user = User.builder()
+                    .name(request.getUserName())
+                    .cart(null)
+                    .code(request.getJs_code())
+                    .favoriteSet(new HashSet<>())
+                    .orderSet(new HashSet<>())
+                    .build();
 
-        User user = new User();
-        Cart cart = new Cart();
-        user.setName(name);
-        cart.setUser(user);
-        set
+            Cart cart = Cart.builder()
+                    .user(new_user)
+                    .cafe(null)
+                    .cartMenuSet(new HashSet<>())
+                    .build();
+
+            saveUser(new_user);
+            return new CreateUserResponse(new_user.getId());
+        }
+        else { // 유저 JS_CODE 재등록
+            user.setCode(request.getJs_code());
+            saveUser(user);
+
+            return new CreateUserResponse(user.getId());
+        }
     }
 
-     */
 }

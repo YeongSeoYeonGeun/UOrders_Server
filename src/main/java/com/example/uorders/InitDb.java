@@ -36,6 +36,7 @@ public class InitDb {
             User user = User.builder()
                     .cart(null)
                     .name(name)
+                    .code(null)
                     .build();
 
             Cart cart = Cart.builder()
