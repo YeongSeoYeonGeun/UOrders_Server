@@ -55,13 +55,13 @@ public class InitDb {
             Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe, true, true);
             Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe, true, true);
 
-            Set<Menu> menus = new HashSet<>();
+            Set<Menu> menuSet = new HashSet<>();
 
-            menus.add(menu1);
-            menus.add(menu2);
-            menus.add(menu3);
+            menuSet.add(menu1);
+            menuSet.add(menu2);
+            menuSet.add(menu3);
 
-            cafe.setMenuSet(menus);
+            cafe.setMenuSet(menuSet);
 
             return cafe;
         }
