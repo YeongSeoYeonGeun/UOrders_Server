@@ -1,13 +1,13 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order_menu")
 @Getter @Setter
+@Table(name = "order_menu")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderMenu {
 
     @Id @GeneratedValue
@@ -33,30 +33,25 @@ public class OrderMenu {
 
     private String menuTakeType; // HERE, TO GO
 
-    //==연관관계 메서드==//
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-        menu.getOrderMenuSet().add(this);
-    }
-
-    //==생성 메서드//
-    public static OrderMenu createOrderMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, String menuTakeType) {
-        OrderMenu orderMenu = new OrderMenu();
-        orderMenu.setMenu(menu);
-        orderMenu.setOrderPrice(orderPrice);
-        orderMenu.setCount(count);
-        orderMenu.setMenuTemperature(menuTemperature);
-        orderMenu.setMenuSize(menuSize);
-        orderMenu.setMenuTakeType(menuTakeType);
-
-        return orderMenu;
-    }
-
     //==조회 로직==//
     /**
      * 전체 장바구니 가격 조회
      */
     public int getTotalPrice() { return getOrderPrice() * getCount(); }
 
+    //== 빌더 ==//
+    @Builder
+    public OrderMenu(Order order, Menu menu, int count, int orderPrice, MenuTemperature menuTemperature, MenuSize menuSize, String menuTakeType) {
+        this.order = order;
+        order.getOrderMenuSet().add(this); //== 연관관계 ==//
 
+        this.menu = menu;
+        menu.getOrderMenuSet().add(this); //== 연관관계 ==//
+
+        this.count = count;
+        this.orderPrice = orderPrice;
+        this.menuTemperature = menuTemperature;
+        this.menuSize = menuSize;
+        this.menuTakeType = menuTakeType;
+    }
 }

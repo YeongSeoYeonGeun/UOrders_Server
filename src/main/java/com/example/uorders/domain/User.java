@@ -1,7 +1,6 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +9,7 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @Table(name = "USER")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue
@@ -28,6 +28,16 @@ public class User {
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Favorite> favorites = new HashSet<>();
+    private Set<Favorite> favoriteSet = new HashSet<>();
 
+    //== 빌더 ==//
+    @Builder
+    public User(String name, String code, Set<Order> orderSet, Cart cart, Set<Favorite> favoriteSet){
+
+        this.name = name;
+        this.code = code;
+        this.orderSet = orderSet;
+        this.cart = cart;
+        this.favoriteSet = favoriteSet;
+    }
 }
