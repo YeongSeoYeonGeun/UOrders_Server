@@ -13,9 +13,9 @@ public class CafeDto {
     private String cafeImage;
 
 
-    public static CafeDto of(Cafe cafe) {
-        String translateCafeName = Translator.translate(cafe.getName(), "chinese");
-        String translateCafeLocation = Translator.translate(cafe.getLocation(), "chinese");
-        return new CafeDto(cafe.getId(), translateCafeName, translateCafeLocation, cafe.getImage());
+    public static CafeDto of(Cafe cafe, String languageCode) {
+        String cafeName = Translator.translate(cafe.getName(), languageCode);
+        String cafeLocation = Translator.translate(cafe.getLocation(), languageCode);
+        return new CafeDto(cafe.getId(), cafeName, cafeLocation, cafe.getImage());
     }
 }
