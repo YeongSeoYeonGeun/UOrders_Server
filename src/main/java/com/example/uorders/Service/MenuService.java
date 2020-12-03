@@ -56,14 +56,13 @@ public class MenuService {
     }
 
     @Transactional
-    public void UpdateMenu(Menu menu, Cafe cafe, UpdateMenuRequest request) {
+    public void UpdateMenu(Menu menu, UpdateMenuRequest request) {
         menu.setName(request.getMenuName());
         menu.setSizeSelect(request.isMenuSize());
         menu.setTemperatureSelect(request.isMenuTemperature());
         menu.setPrice(request.getMenuPrice());
         menu.setStatus(request.getSoldOut());
         menu.setImage(request.getMenuImage());
-        menu.setCafe(cafe);
 
         saveMenu(menu);
     }
