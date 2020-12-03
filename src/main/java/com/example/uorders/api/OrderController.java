@@ -6,10 +6,7 @@ import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.api.constants.WeChat;
 import com.example.uorders.domain.*;
-import com.example.uorders.dto.order.AcceptOrderRequest;
-import com.example.uorders.dto.order.CreateOrderRequest;
-import com.example.uorders.dto.order.OrderDto;
-import com.example.uorders.dto.order.PayResponse;
+import com.example.uorders.dto.order.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
@@ -47,9 +44,7 @@ public class OrderController {
     private final CartService cartService;
     private final OwnerService ownerService;
 
-    /**
-     *  주문 추가
-     */
+    /** 주문 추가 */
     @PostMapping
     public ResponseEntity<Message> createOrderApi(@RequestBody CreateOrderRequest createOrderRequest) {
         Long userId = createOrderRequest.getUserIndex();
@@ -78,10 +73,8 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<Message> readOrderHistory(@RequestHeader("userIndex") Long userId) {
         User user = userService.findById(userId);
-        List<OrderDto> response = orderService.readOrderHistory(userId);
-        Set<Order> orders = userService.findOrderSet(userId);
-
-
+        List<OrderDto> orderDtoList = orderService.readOrderHistory(userId, user.getLanguageCode());
+        ReadOrderResponse response = ReadOrderResponse.of(user.getLanguageCode(), orderDtoList);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);

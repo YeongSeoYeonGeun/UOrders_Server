@@ -1,5 +1,6 @@
 package com.example.uorders.dto.cart;
 
+import com.example.uorders.api.constants.Text;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.cartMenu.CartMenuDto;
 import lombok.AllArgsConstructor;
@@ -15,10 +16,13 @@ public class Cart_cartMenuDto {
     private String menuTakeType;
     private int menuCount;
     private int menuOrderPrice;
+    private String menuPriceText;
 
-    public static Cart_cartMenuDto of(CartMenu cartMenu) {
+    public static Cart_cartMenuDto of(CartMenu cartMenu, String languageCode) {
         Menu menu = cartMenu.getMenu();
+        String menuPriceText = Text.menuPrice(cartMenu.getCount(), cartMenu.getOrderPrice(), languageCode);
+
         return new Cart_cartMenuDto(cartMenu.getId(), menu.getId(), menu.getName(), cartMenu.getMenuTemperature(),
-                cartMenu.getMenuSize(), cartMenu.getMenuTakeType(), cartMenu.getCount(), cartMenu.getOrderPrice());
+                cartMenu.getMenuSize(), cartMenu.getMenuTakeType(), cartMenu.getCount(), cartMenu.getOrderPrice(), menuPriceText);
     }
 }

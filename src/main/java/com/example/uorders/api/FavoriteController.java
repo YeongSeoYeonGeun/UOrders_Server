@@ -11,13 +11,11 @@ import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.favorite.FavoriteDto;
 import com.example.uorders.dto.favorite.createFavoriteRequest;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -43,7 +41,8 @@ public class FavoriteController {
     @PostMapping
     public ResponseEntity<Message> createFavoriteCafe (@RequestHeader("userIndex") Long userId, @RequestBody createFavoriteRequest request){
         User user = userService.findById(userId);
-        favoriteService.createFavorite(user, request);
+        Cafe cafe = cafeService.findById(request.getCafeIndex());
+        favoriteService.createFavorite(user, cafe, request);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_FAVORITE);
         return new ResponseEntity<>(message,null,HttpStatus.OK);

@@ -21,25 +21,13 @@ public class HomeResponse {
 
     public static HomeResponse of(User user, List<CafeDto> cafeDtoList) {
 
-        String greeting;
-        String main;
-        String nearestCafe;
-        String favoriteCafe;
+        String userName = user.getName();
+        String languageCode = user.getLanguageCode();
 
-        switch (user.getLanguageCode()) {
-            case "zh":
-                greeting = Text.greeting_chinese(user.getName());
-                main = Text.mainText_chinese;
-                nearestCafe = Text.nearestCafe_chinese;
-                favoriteCafe = Text.favoriteStore_chiense;
-                break;
-            default:
-                greeting = Text.greeting_korean(user.getName());
-                main = Text.mainText_korean;
-                nearestCafe = Text.nearestCafe_korean;
-                favoriteCafe = Text.favoriteStore_korean;
-                break;
-        }
+        String greeting = Text.greeting(userName ,languageCode);
+        String main = Text.main(languageCode);
+        String nearestCafe = Text.nearestCafe(languageCode);
+        String favoriteCafe = Text.favoriteCafe(languageCode);
 
         return new HomeResponse(greeting, main, nearestCafe, favoriteCafe, cafeDtoList);
     }
