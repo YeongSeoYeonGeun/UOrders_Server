@@ -33,12 +33,13 @@ public class User {
 
     //== 빌더 ==//
     @Builder
-    public User(String name, String code, Set<Order> orderSet, Cart cart, Set<Favorite> favoriteSet){
+    public User(String name, String code, Set<Order> orderSet, Cart cart, Set<Favorite> favoriteSet, String languageCode){
 
         this.name = name;
         this.code = code;
         this.orderSet = orderSet;
         this.cart = cart;
         this.favoriteSet = favoriteSet;
+        this.languageCode = languageCode;
     }
 }

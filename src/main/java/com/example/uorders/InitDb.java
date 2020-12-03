@@ -32,11 +32,12 @@ public class InitDb {
     @RequiredArgsConstructor
     static class InitService {
 
-        private User createUser(String name){
+        private User createUser(String name, String languageCode){
             User user = User.builder()
                     .cart(null)
                     .name(name)
                     .code(null)
+                    .languageCode(languageCode)
                     .build();
 
             Cart cart = Cart.builder()
@@ -115,8 +116,11 @@ public class InitDb {
             em.persist(owner7);
             em.persist(owner8);
 
-            User user = createUser("시연");
-            em.persist(user);
+            User user1 = createUser("시연", "ko");
+            User user2 = createUser("종근", "zh");
+
+            em.persist(user1);
+            em.persist(user2);
 
             Cafe cafe1 = createCafe(owner1,"남산학사 cafe", "신공학관 1층", "남산학사_cafe 이미지 링크");
             Cafe cafe2 = createCafe(owner2, "가온누리 cafe", "중앙도서관 입구 옆", "가온누리_cafe 이미지 링크");

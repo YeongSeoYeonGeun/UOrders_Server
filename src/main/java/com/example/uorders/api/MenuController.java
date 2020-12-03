@@ -2,20 +2,19 @@ package com.example.uorders.api;
 
 import com.example.uorders.Service.CafeService;
 import com.example.uorders.Service.MenuService;
+import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
 import com.example.uorders.domain.Cafe;
-import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.Menu;
 import com.example.uorders.domain.User;
-import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.OwnerCafeDetail;
 import com.example.uorders.dto.menu.MenuDto;
-import com.example.uorders.dto.menu.MenuResponse;
 import com.example.uorders.dto.menu.CreateMenuRequest;
 import com.example.uorders.dto.menu.UpdateMenuRequest;
 import lombok.Data;
+
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.springframework.http.HttpStatus;
@@ -28,21 +27,18 @@ public class MenuController {
 
     private final CafeService cafeService;
     private final MenuService menuService;
+    private final UserService userService;
 
-
+    /** 메뉴 상세 조회 */
     @GetMapping("/menu")
-    public ResponseEntity<Message> readMenu(@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
+    public ResponseEntity<Message> readMenu(@RequestHeader("userIndex") Long userId,@RequestParam("cafeIndex") Long cafeId, @RequestParam("menuIndex") Long menuId) {
+        User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(cafeId);
         Menu menu = menuService.findById(menuId);
-        if(menu == null) {
-            Message message = new Message(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_MENU);
-            return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-        }
 
-        MenuDto menuDto = MenuDto.of(menu);
-        MenuResponse response = new MenuResponse(menuDto);
+        MenuDto menuDto = MenuDto.of(menu, user.getLanguageCode());
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_MENU, response);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_MENU, menuDto);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -16,12 +16,12 @@ public class OwnerCafeDetail {
 
     private String cafeName;
     private String cafeLocation;
-    private List<CafeDetail_menuDto> menuInfo;
+    private List<OwnerCafeDetail_menuDto> menuInfo;
 
     public static OwnerCafeDetail of(Cafe cafe) {
-        List<CafeDetail_menuDto> menuDtoList = new ArrayList<>();
+        List<OwnerCafeDetail_menuDto> menuDtoList = new ArrayList<>();
         for(Menu menu: cafe.getMenuSet()) {
-            CafeDetail_menuDto menuDto = CafeDetail_menuDto.of(menu);
+            OwnerCafeDetail_menuDto menuDto = OwnerCafeDetail_menuDto.of(menu);
             menuDtoList.add(menuDto);
         }
 

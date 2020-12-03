@@ -1,6 +1,7 @@
 package com.example.uorders.dto.order;
 
 import com.example.uorders.domain.*;
+import com.example.uorders.util.Translator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,11 +20,13 @@ public class OrderDto {
     private List<Order_orderMenuDto> menuInfo;
     private int totalPrice;
 
-    public static OrderDto of(Order order) {
+    public static OrderDto of(Order order, String languageCode) {
+        String cafeName = Translator.translate(order.getCafe().getName(), languageCode);
+
         List<Order_orderMenuDto> orderMenuDtoList = new ArrayList<>();
 
         for (OrderMenu orderMenu : order.getOrderMenuSet()) {
-            Order_orderMenuDto orderMenuDto = Order_orderMenuDto.of(orderMenu);
+            Order_orderMenuDto orderMenuDto = Order_orderMenuDto.of(orderMenu, languageCode);
             orderMenuDtoList.add(orderMenuDto);
         }
 

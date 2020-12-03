@@ -1,7 +1,10 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.Cafe;
+import com.example.uorders.domain.Favorite;
 import com.example.uorders.domain.Menu;
+import com.example.uorders.domain.User;
+import com.example.uorders.dto.cafe.CafeDetailDto;
 import com.example.uorders.dto.cafe.CafeDto;
 import com.example.uorders.dto.cafe.UpdateCafeRequest;
 import com.example.uorders.dto.home.HomeResponse;
@@ -21,6 +24,7 @@ import java.util.Set;
 public class CafeService {
 
     private final CafeRepository cafeRepository;
+    private final FavoriteService favoriteService;
 
     @Transactional
     public void saveCafe(Cafe cafe) { cafeRepository.save(cafe);};
@@ -31,13 +35,13 @@ public class CafeService {
 
     public List<Cafe> findCafes() { return cafeRepository.findAll(); }
 
-    public List<CafeDto> readCafeList() {
+    public List<CafeDto> readCafeList(String languageCode) {
 
         List<Cafe> findCafes = findCafes();
 
         List<CafeDto> cafeDtoList = new ArrayList<>();
         for(Cafe cafe: findCafes) {
-            cafeDtoList.add(CafeDto.of(cafe));
+            cafeDtoList.add(CafeDto.of(cafe, languageCode));
         }
         return cafeDtoList;
     }
@@ -48,5 +52,14 @@ public class CafeService {
         cafe.setLocation(request.getCafeLocation());
 
         saveCafe(cafe);
+    }
+
+    public CafeDetailDto readCafeDetail(User user, Cafe cafe) {
+
+        boolean isFavorite = false;
+        Favorite findFavorite = favoriteService.findOne(user.getId(), cafe.getId()).orElse(null);
+        if(findFavorite != null) { isFavorite = true; }
+
+        return CafeDetailDto.of(cafe, isFavorite, user.getLanguageCode());
     }
 }

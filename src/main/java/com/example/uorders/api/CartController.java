@@ -24,36 +24,19 @@ public class CartController {
     private final CartMenuService cartMenuService;
     private final CafeService cafeService;
 
-    /**
-     * 장바구니 메뉴 조회
-     */
+    /** 장바구니 조회 */
     @GetMapping
-    public ResponseEntity<Message> getCartMenu(@RequestHeader("userIndex") Long userId) {
-
+    public ResponseEntity<Message> readCart(@RequestHeader("userIndex") Long userId) {
         User user = userService.findById(userId);
         Cart cart = userService.findCart(userId);
 
-        Set<CartMenu> findCartMenus = cart.getCartMenuSet();
-
-        // 장바구니 비어있음
-        String cafeName = "";
-        Long cafeIndex = 0L;
-        if(findCartMenus.size() == 0) { cafeName = ""; cafeIndex = 0L;}
-        else {
-            Cafe cafe = cart.getCafe();
-            cafeIndex = cafe.getId();
-            cafeName = cafe.getName();
-        }
-
-        CartDto response = CartDto.of(cart, cafeIndex, cafeName);
+        CartDto response = cartService.readCart(user, cart);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CART, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  장바구니 비우기
-     */
+    /** 장바구니 비우기 */
     @DeleteMapping
     public ResponseEntity<Message> initializeCart(@RequestHeader("userIndex") Long userId, @RequestHeader("cartIndex") Long cartId) {
         User user = userService.findById(userId);

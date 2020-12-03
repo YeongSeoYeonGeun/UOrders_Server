@@ -6,13 +6,8 @@ import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
-import com.example.uorders.api.constants.Text;
-import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.User;
-import com.example.uorders.dto.cafe.CafeDto;
 import com.example.uorders.dto.home.HomeResponse;
-import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.Translation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor

@@ -89,12 +89,12 @@ public class OrderService {
     }
 
     /** 주문 내역 조회 */
-    public List<OrderDto> readOrderHistory(Long userId) {
+    public List<OrderDto> readOrderHistory(Long userId, String languageCode) {
 
         List<Order> orders = orderRepository.findOrderByUserDESC(userId);
         List<OrderDto> orderListDtoList = new ArrayList<>();
         for(Order order: orders) {
-            OrderDto orderListDto = OrderDto.of(order);
+            OrderDto orderListDto = OrderDto.of(order, languageCode);
             orderListDtoList.add(orderListDto);
         }
 

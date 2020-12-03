@@ -70,6 +70,7 @@ public class UserService {
                     .code(request.getJs_code())
                     .favoriteSet(new HashSet<>())
                     .orderSet(new HashSet<>())
+                    .languageCode("ko")
                     .build();
 
             Cart cart = Cart.builder()

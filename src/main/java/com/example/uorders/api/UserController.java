@@ -6,18 +6,12 @@ import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
-import com.example.uorders.domain.*;
-import com.example.uorders.dto.favorite.FavoriteDto;
 import com.example.uorders.dto.user.CreateUserResponse;
 import com.example.uorders.dto.user.LoginRequest;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,9 +22,7 @@ public class UserController {
     private final CafeService cafeService;
     private final FavoriteService favoriteService;
 
-    /**
-     *  로그인
-     */
+    /** 로그인 */
     @PostMapping("/login")
     public ResponseEntity<Message> login(@RequestBody LoginRequest request) {
         CreateUserResponse response = userService.login(request);

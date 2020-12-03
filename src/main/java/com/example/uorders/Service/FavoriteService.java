@@ -19,8 +19,6 @@ public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final UserService userService;
-    private final CafeService cafeService;
-    private final FavoriteService favoriteService;
 
     @Transactional
     public void saveFavorite(Favorite favorite) { favoriteRepository.save(favorite);}
@@ -30,6 +28,10 @@ public class FavoriteService {
         return favoriteRepository.findById(favoriteId).orElseThrow(() -> new FavoriteNotFoundException(userId, cafeId));
     }
 
+    public Optional<Favorite> findOne(Long userId, Long cafeId) {
+        FavoriteId favoriteId = new FavoriteId(userId, cafeId);
+        return favoriteRepository.findById(favoriteId);
+    }
     @Transactional
     public void deleteOne(Favorite favorite) {
         favoriteRepository.delete(favorite);
@@ -58,14 +60,13 @@ public class FavoriteService {
         return favoriteCafeDtoList;
     }
 
-    public void createFavorite(User user, createFavoriteRequest request) {
-        Cafe cafe = cafeService.findById(request.getCafeIndex());
-
+    public void createFavorite(User user, Cafe cafe, createFavoriteRequest request) {
         Favorite favorite = Favorite.builder()
                 .user(user)
                 .cafe(cafe)
                 .build();
 
-        favoriteService.saveFavorite(favorite);
+        saveFavorite(favorite);
     }
+
 }

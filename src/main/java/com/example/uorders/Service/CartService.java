@@ -1,8 +1,7 @@
 package com.example.uorders.Service;
 
-import com.example.uorders.domain.Cart;
-import com.example.uorders.domain.CartMenu;
-import com.example.uorders.domain.Menu;
+import com.example.uorders.domain.*;
+import com.example.uorders.dto.cart.CartDto;
 import com.example.uorders.exception.CartNotFoundException;
 import com.example.uorders.repository.CartMenuRepository;
 import com.example.uorders.repository.CartRepository;
@@ -50,5 +49,21 @@ public class CartService {
             }
         }
         return findCartMenus;
+    }
+
+    public CartDto readCart(User user, Cart cart) {
+        Set<CartMenu> findCartMenus = cart.getCartMenuSet();
+
+        // 장바구니 비어있음
+        String cafeName = "";
+        Long cafeIndex = 0L;
+        if(findCartMenus.size() == 0) { cafeName = ""; cafeIndex = 0L;}
+        else {
+            Cafe cafe = cart.getCafe();
+            cafeIndex = cafe.getId();
+            cafeName = cafe.getName();
+        }
+
+        return CartDto.of(cart, cafeIndex, cafeName, user.getLanguageCode());
     }
 }

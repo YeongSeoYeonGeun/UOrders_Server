@@ -17,7 +17,7 @@ public class HomeService {
     private final CafeService cafeService;
 
     public HomeResponse readHome(User user) {
-        List<CafeDto> cafeDtoList = cafeService.readCafeList();
+        List<CafeDto> cafeDtoList = cafeService.readCafeList(user.getLanguageCode());
         return HomeResponse.of(user, cafeDtoList);
     }
 
