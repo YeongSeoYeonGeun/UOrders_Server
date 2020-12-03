@@ -6,6 +6,7 @@ import com.example.uorders.dto.menu.CreateMenuRequest;
 import com.example.uorders.exception.MenuNotFoundException;
 import com.example.uorders.repository.CafeRepository;
 import com.example.uorders.repository.MenuRepository;
+import com.example.uorders.dto.menu.UpdateMenuRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +55,17 @@ public class MenuService {
         menuRepository.delete(menu);
     }
 
+    @Transactional
+    public void UpdateMenu(Menu menu, Cafe cafe, UpdateMenuRequest request) {
+        menu.setName(request.getMenuName());
+        menu.setSizeSelect(request.isMenuSize());
+        menu.setTemperatureSelect(request.isMenuTemperature());
+        menu.setPrice(request.getMenuPrice());
+        menu.setStatus(request.getSoldOut());
+        menu.setImage(request.getMenuImage());
+        menu.setCafe(cafe);
+
+        saveMenu(menu);
+    }
 
 }

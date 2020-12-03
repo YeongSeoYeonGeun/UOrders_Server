@@ -14,6 +14,7 @@ import com.example.uorders.dto.cafe.OwnerCafeDetail;
 import com.example.uorders.dto.menu.MenuDto;
 import com.example.uorders.dto.menu.MenuResponse;
 import com.example.uorders.dto.menu.CreateMenuRequest;
+import com.example.uorders.dto.menu.UpdateMenuRequest;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.OnDelete;
@@ -73,6 +74,17 @@ public class MenuController {
         menuService.deleteMenu(menu, cafe);
 
         Message message = new Message(StatusCode.OK, ResponseMessage.DELETE_MENU);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    //점주용 메뉴 수정///
+    @PutMapping("/owner/menu")
+    public ResponseEntity<Message> updateMenu (@RequestHeader("menuIndex") Long menuId, @RequestHeader("cafeIndex") Long cafeId, @RequestBody UpdateMenuRequest request) {
+        Menu menu = menuService.findById(menuId);
+        Cafe cafe = cafeService.findById(cafeId);
+        menuService.UpdateMenu(menu, cafe, request);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_MENU);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
