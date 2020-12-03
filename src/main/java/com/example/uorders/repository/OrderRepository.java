@@ -19,12 +19,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders where user_id = :userId ORDER BY order_time DESC", nativeQuery = true)
     List<Order> findOrderByUserDESC(@Param("userId") Long userId);
 
-    @Query(value = "select * from(select * from orders where cafe_id = :cafeId order by order_time ASC) o LIMIT 1", nativeQuery = true)
-    Order findFirstOrder(@Param("cafeId") Long cafeId);
-
-    @Query(value = "select * from(select * from orders where cafe_id = :cafeId order by order_time DESC) o LIMIT 1", nativeQuery = true)
-    Order findLastOrder(@Param("cafeId") Long cafeId);
-
-    @Query(value = "select sum(total_price) from orders where year(order_time) = :year and month(order_time) = :month and cafe_id = :cafeId", nativeQuery = true)
-    Long sumRevenue(int year, int month, Long cafeId);
 }

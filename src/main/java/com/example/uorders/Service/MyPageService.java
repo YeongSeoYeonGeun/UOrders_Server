@@ -3,14 +3,15 @@ package com.example.uorders.Service;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.Order;
 import com.example.uorders.domain.OrderMenu;
-import com.example.uorders.dto.myPage.*;
+import com.example.uorders.dto.myPage.myPageDto;
+import com.example.uorders.dto.myPage.myPage_cafeDto;
+import com.example.uorders.dto.myPage.myPage_orderDto;
+import com.example.uorders.dto.myPage.myPage_order_menuDto;
 import com.example.uorders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,30 +57,5 @@ public class MyPageService {
             orderDtoList.add(myPage_orderDto.of(todayOrder, orderTime, orderMenuDtoList));
         }
         return new myPageDto(myPage_cafeDto.of(cafe), orderDtoList);
-    }
-
-    public ReadCafeRevenueDto readCafeRevenue(Cafe cafe) {
-        Long cafeId = cafe.getId();
-
-        List<ReadCafeRevenue_revenueDto> revenueDtoList = new ArrayList<>();
-
-        Order firstOrder = orderRepository.findFirstOrder(cafeId);
-
-        if(firstOrder != null) {
-            LocalDate start = LocalDate.of(firstOrder.getOrderTime().getYear(), firstOrder.getOrderTime().getMonthValue(), 1);
-            LocalDate now = LocalDate.now();
-
-            while(start.isBefore(now)){
-
-                int year = start.getYear();
-                int month = start.getMonthValue();
-                Long revenue = orderRepository.sumRevenue(year, month, cafeId);
-                revenueDtoList.add(ReadCafeRevenue_revenueDto.of(year, month, revenue));
-
-                start = start.plusMonths(1);
-            }
-        }
-
-        return ReadCafeRevenueDto.of(cafe, revenueDtoList);
     }
 }
