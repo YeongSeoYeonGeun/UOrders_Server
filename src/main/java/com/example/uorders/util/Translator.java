@@ -5,16 +5,16 @@ import com.google.cloud.translate.Translation;
 
 public class Translator {
 
-    public static String translate(String text, String Language) {
+    public static String translate(String text, String LanguageCode) {
 
         String targetLanguage = "zh";
 
-        switch (Language) {
-            case "korean":
-                return text;
-            case "chinese":
+        switch (LanguageCode) {
+            case "zh":
                 targetLanguage = "zh";
-
+                break;
+            default:
+                return text;
         }
 
         System.setProperty("GOOGLE_API_KEY", "AIzaSyD9-APDbhThUwPpqKx-HhNf_VbEmLmeaUY");
