@@ -3,6 +3,7 @@ package com.example.uorders.Service;
 import com.example.uorders.domain.*;
 import com.example.uorders.dto.user.CreateUserResponse;
 import com.example.uorders.dto.user.LoginRequest;
+import com.example.uorders.dto.user.UpdateUserLanguageCodeRequest;
 import com.example.uorders.exception.UserNotFoundException;
 import com.example.uorders.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -90,4 +91,9 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void updateLanguageCode(User user, UpdateUserLanguageCodeRequest request) {
+        user.setLanguageCode(request.getLanguageCode());
+        saveUser(user);
+    }
 }
