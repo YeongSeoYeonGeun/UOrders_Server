@@ -3,6 +3,7 @@ package com.example.uorders.dto.cart;
 import com.example.uorders.api.constants.Text;
 import com.example.uorders.domain.Cart;
 import com.example.uorders.domain.CartMenu;
+import com.example.uorders.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class CartDto {
 
     public static CartDto of(Cart cart, Long cafeIndex, String cafeName, String languageCode) {
         String cartText = Text.cart(languageCode);
+        String cafeName_t = Translator.translate(cafeName, languageCode);
         String initializeCartText = Text.initializeCart(languageCode);
         String orderText = Text.orderMenu(cart.getTotalPrice(), languageCode);
 
@@ -34,6 +36,6 @@ public class CartDto {
             cartMenuDtoList.add(cartMenuDto);
         }
 
-        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName, cartMenuDtoList, cart.getTotalPrice(), orderText);
+        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName_t, cartMenuDtoList, cart.getTotalPrice(), orderText);
     }
 }

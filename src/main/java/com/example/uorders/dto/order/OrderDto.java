@@ -30,6 +30,6 @@ public class OrderDto {
             orderMenuDtoList.add(orderMenuDto);
         }
 
-        return new OrderDto(order.getId(), order.getCafe().getName(), order.getOrderTime(), orderMenuDtoList, order.getTotalPrice());
+        return new OrderDto(order.getId(), cafeName, order.getOrderTime(), orderMenuDtoList, order.getTotalPrice());
     }
 }
