@@ -60,6 +60,7 @@ public class FavoriteService {
         return favoriteCafeDtoList;
     }
 
+    @Transactional
     public void createFavorite(User user, Cafe cafe, createFavoriteRequest request) {
         Favorite favorite = Favorite.builder()
                 .user(user)
