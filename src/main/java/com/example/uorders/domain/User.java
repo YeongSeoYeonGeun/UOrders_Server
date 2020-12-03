@@ -20,9 +20,10 @@ public class User {
 
     private String code;
 
+    private String languageCode;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Order> orderSet = new HashSet<>();
-
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;

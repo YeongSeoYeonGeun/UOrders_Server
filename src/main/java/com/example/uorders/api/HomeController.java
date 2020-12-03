@@ -1,10 +1,12 @@
 package com.example.uorders.api;
 
 import com.example.uorders.Service.CafeService;
+import com.example.uorders.Service.HomeService;
 import com.example.uorders.Service.UserService;
 import com.example.uorders.api.constants.Message;
 import com.example.uorders.api.constants.ResponseMessage;
 import com.example.uorders.api.constants.StatusCode;
+import com.example.uorders.api.constants.Text;
 import com.example.uorders.domain.Cafe;
 import com.example.uorders.domain.User;
 import com.example.uorders.dto.cafe.CafeDto;
@@ -29,18 +31,15 @@ import java.util.stream.Collectors;
 public class HomeController {
     private final UserService userService;
     private final CafeService cafeService;
+    private final HomeService homeService;
 
-    /**
-     *
-     * 홈 화면
-     */
+    /** 홈 화면 */
     @GetMapping
     public ResponseEntity<Message> cafe(@RequestHeader("userIndex") Long userId) {
         User user = userService.findById(userId);
-        String userName = user.getName();
-        List<CafeDto> cafeDtoList = cafeService.readCafeList();
+        HomeResponse response = homeService.readHome(user);
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, new HomeResponse(userName, cafeDtoList));
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE_LIST, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
