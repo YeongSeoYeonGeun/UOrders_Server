@@ -28,12 +28,12 @@ public class Text {
         }
     }
 
-    public static String orderMenu(int price, String languageCode) {
+    public static String payMenu(int price, String languageCode) {
         switch (languageCode){
             case "zh":
-                return "订购" + price + "韩元";
+                return "支付" + price + "韩元";
             default:
-                return price + "원 주문하기";
+                return price + "결제하기";
         }
     }
 
