@@ -65,8 +65,14 @@ public class OrderController {
         // 장바구니 비우기
         cartService.initializeCart(cart);
 
+        // 점주용 앱에 알림 푸시
+        FirebaseCloudMessageService firebaseCloudMessageService = new FirebaseCloudMessageService();
+        firebaseCloudMessageService.sendMessageTO(,"UOrders","주문이 도착했습니다!");
+
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER);
         return new ResponseEntity<>(message, HttpStatus.OK);
+
+
     }
 
     /** 주문 내역 조회 */

@@ -37,3 +37,4 @@ out/
 .vscode/
 *.log
 src/main/java/com/example/uorders/api/constants/WeChat.java
+src/main/resources/firebase/firebase_service_key.json
