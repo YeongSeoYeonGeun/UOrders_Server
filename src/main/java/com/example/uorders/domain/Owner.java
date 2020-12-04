@@ -18,18 +18,20 @@ public class Owner {
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
+    private String id_owner;
     private String password;
-
     private String name;
-
     private String businessNumber;
+    private String deviceToken;
 
     //== 빌더 ==//
     @Builder
-    public Owner(Cafe cafe, String password, String name, String businessNumber) {
+    public Owner(Cafe cafe, String id_owner, String password, String name, String businessNumber, String deviceToken) {
         this.cafe = cafe;
+        this.id_owner = id_owner;
         this.password = password;
         this.name = name;
         this.businessNumber = businessNumber;
+        this.deviceToken = deviceToken;
     }
 }

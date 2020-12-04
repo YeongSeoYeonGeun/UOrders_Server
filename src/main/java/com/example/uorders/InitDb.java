@@ -84,12 +84,14 @@ public class InitDb {
             return menu;
         }
 
-        private Owner createOwner(String name, Cafe cafe, String password, String businessNumber){
+        private Owner createOwner(String name, String id_owner, Cafe cafe, String password, String businessNumber, String deviceToken){
             Owner owner = Owner.builder()
+                    .id_owner(id_owner)
                     .name(name)
                     .cafe(cafe)
                     .password(password)
                     .businessNumber(businessNumber)
+                    .deviceToken(deviceToken)
                     .build();
 
             return owner;
@@ -98,14 +100,14 @@ public class InitDb {
         private final EntityManager em;
         public void dbInit1(){
 
-            Owner owner1 = createOwner("박종근", null, "1234", "111-111");
-            Owner owner2 = createOwner("양시연", null, "1234", "222-222");
-            Owner owner3 = createOwner("이선영", null, "1234", "333-333");
-            Owner owner4 = createOwner("이영서", null, "1234", "444-444");
-            Owner owner5 = createOwner("최고운", null, "1234", "555-555");
-            Owner owner6 = createOwner("최윤호", null, "1234", "666-666");
-            Owner owner7 = createOwner("최서정", null, "1234", "777-777");
-            Owner owner8 = createOwner("이승민", null, "1234", "888-888");
+            Owner owner1 = createOwner("박종근", "test1",null, "1234", "111-111", null);
+            Owner owner2 = createOwner("양시연", "test2", null, "1234", "222-222", null);
+            Owner owner3 = createOwner("이선영", "test3",null, "1234", "333-333", null);
+            Owner owner4 = createOwner("이영서", "test4",null, "1234", "444-444", null);
+            Owner owner5 = createOwner("최고운", "test5",null, "1234", "555-555", null);
+            Owner owner6 = createOwner("최윤호", "test6",null, "1234", "666-666", null);
+            Owner owner7 = createOwner("최서정", "test7",null, "1234", "777-777", null);
+            Owner owner8 = createOwner("이승민", "test8", null, "1234", "888-888", null);
 
             em.persist(owner1);
             em.persist(owner2);
