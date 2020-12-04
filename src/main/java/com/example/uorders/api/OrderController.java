@@ -75,7 +75,8 @@ public class OrderController {
             e.printStackTrace();
         }
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER, order.getId());
+        CreateOrderResponse response = CreateOrderResponse.of(order, user.getLanguageCode());
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
 
 
@@ -92,9 +93,7 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  주문 접수
-     */
+    /** 주문 접수 */
     @PutMapping("{orderIndex}")
     public ResponseEntity<Message> acceptOrder(@RequestHeader("ownerIndex") Long ownerId, @RequestHeader("cafeIndex") Long cafeId, @PathVariable("orderIndex") Long orderId, @RequestBody AcceptOrderRequest request) {
         Owner owner = ownerService.findById(ownerId);
@@ -107,9 +106,7 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  결제
-     */
+    /** 결제 */
     @GetMapping("/pay")
     public ResponseEntity<Message> payApi(@RequestHeader("userIndex") Long userId) {
 

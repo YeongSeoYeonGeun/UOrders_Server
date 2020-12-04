@@ -100,15 +100,6 @@ public class Text {
         }
     }
 
-    public static String count(String languageCode) {
-        switch (languageCode){
-            case "zh":
-                return "个";
-            default:
-                return "개";
-        }
-    }
-
     public static String completeOrder(String languageCode) {
         switch (languageCode){
             case "zh":
@@ -245,4 +236,12 @@ public class Text {
         }
     }
 
+    public static String returnHome(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "返回主画面";
+            default:
+                return "홈으로 돌아가기";
+        }
+    }
 }
