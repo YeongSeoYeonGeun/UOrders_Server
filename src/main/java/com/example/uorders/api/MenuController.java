@@ -44,7 +44,7 @@ public class MenuController {
 
     /*점주용 메장 조회*/
     @GetMapping("/owner/cafe/{cafeIndex}")
-    public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") Long cafeId ){
+    public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") Long cafeId, @RequestHeader("ownerIndex") Long ownerId){
         Cafe cafe = cafeService.findById(cafeId);
 
         OwnerCafeDetail result = OwnerCafeDetail.of(cafe);
@@ -52,7 +52,7 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //점주용 메뉴 생성//
+    //점주용 메뉴 추가//
     @PostMapping("owner/menu")
     public ResponseEntity<Message> createMenu (@RequestBody CreateMenuRequest request ){
         menuService.createMenu(request);
