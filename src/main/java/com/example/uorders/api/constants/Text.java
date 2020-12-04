@@ -226,7 +226,23 @@ public class Text {
                 return "오후";
         }
     }
-    public static final String and_korean = "외";
-    public static final String and_chinese = "和其";
+
+    public static String and(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "和其";
+            default:
+                return "외";
+        }
+    }
+
+    public static String number(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "个";
+            default:
+                return "개";
+        }
+    }
 
 }
