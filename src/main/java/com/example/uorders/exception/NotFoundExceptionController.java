@@ -20,6 +20,7 @@ public class NotFoundExceptionController {
             OrderNotFoundException.class,
             OrderMenuNotFoundException.class,
             OwnerNotFoundException.class,
+            LoginFailException.class,
     })
 
     public ResponseEntity<Message> BadRequestException(final ChangeSetPersister.NotFoundException exception){
