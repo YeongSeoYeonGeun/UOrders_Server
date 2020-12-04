@@ -26,7 +26,6 @@ public class CartDto {
 
     public static CartDto of(Cart cart, Long cafeIndex, String cafeName, String languageCode) {
         String cartText = Text.cart(languageCode);
-        String cafeName_t = Translator.translate(cafeName, languageCode);
         String initializeCartText = Text.initializeCart(languageCode);
         String payText = Text.payMenu(cart.getTotalPrice(), languageCode);
 
@@ -36,6 +35,6 @@ public class CartDto {
             cartMenuDtoList.add(cartMenuDto);
         }
 
-        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName_t, cartMenuDtoList, cart.getTotalPrice(), payText);
+        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName, cartMenuDtoList, cart.getTotalPrice(), payText);
     }
 }

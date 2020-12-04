@@ -21,7 +21,7 @@ public class OrderDto {
     private int totalPrice;
 
     public static OrderDto of(Order order, String languageCode) {
-        String cafeName = Translator.translate(order.getCafe().getName(), languageCode);
+        String cafeName = order.getCafe().getName(languageCode);
 
         List<Order_orderMenuDto> orderMenuDtoList = new ArrayList<>();
 

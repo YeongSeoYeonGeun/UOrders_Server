@@ -30,7 +30,7 @@ public class MenuDto {
         String addCartText = Text.addToCart(languageCode);
         String wonText = Text.won(languageCode);
         String selectSizeText = Text.selectSize(languageCode);
-        String menuName = Translator.translate(menu.getName(), languageCode);
+        String menuName = menu.getName(languageCode);
         String menuPriceText = Text.menuPrice(menu.getPrice(), languageCode);
         return new MenuDto(menuDetailText, addCartText, wonText, selectSizeText, menuName, menu.getPrice(), menuPriceText,  menu.getImage(), menu.getTemperatureSelect(), menu.getSizeSelect());
     }

@@ -22,8 +22,8 @@ public class CafeDetailDto {
 
     public static CafeDetailDto of(Cafe cafe, Boolean isFavorite, String languageCode) {
 
-        String cafeName = Translator.translate(cafe.getName(), languageCode);
-        String cafeLocation = Translator.translate(cafe.getLocation(), languageCode);
+        String cafeName = cafe.getName(languageCode);
+        String cafeLocation = cafe.getLocation(languageCode);
 
         List<CafeDetail_menuDto> menuDtoList = new ArrayList<>();
         for(Menu menu: cafe.getMenuSet()) {
