@@ -51,8 +51,10 @@ public class OrderController {
         Long cafeId = createOrderRequest.getCafeIndex();
         LocalDateTime orderDateTime = createOrderRequest.getOrderDateTime();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(cafeId);
+        Owner owner = cafe.getOwner();
 
         // 주문 추가
         Cart cart = userService.findCart(userId);
@@ -66,8 +68,12 @@ public class OrderController {
         cartService.initializeCart(cart);
 
         // 점주용 앱에 알림 푸시
-        FirebaseCloudMessageService firebaseCloudMessageService = new FirebaseCloudMessageService();
-        firebaseCloudMessageService.sendMessageTO(,"UOrders","주문이 도착했습니다!");
+        FirebaseCloudMessageService firebaseCloudMessageService = new FirebaseCloudMessageService(objectMapper);
+        try {
+            firebaseCloudMessageService.sendMessageTO(owner.getDeviceToken(),"UOrders","주문이 도착했습니다!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER);
         return new ResponseEntity<>(message, HttpStatus.OK);
