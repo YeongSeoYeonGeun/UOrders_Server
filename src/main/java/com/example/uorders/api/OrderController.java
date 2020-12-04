@@ -111,14 +111,15 @@ public class OrderController {
     }
 
     /** 점주용 주문 관리 조회 */
-//    @GetMapping("/owner/order")
-//    public ResponseEntity<Message> readOrderOwner(@RequestHeader("ownerIndex") Long ownerId) {
-//        Owner owner = ownerService.findById(ownerId);
-//        Cafe cafe = cafeService.findById(owner.getCafe().getId());
-//
+    @GetMapping("/owner")
+    public ResponseEntity<Message> readOrderOwner(@RequestHeader("ownerIndex") Long ownerId) {
+        Owner owner = ownerService.findById(ownerId);
+        Cafe cafe = cafeService.findById(owner.getCafe().getId());
 
-//        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, result);//       return new ResponseEntity<>(message, HttpStatus.OK);
-//    }
+        OwnerOrderDetail result = OwnerOrderDetail.of(cafe);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, result);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
 
 }
