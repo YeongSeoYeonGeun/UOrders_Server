@@ -52,7 +52,7 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //점주용 메뉴 생성//
+    //점주용 메뉴 추가//
     @PostMapping("owner/menu")
     public ResponseEntity<Message> createMenu (@RequestBody CreateMenuRequest request ){
         menuService.createMenu(request);

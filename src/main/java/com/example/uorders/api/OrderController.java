@@ -13,9 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
@@ -121,4 +118,17 @@ public class OrderController {
         Message message = new Message(StatusCode.OK, ResponseMessage.PAY_SUCCESS, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    /** 점주용 주문 관리 조회 */
+    @GetMapping("/owner")
+    public ResponseEntity<Message> readOrderOwner(@RequestHeader("ownerIndex") Long ownerId) {
+        Owner owner = ownerService.findById(ownerId);
+        Cafe cafe = cafeService.findById(owner.getCafe().getId());
+
+        OwnerOrderDetail result = OwnerOrderDetail.of(cafe);
+        Message message = new Message(StatusCode.OK, ResponseMessage.READ_ORDER_LIST, result);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+
 }
