@@ -75,7 +75,7 @@ public class OrderController {
             e.printStackTrace();
         }
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER);
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER, order.getId());
         return new ResponseEntity<>(message, HttpStatus.OK);
 
 
