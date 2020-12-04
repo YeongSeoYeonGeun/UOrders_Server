@@ -16,7 +16,7 @@ public class Order_orderMenuDto {
 
     public static Order_orderMenuDto of(OrderMenu orderMenu, String languageCode) {
         Menu menu = orderMenu.getMenu();
-        String menuName = Translator.translate(menu.getName(), languageCode);
+        String menuName = menu.getName(languageCode);
 
         return new Order_orderMenuDto(menu.getId(), menuName, orderMenu.getCount(), orderMenu.getOrderPrice());
     }

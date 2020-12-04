@@ -61,7 +61,7 @@ public class CartService {
         else {
             Cafe cafe = cart.getCafe();
             cafeIndex = cafe.getId();
-            cafeName = cafe.getName();
+            cafeName = cafe.getName(user.getLanguageCode());
         }
 
         return CartDto.of(cart, cafeIndex, cafeName, user.getLanguageCode());

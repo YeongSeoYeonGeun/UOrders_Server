@@ -2,8 +2,6 @@ package com.example.uorders.dto.cart;
 
 import com.example.uorders.api.constants.Text;
 import com.example.uorders.domain.*;
-import com.example.uorders.dto.cartMenu.CartMenuDto;
-import com.example.uorders.util.Translator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,7 +20,7 @@ public class Cart_cartMenuDto {
     public static Cart_cartMenuDto of(CartMenu cartMenu, String languageCode) {
         Menu menu = cartMenu.getMenu();
         String menuPriceText = Text.menuPrice(cartMenu.getCount(), cartMenu.getOrderPrice(), languageCode);
-        String menuName = Translator.translate(menu.getName(),languageCode);
+        String menuName = menu.getName(languageCode);
 
         return new Cart_cartMenuDto(cartMenu.getId(), menu.getId(), menuName, cartMenu.getMenuTemperature(),
                 cartMenu.getMenuSize(), cartMenu.getMenuTakeType(), cartMenu.getCount(), cartMenu.getOrderPrice(), menuPriceText);

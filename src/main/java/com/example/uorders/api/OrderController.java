@@ -48,8 +48,10 @@ public class OrderController {
         Long cafeId = createOrderRequest.getCafeIndex();
         LocalDateTime orderDateTime = createOrderRequest.getOrderDateTime();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         User user = userService.findById(userId);
         Cafe cafe = cafeService.findById(cafeId);
+        Owner owner = cafe.getOwner();
 
         // 주문 추가
         Cart cart = userService.findCart(userId);
@@ -62,8 +64,19 @@ public class OrderController {
         // 장바구니 비우기
         cartService.initializeCart(cart);
 
-        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER);
+        // 점주용 앱에 알림 푸시
+        FirebaseCloudMessageService firebaseCloudMessageService = new FirebaseCloudMessageService(objectMapper);
+        try {
+            firebaseCloudMessageService.sendMessageTO(owner.getDeviceToken(),"UOrders","주문이 도착했습니다!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CreateOrderResponse response = CreateOrderResponse.of(order, user.getLanguageCode());
+        Message message = new Message(StatusCode.OK, ResponseMessage.CREATE_ORDER, response);
         return new ResponseEntity<>(message, HttpStatus.OK);
+
+
     }
 
     /** 주문 내역 조회 */
@@ -77,9 +90,7 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  주문 접수
-     */
+    /** 주문 접수 */
     @PutMapping("{orderIndex}")
     public ResponseEntity<Message> acceptOrder(@RequestHeader("ownerIndex") Long ownerId, @RequestHeader("cafeIndex") Long cafeId, @PathVariable("orderIndex") Long orderId, @RequestBody AcceptOrderRequest request) {
         Owner owner = ownerService.findById(ownerId);
@@ -92,9 +103,7 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /**
-     *  결제
-     */
+    /** 결제 */
     @GetMapping("/pay")
     public ResponseEntity<Message> payApi(@RequestHeader("userIndex") Long userId) {
 

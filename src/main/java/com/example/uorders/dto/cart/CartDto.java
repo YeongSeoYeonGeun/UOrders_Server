@@ -22,13 +22,12 @@ public class CartDto {
     private String cafeName;
     private List<Cart_cartMenuDto> cartMenuInfo;
     private int totalPrice;
-    private String orderText;
+    private String payText;
 
     public static CartDto of(Cart cart, Long cafeIndex, String cafeName, String languageCode) {
         String cartText = Text.cart(languageCode);
-        String cafeName_t = Translator.translate(cafeName, languageCode);
         String initializeCartText = Text.initializeCart(languageCode);
-        String orderText = Text.orderMenu(cart.getTotalPrice(), languageCode);
+        String payText = Text.payMenu(cart.getTotalPrice(), languageCode);
 
         List<Cart_cartMenuDto> cartMenuDtoList = new ArrayList<>();
         for (CartMenu cartMenu : cart.getCartMenuSet()) {
@@ -36,6 +35,6 @@ public class CartDto {
             cartMenuDtoList.add(cartMenuDto);
         }
 
-        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName_t, cartMenuDtoList, cart.getTotalPrice(), orderText);
+        return new CartDto(cartText, initializeCartText, cart.getId(), cafeIndex, cafeName, cartMenuDtoList, cart.getTotalPrice(), payText);
     }
 }

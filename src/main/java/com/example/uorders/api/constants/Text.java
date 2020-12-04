@@ -28,12 +28,12 @@ public class Text {
         }
     }
 
-    public static String orderMenu(int price, String languageCode) {
+    public static String payMenu(int price, String languageCode) {
         switch (languageCode){
             case "zh":
-                return "订购" + price + "韩元";
+                return "支付" + price + "韩元";
             default:
-                return price + "원 주문하기";
+                return price + "결제하기";
         }
     }
 
@@ -97,15 +97,6 @@ public class Text {
                 return "订购";
             default:
                 return "주문하기";
-        }
-    }
-
-    public static String count(String languageCode) {
-        switch (languageCode){
-            case "zh":
-                return "个";
-            default:
-                return "개";
         }
     }
 
@@ -226,7 +217,31 @@ public class Text {
                 return "오후";
         }
     }
-    public static final String and_korean = "외";
-    public static final String and_chinese = "和其";
 
+    public static String and(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "和其";
+            default:
+                return "외";
+        }
+    }
+
+    public static String number(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "个";
+            default:
+                return "개";
+        }
+    }
+
+    public static String returnHome(String languageCode) {
+        switch (languageCode){
+            case "zh":
+                return "返回主画面";
+            default:
+                return "홈으로 돌아가기";
+        }
+    }
 }

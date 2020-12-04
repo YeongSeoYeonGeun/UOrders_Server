@@ -44,8 +44,8 @@ public class MenuController {
 
     /*점주용 메장 조회*/
     @GetMapping("/owner/cafe/{cafeIndex}")
-    public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") Long cafeId, @RequestHeader("ownerIndex") Long ownerId){
-        Cafe cafe = cafeService.findById(cafeId);
+    public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") String cafeId ){
+        Cafe cafe = cafeService.findById(Long.parseLong(cafeId));
 
         OwnerCafeDetail result = OwnerCafeDetail.of(cafe);
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);

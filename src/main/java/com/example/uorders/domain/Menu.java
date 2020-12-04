@@ -1,5 +1,6 @@
 package com.example.uorders.domain;
 
+import com.example.uorders.util.Translator;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -30,9 +31,9 @@ public class Menu {
     private Set<OrderMenu> orderMenuSet = new HashSet<>();
 
     private String name;
+    private String name_chinese;
 
     private int price;
-
     private String image;
 
     @Column(columnDefinition = "boolean default true")
@@ -44,6 +45,15 @@ public class Menu {
     @Enumerated(EnumType.STRING)
     private MenuStatus status; // AVAILABLE, UNAVAILABLE
 
+    public String getName(String languageCode) {
+
+        switch (languageCode){
+            case "zh":
+                return this.name_chinese;
+            default:
+                return this.name;
+        }
+    }
 
     public boolean getTemperatureSelect() { return this.temperatureSelect; }
 
@@ -62,6 +72,7 @@ public class Menu {
         this.cartMenuSet = cartMenuSet;
         this.orderMenuSet = orderMenuSet;
         this.name = name;
+        this.name_chinese = Translator.translate(name, "zh");
         this.price = price;
         this.image = image;
         this.temperatureSelect = temperatureSelect;

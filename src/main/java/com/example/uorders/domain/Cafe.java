@@ -1,5 +1,6 @@
 package com.example.uorders.domain;
 
+import com.example.uorders.util.Translator;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,10 +33,32 @@ public class Cafe {
     private Set<Cart>  cartSet = new HashSet<>();
 
     private String name;
+    private String name_chinese;
 
     private String location;
+    private String location_chinese;
 
     private String image;
+
+    public String getName(String languageCode) {
+
+        switch (languageCode){
+            case "zh":
+                return this.name_chinese;
+            default:
+                return this.name;
+        }
+    }
+
+    public String getLocation(String languageCode) {
+
+        switch (languageCode){
+            case "zh":
+                return this.location_chinese;
+            default:
+                return this.location;
+        }
+    }
 
     //== 빌더 ==//
     @Builder
@@ -49,7 +72,9 @@ public class Cafe {
         this.favoriteSet = favoriteSet;
         this.cartSet = cartSet;
         this.name = name;
+        this.name_chinese = Translator.translate(name, "zh");
         this.location = location;
+        this.location_chinese = Translator.translate(location, "zh");
         this.image = image;
     }
 
