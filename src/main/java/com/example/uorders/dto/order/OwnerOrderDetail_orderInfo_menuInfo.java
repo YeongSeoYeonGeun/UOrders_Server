@@ -13,12 +13,12 @@ import java.util.List;
 public class OwnerOrderDetail_orderInfo_menuInfo {
     private Long menuIndex;
     private String menuName;
-    private String menuTemperature;
+    private MenuTemperature menuTemperature;
     private MenuSize menuSize;
-    private MenuTakeType menuTakeType;
+    private String menuTakeType;
 
     public static OwnerOrderDetail_orderInfo_menuInfo of(OrderMenu ordermenu) {
         Menu menu = ordermenu.getMenu();
-        return new OwnerOrderDetail_orderInfo_menuInfo(menu.getId(), menu.getName(), MenuTemperature.valueOf(ordermenu.getMenuTemperature()), ordermenu.getMenuSize(), ordermenu.getMenuTakeType());
+        return new OwnerOrderDetail_orderInfo_menuInfo(menu.getId(), menu.getName(), ordermenu.getMenuTemperature(), ordermenu.getMenuSize(), ordermenu.getMenuTakeType());
     }
 }

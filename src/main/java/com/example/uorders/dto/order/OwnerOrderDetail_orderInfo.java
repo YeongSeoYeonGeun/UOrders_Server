@@ -26,7 +26,7 @@ public class OwnerOrderDetail_orderInfo {
     public static OwnerOrderDetail_orderInfo of(Order order) {
         List<OwnerOrderDetail_orderInfo_menuInfo> OwnerMenuDtoList = new ArrayList<>();
         for (OrderMenu orderMenu : order.getOrderMenuSet()) {
-            OwnerOrderDetail_orderInfo_menuInfo OwnerMenuDto = OwnerOrderDetail_orderInfo_menuInfo.of(orderMenu.getMenu());
+            OwnerOrderDetail_orderInfo_menuInfo OwnerMenuDto = OwnerOrderDetail_orderInfo_menuInfo.of(orderMenu);
             OwnerMenuDtoList.add(OwnerMenuDto);
         }
 
