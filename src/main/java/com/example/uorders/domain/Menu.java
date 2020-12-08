@@ -31,6 +31,7 @@ public class Menu {
     private Set<OrderMenu> orderMenuSet = new HashSet<>();
 
     private String name;
+    private String name_english;
     private String name_chinese;
 
     private int price;
@@ -48,6 +49,8 @@ public class Menu {
     public String getName(String languageCode) {
 
         switch (languageCode){
+            case "en":
+                return this.name_english;
             case "zh":
                 return this.name_chinese;
             default:
@@ -73,6 +76,7 @@ public class Menu {
         this.orderMenuSet = orderMenuSet;
         this.name = name;
         this.name_chinese = Translator.translate(name, "zh");
+        this.name_english = Translator.translate(name, "en");
         this.price = price;
         this.image = image;
         this.temperatureSelect = temperatureSelect;
