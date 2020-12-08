@@ -136,7 +136,7 @@ public class Text {
     public static String acceptOrder(String languageCode) {
         switch (languageCode){
             case "en":
-                return "The cafe has received an order";
+                return "Order accepted!";
             case "zh":
                 return "我在商店收到订单";
             default:
