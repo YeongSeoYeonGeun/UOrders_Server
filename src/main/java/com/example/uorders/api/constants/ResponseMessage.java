@@ -25,6 +25,8 @@ public class ResponseMessage {
     public static final String PAY_SUCCESS = "결제 성공";
     public static final String PAY_FAIL = "결제 실패";
 
+    public static final String UPDATE_OWNER_ORDER = "주문 완료 처리";
+
     public static final String CREATE_MENU = "메뉴 생성 성공";
     public static final String DELETE_MENU = "메뉴 삭제 성공";
     public static final String UPDATE_MENU = "메뉴 수정 성공";

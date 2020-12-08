@@ -49,6 +49,7 @@ public class InitDb {
             return user;
         }
 
+
         private Cafe createCafe(Owner owner, String name, String location, String imageLink){
 
             Cafe cafe = Cafe.builder()
@@ -141,6 +142,7 @@ public class InitDb {
             em.persist(cafe6);
             em.persist(cafe7);
             em.persist(cafe8);
+
         }
 
     }
