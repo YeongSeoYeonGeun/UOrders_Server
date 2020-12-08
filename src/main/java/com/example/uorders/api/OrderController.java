@@ -91,7 +91,7 @@ public class OrderController {
     }
 
     /** 주문 접수 */
-    @PutMapping("{orderIndex}")
+    @PutMapping("/{orderIndex}")
     public ResponseEntity<Message> acceptOrder(@RequestHeader("ownerIndex") Long ownerId, @RequestHeader("cafeIndex") Long cafeId, @PathVariable("orderIndex") Long orderId, @RequestBody AcceptOrderRequest request) {
         Owner owner = ownerService.findById(ownerId);
         Cafe cafe = cafeService.findById(cafeId);
@@ -130,5 +130,15 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    //주문 완료 처리//
+    @PutMapping("/owner")
+    public ResponseEntity<Message> updateOrderOwner(@RequestHeader("orderIndex") Long orderId ){
+        Order order = orderService.findById(orderId);
+
+        orderService.UpdateOrderOwner(order);
+
+        Message message = new Message(StatusCode.OK, ResponseMessage.UPDATE_OWNER_ORDER);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
 }

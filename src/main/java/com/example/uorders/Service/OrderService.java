@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.example.uorders.domain.OrderStatus.COMPLETED;
 import static com.example.uorders.domain.OrderStatus.PLACED;
 
 @Service
@@ -175,5 +176,11 @@ public class OrderService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Transactional
+    public void UpdateOrderOwner(Order order){
+        order.setStatus(COMPLETED);
+        saveOrder(order);
     }
 }

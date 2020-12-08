@@ -53,7 +53,7 @@ public class MenuController {
     }
 
     //점주용 메뉴 추가//
-    @PostMapping("owner/menu")
+    @PostMapping("/owner/menu")
     public ResponseEntity<Message> createMenu (@RequestBody CreateMenuRequest request ){
         menuService.createMenu(request);
 
@@ -62,7 +62,7 @@ public class MenuController {
     }
 
     //점주용 메뉴 삭제//
-    @DeleteMapping("owner/menu")
+    @DeleteMapping("/owner/menu")
     public ResponseEntity<Message> deleteMenu (@RequestHeader("menuIndex") Long menuId, @RequestHeader("cafeIndex") Long cafeId){
 
         Menu menu = menuService.findById(menuId);
