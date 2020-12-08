@@ -18,8 +18,9 @@ public class CreateOrderResponse {
         String orderCompleteText = Text.completeOrder(languageCode);
         String acceptText = Text.acceptOrder(languageCode);
         String returnHomeText = Text.returnHome(languageCode);
+        String cafeName = order.getCafe().getName(languageCode);
 
-        return new CreateOrderResponse(order.getId(), order.getCafe().getName(), orderCompleteText, acceptText, returnHomeText);
+        return new CreateOrderResponse(order.getId(), cafeName, orderCompleteText, acceptText, returnHomeText);
     }
 }
 
