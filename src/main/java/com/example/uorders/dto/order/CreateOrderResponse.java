@@ -9,6 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class CreateOrderResponse {
     private Long orderIndex;
+    private String cafeName;
     private String orderCompleteText;
     private String acceptText;
     private String returnHomeText;
@@ -17,8 +18,9 @@ public class CreateOrderResponse {
         String orderCompleteText = Text.completeOrder(languageCode);
         String acceptText = Text.acceptOrder(languageCode);
         String returnHomeText = Text.returnHome(languageCode);
+        String cafeName = order.getCafe().getName(languageCode);
 
-        return new CreateOrderResponse(order.getId(), orderCompleteText, acceptText, returnHomeText);
+        return new CreateOrderResponse(order.getId(), cafeName, orderCompleteText, acceptText, returnHomeText);
     }
 }
 
