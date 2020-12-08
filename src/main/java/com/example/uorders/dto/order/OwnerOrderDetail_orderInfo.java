@@ -32,7 +32,7 @@ public class OwnerOrderDetail_orderInfo {
 
         LocalDateTime estimateTime = order.getEstimateTime();
         LocalDateTime now = LocalDateTime.now();
-        Duration duration = Duration.between(estimateTime, now);
+        Duration duration = Duration.between(now, estimateTime);
         long time = (duration.getSeconds()/60);
         int leftTime = Long.valueOf(time).intValue();
 
