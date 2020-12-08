@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +20,23 @@ import java.util.List;
 public class OwnerOrderDetail_orderInfo {
     private Long ticketNumber;
     private String orderID;
-    private LocalDateTime orderTime;
+    private int estimateTime;
     private List<OwnerOrderDetail_orderInfo_menuInfo> menuInfo;
 
     public static OwnerOrderDetail_orderInfo of(Order order) {
         List<OwnerOrderDetail_orderInfo_menuInfo> OwnerMenuDtoList = new ArrayList<>();
         for (OrderMenu orderMenu : order.getOrderMenuSet()) {
-            OwnerOrderDetail_orderInfo_menuInfo OwnerMenuDto = OwnerOrderDetail_orderInfo_menuInfo.of(orderMenu.getMenu());
+            OwnerOrderDetail_orderInfo_menuInfo OwnerMenuDto = OwnerOrderDetail_orderInfo_menuInfo.of(orderMenu);
             OwnerMenuDtoList.add(OwnerMenuDto);
         }
 
-        return new OwnerOrderDetail_orderInfo(order.getId(), order.getUser().getName(), order.getOrderTime(),OwnerMenuDtoList);
+        LocalDateTime estimateTime = order.getEstimateTime();
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(estimateTime, now);
+        long time = (duration.getSeconds()/60);
+        int leftTime = Long.valueOf(time).intValue();
+
+        return new OwnerOrderDetail_orderInfo(order.getId(), order.getUser().getName(), leftTime ,OwnerMenuDtoList);
     }
 
 }

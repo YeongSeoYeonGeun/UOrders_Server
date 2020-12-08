@@ -42,7 +42,7 @@ public class MenuController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    /*점주용 메장 조회*/
+    /**점주용 메장 조회*/
     @GetMapping("/owner/cafe/{cafeIndex}")
     public ResponseEntity<Message> readMenu(@PathVariable("cafeIndex") String cafeId ){
         Cafe cafe = cafeService.findById(Long.parseLong(cafeId));
