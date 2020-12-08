@@ -33,9 +33,11 @@ public class Cafe {
     private Set<Cart>  cartSet = new HashSet<>();
 
     private String name;
+    private String name_english;
     private String name_chinese;
 
     private String location;
+    private String location_english;
     private String location_chinese;
 
     private String image;
@@ -43,6 +45,8 @@ public class Cafe {
     public String getName(String languageCode) {
 
         switch (languageCode){
+            case "en":
+                return this.name_english;
             case "zh":
                 return this.name_chinese;
             default:
@@ -53,6 +57,8 @@ public class Cafe {
     public String getLocation(String languageCode) {
 
         switch (languageCode){
+            case "en":
+                return this.location_english;
             case "zh":
                 return this.location_chinese;
             default:
@@ -73,8 +79,10 @@ public class Cafe {
         this.cartSet = cartSet;
         this.name = name;
         this.name_chinese = Translator.translate(name, "zh");
+        this.name_english = Translator.translate(name, "en");
         this.location = location;
         this.location_chinese = Translator.translate(location, "zh");
+        this.location_english = Translator.translate(location, "en");
         this.image = image;
     }
 

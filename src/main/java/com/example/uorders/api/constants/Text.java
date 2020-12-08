@@ -3,6 +3,8 @@ package com.example.uorders.api.constants;
 public class Text {
     public static String greeting(String name, String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Hello " + name;
             case "zh":
                 return "你好" + name;
             default:
@@ -12,6 +14,8 @@ public class Text {
 
     public static String main(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "What drink would you like to order today?";
             case "zh":
                 return "您今天想点什么饮料？";
             default:
@@ -21,6 +25,8 @@ public class Text {
 
     public static String addToCart(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Add to cart";
             case "zh":
                 return "个 加入购物车";
             default:
@@ -30,6 +36,8 @@ public class Text {
 
     public static String payMenu(int price, String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Pay " + price + "won";
             case "zh":
                 return "支付" + price + "韩元";
             default:
@@ -39,6 +47,8 @@ public class Text {
 
     public static String nearestCafe(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Near";
             case "zh":
                 return "最近的商店";
             default:
@@ -48,6 +58,8 @@ public class Text {
 
     public static String favoriteCafe(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Favorite";
             case "zh":
                 return "最喜欢的商店";
             default:
@@ -57,6 +69,8 @@ public class Text {
 
     public static String initializeCart(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Empty Cart";
             case "zh":
                 return "删除所有";
             default:
@@ -66,6 +80,8 @@ public class Text {
 
     public static String menuDetail(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Menu Detail";
             case "zh":
                 return "菜单详情";
             default:
@@ -75,6 +91,8 @@ public class Text {
 
     public static String selectSize(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Select size";
             case "zh":
                 return "选择大小";
             default:
@@ -84,6 +102,8 @@ public class Text {
 
     public static String cart(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Cart";
             case "zh":
                 return "购物车";
             default:
@@ -93,6 +113,8 @@ public class Text {
 
     public static String order(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Order";
             case "zh":
                 return "订购";
             default:
@@ -102,6 +124,8 @@ public class Text {
 
     public static String completeOrder(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Order Completed";
             case "zh":
                 return "订单完成";
             default:
@@ -111,6 +135,8 @@ public class Text {
 
     public static String acceptOrder(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "The cafe has received an order";
             case "zh":
                 return "我在商店收到订单";
             default:
@@ -120,6 +146,8 @@ public class Text {
 
     public static String orderDate(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Order date";
             case "zh":
                 return "订单日期和时间";
             default:
@@ -129,6 +157,8 @@ public class Text {
 
     public static String menuPrice(int count, int price, String languageCode) {
         switch (languageCode){
+            case "en":
+                return count + " selected" + price + " won";
             case "zh":
                 return count + "个" + price + "韩元";
             default:
@@ -138,6 +168,8 @@ public class Text {
 
     public static String menuPrice(int price, String languageCode) {
         switch (languageCode){
+            case "en":
+                return price + "won";
             case "zh":
                 return price + "韩元";
             default:
@@ -147,6 +179,8 @@ public class Text {
 
     public static String won(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "won";
             case "zh":
                 return "韩元";
             default:
@@ -156,6 +190,8 @@ public class Text {
 
     public static String readOrder(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Order history";
             case "zh":
                 return "查看订单历史";
             default:
@@ -166,6 +202,8 @@ public class Text {
 
     public static String totalPrice(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Total price";
             case "zh":
                 return " 总付款额";
             default:
@@ -175,6 +213,8 @@ public class Text {
 
     public static String year(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "-";
             case "zh":
                 return "年";
             default:
@@ -184,6 +224,8 @@ public class Text {
 
     public static String month(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "-";
             case "zh":
                 return "月";
             default:
@@ -193,6 +235,8 @@ public class Text {
 
     public static String day(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "";
             case "zh":
                 return "日";
             default:
@@ -202,6 +246,8 @@ public class Text {
 
     public static String morning(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "AM";
             case "zh":
                 return "早上";
             default:
@@ -211,6 +257,8 @@ public class Text {
 
     public static String afternoon(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "PM";
             case "zh":
                 return "下午";
             default:
@@ -220,6 +268,8 @@ public class Text {
 
     public static String and(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "and";
             case "zh":
                 return "和其";
             default:
@@ -229,6 +279,8 @@ public class Text {
 
     public static String number(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "selected";
             case "zh":
                 return "个";
             default:
@@ -238,6 +290,8 @@ public class Text {
 
     public static String returnHome(String languageCode) {
         switch (languageCode){
+            case "en":
+                return "Home";
             case "zh":
                 return "返回主画面";
             default:

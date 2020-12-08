@@ -10,6 +10,8 @@ public class Translator {
         String targetLanguage = "zh";
 
         switch (LanguageCode) {
+            case "en":
+                targetLanguage = "en";
             case "zh":
                 targetLanguage = "zh";
                 break;
