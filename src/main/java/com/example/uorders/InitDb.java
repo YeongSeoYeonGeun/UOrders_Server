@@ -64,8 +64,10 @@ public class InitDb {
                     .build();
 
             Menu menu1 = createMenu("아메리카노", 1500, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/americano.jpg", cafe, true, true, MenuStatus.AVAILABLE);
-            Menu menu2 = createMenu("카페 라떼", 1500, name+"_카페 라떼 이미지 링크", cafe, true, true, MenuStatus.AVAILABLE);
-            Menu menu3 = createMenu("딸기 케이크", 12000, name+"_딸기 케이크 이미지 링크", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu2 = createMenu("카페 라떼", 1500, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/cafelatte.jpg", cafe, true, true, MenuStatus.AVAILABLE);
+            Menu menu3 = createMenu("딸기 케이크", 12000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/strawberryCake.jpg", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu4 = createMenu("샌드위치", 5000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/sandwitch.jpg", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu5 = createMenu("하루 과일", 4000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/fruit.jpg", cafe, false, false, MenuStatus.AVAILABLE);
 
             return cafe;
         }
@@ -126,13 +128,13 @@ public class InitDb {
             em.persist(user2);
 
             Cafe cafe1 = createCafe(owner1,"남산학사 cafe", "신공학관 1층", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/namsan.jpg");
-            Cafe cafe2 = createCafe(owner2, "가온누리 cafe", "중앙도서관 입구 옆", "가온누리_cafe 이미지 링크");
-            Cafe cafe3 = createCafe(owner3, "펜도로시 cafe", "중앙도서관 1층", "펜도로시_cafe 이미지 링크");
-            Cafe cafe4 = createCafe(owner4, "쎄리오 cafe", "만해광장 앞", "쎄리오_cafe 이미지 링크");
-            Cafe cafe5 = createCafe(owner5, "혜화 디저트 cafe", "혜화관 7층 옥상", "혜화_디저트_cafe 이미지 링크");
-            Cafe cafe6 = createCafe(owner6, "디초콜릿 cafe", "혜화관 대운동장 사이", "디초콜릿_cafe 이미지 링크");
+            Cafe cafe2 = createCafe(owner2, "가온누리 cafe", "중앙도서관 입구 옆", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/gaonuri.jpg");
+            Cafe cafe3 = createCafe(owner3, "펜도로시 cafe", "중앙도서관 1층", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/pandorosi.jpg");
+            Cafe cafe4 = createCafe(owner4, "쎄리오 cafe", "만해광장 앞", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/serio.jpg");
+            Cafe cafe5 = createCafe(owner5, "혜화 디저트 cafe", "혜화관 7층 옥상", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/hyehwa.jpg");
+            Cafe cafe6 = createCafe(owner6, "디초콜릿 cafe", "혜화관 대운동장 사이", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/de_choco.jpg");
             Cafe cafe7 = createCafe(owner7,"보니에 cafe", "사회과학관 2층", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/gru.jpg");
-            Cafe cafe8 = createCafe(owner8, "두리터 cafe", "학술문화관 지하", "두리터_cafe 이미지 링크");
+            Cafe cafe8 = createCafe(owner8, "두리터 cafe", "학술문화관 지하", "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/cafe/durito.jpg");
 
             em.persist(cafe1);
             em.persist(cafe2);
