@@ -120,7 +120,7 @@ public class OrderController {
     }
 
     /** 점주용 주문 관리 조회 */
-    @GetMapping("/owner")
+    @GetMapping("/main")
     public ResponseEntity<Message> readOrderOwner(@RequestHeader("ownerIndex") Long ownerId) {
         Owner owner = ownerService.findById(ownerId);
         Cafe cafe = cafeService.findById(owner.getCafe().getId());
@@ -131,7 +131,7 @@ public class OrderController {
     }
 
     //주문 완료 처리//
-    @PutMapping("/owner")
+    @PutMapping("/complete")
     public ResponseEntity<Message> updateOrderOwner(@RequestHeader("orderIndex") Long orderId ){
         Order order = orderService.findById(orderId);
 
