@@ -7,11 +7,12 @@ public class Translator {
 
     public static String translate(String text, String LanguageCode) {
 
-        String targetLanguage = "zh";
+        String targetLanguage;
 
         switch (LanguageCode) {
             case "en":
                 targetLanguage = "en";
+                break;
             case "zh":
                 targetLanguage = "zh";
                 break;
