@@ -130,6 +130,7 @@ public class OrderController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    //주문 완료 처리//
     @PutMapping("/owner")
     public ResponseEntity<Message> updateOrderOwner(@RequestHeader("orderIndex") Long orderId ){
         Order order = orderService.findById(orderId);
