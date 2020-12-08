@@ -77,7 +77,7 @@ public class CartMenuController {
                     .menu(menu)
                     .orderPrice(menu.getPrice()*request.getMenuCount())
                     .count(request.getMenuCount())
-                    .menuTemperature(MenuTemperature.fromString(request.getMenuTemperature()))
+                    .menuTemperature(request.getMenuTemperature())
                     .menuSize(request.getMenuSize())
                     .menuTakeType(request.getMenuTakeType())
                     .cart(cart)
@@ -88,7 +88,7 @@ public class CartMenuController {
             for(CartMenu cartMenu: findCartMenus) { // 해당 장바구니 메뉴 중
 
                 // 사이즈, 온도, 포장 여부까지 동일한 메뉴가 있다면
-                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == MenuTemperature.fromString(request.getMenuTemperature()) && cartMenu.getMenuTakeType().equals(request.getMenuTakeType()))
+                if(cartMenu.getMenuSize() == request.getMenuSize() && cartMenu.getMenuTemperature() == request.getMenuTemperature() && cartMenu.getMenuTakeType().equals(request.getMenuTakeType()))
                 {
                     // 메뉴 count, TotalPrice만 증가
                     cartMenu.setCount(cartMenu.getCount() + request.getMenuCount());
@@ -106,7 +106,7 @@ public class CartMenuController {
                         .menu(menu)
                         .orderPrice(menu.getPrice()*request.getMenuCount())
                         .count(request.getMenuCount())
-                        .menuTemperature(MenuTemperature.fromString(request.getMenuTemperature()))
+                        .menuTemperature(request.getMenuTemperature())
                         .menuSize(request.getMenuSize())
                         .menuTakeType(request.getMenuTakeType())
                         .cart(cart)

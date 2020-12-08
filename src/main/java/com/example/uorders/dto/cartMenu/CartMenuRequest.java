@@ -15,7 +15,7 @@ public class CartMenuRequest {
         private Long menuIndex;
         private String menuName;
         private int menuCount;
-        private String menuTemperature;
+        private MenuTemperature menuTemperature;
         private MenuSize menuSize;
         private String menuTakeType;
         private int menuTotalPrice;
