@@ -20,7 +20,7 @@ import java.util.List;
 public class OwnerOrderDetail_orderInfo {
     private Long ticketNumber;
     private String orderID;
-    private int estimateTime;
+    private int orderTime;
     private List<OwnerOrderDetail_orderInfo_menuInfo> menuInfo;
 
     public static OwnerOrderDetail_orderInfo of(Order order) {
