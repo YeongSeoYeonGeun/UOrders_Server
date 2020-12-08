@@ -65,9 +65,11 @@ public class InitDb {
 
             Menu menu1 = createMenu("아메리카노", 1500, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/americano.jpg", cafe, true, true, MenuStatus.AVAILABLE);
             Menu menu2 = createMenu("카페 라떼", 1500, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/cafelatte.jpg", cafe, true, true, MenuStatus.AVAILABLE);
-            Menu menu3 = createMenu("딸기 케이크", 12000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/strawberryCake.jpg", cafe, false, false, MenuStatus.AVAILABLE);
-            Menu menu4 = createMenu("샌드위치", 5000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/sandwitch.jpg", cafe, false, false, MenuStatus.AVAILABLE);
-            Menu menu5 = createMenu("하루 과일", 4000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/fruit.jpg", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu3 = createMenu("핫초코", 3000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/hotChoco.jpg", cafe, true, true, MenuStatus.AVAILABLE);
+            Menu menu4 = createMenu("바나나 우유", 2000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/bananaMilk.jpg", cafe, true, true, MenuStatus.AVAILABLE);
+            Menu menu5 = createMenu("하루과일", 4000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/fruit.jpg", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu6 = createMenu("샌드위치", 5000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/sandwitch.jpg", cafe, false, false, MenuStatus.AVAILABLE);
+            Menu menu7 = createMenu("딸기 케이크", 12000, "https://uorders-bucket.s3.ap-northeast-2.amazonaws.com/image/menu/strawberryCake.jpg", cafe, false, false, MenuStatus.AVAILABLE);
 
             return cafe;
         }
