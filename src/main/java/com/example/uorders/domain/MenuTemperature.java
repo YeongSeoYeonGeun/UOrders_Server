@@ -13,4 +13,13 @@ public enum MenuTemperature {
     String getTemperature(){
         return this.temperature;
     }
+
+    public static MenuTemperature fromString(String text) {
+        for (MenuTemperature t : MenuTemperature.values()) {
+            if (t.temperature.equalsIgnoreCase(text)) {
+                return t;
+            }
+        }
+        return null;
+    }
 }
