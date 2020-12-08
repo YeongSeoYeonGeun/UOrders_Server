@@ -25,8 +25,10 @@ public class OwnerOrderDetail {
     public static OwnerOrderDetail of(Cafe cafe) {
         List<OwnerOrderDetail_orderInfo> OwnerOrderDtoList = new ArrayList<>();
         for (Order order : cafe.getOrderSet()) {
-            OwnerOrderDetail_orderInfo orderDto = OwnerOrderDetail_orderInfo.of(order);
-            OwnerOrderDtoList.add(orderDto);
+            if(order.getStatus() ==  OrderStatus.ACCEPTED || order.getStatus() == OrderStatus.PLACED) {
+                OwnerOrderDetail_orderInfo orderDto = OwnerOrderDetail_orderInfo.of(order);
+                OwnerOrderDtoList.add(orderDto);
+            }
         }
 
         return new OwnerOrderDetail(cafe.getName(), cafe.getLocation(), OwnerOrderDtoList);
