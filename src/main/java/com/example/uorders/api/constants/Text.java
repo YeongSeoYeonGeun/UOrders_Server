@@ -41,7 +41,7 @@ public class Text {
             case "zh":
                 return "支付" + price + "韩元";
             default:
-                return price + "결제하기";
+                return price  + "원 결제하기";
         }
     }
 
