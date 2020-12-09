@@ -36,8 +36,11 @@ public class ResponseMessage {
     public static final String NOT_FOUND_USER = "userIndex 에 해당하는 값이 유효하지 않습니다. userIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_CAFE = "cafeIndex 에 해당하는 값이 유효하지 않습니다. cafeIndex 값을 확인해주세요.";
     public static final String NOT_FOUND_MENU = "menuIndex 에 해당하는 값이 유효하지 않습니다. menuIndex 값을 확인해주세요.";
-    public static final String NOT_FOUND_USER_OR_CAFE = "userIndex 혹은 cafeIndex 에 해당하는 값이 유효하지 않습니다. userIndex 혹은 cafeIndex 값을 확인해주세요.";
-    public static final String NOT_FOUND_USER_OR_MENU = "userIndex 혹은 menuIndex 에 해당하는 값이 유효하지 않습니다. userIndex 혹은 menuIndex 값을 확인해주세요.";
+    public static final String NOT_FOUND_CARTMENU = "cartMenuIndex 에 해당하는 값이 유효하지 않습니다. cartMenuIndex 값을 확인해주세요.";
+    public static final String NOT_FOUND_ORDER = "orderIndex 에 해당하는 값이 유효하지 않습니다. orderIndex 값을 확인해주세요.";
+    public static final String NOT_FOUND_ORDERMENU = "orderMenuIndex 에 해당하는 값이 유효하지 않습니다. orderMenuIndex 값을 확인해주세요.";
+    public static final String NOT_FOUND_OWNER = "ownerIndex 에 해당하는 값이 유효하지 않습니다. ownerIndex 값을 확인해주세요.";
+    
     public static final String NOT_FOUND_VALUE = "유효하지 않은 값이 포함되어있습니다.";
 
     public static final String LOGIN_SUCCESS = "로그인 성공";
