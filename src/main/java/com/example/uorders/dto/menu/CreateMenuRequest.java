@@ -7,7 +7,6 @@ import lombok.Data;
 public class CreateMenuRequest {
 
     private Long cafeIndex;
-    private Long menuIndex;
     private String menuName;
     private boolean menuTemperature;
     private boolean menuSize;
