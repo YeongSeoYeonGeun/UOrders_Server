@@ -10,6 +10,7 @@ import com.example.uorders.dto.cafe.UpdateCafeRequest;
 import com.example.uorders.dto.home.HomeResponse;
 import com.example.uorders.exception.CafeNotFoundException;
 import com.example.uorders.repository.CafeRepository;
+import com.example.uorders.util.Translator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,12 @@ public class CafeService {
     @Transactional
     public void updateCafe(Cafe cafe, UpdateCafeRequest request) {
         cafe.setName(request.getCafeName());
+        cafe.setName_chinese(Translator.translate(request.getCafeName(),"zh"));
+        cafe.setName_english(Translator.translate(request.getCafeName(),"en"));
+
         cafe.setLocation(request.getCafeLocation());
+        cafe.setLocation_chinese(Translator.translate(request.getCafeLocation(),"zh"));
+        cafe.setLocation_english(Translator.translate(request.getCafeLocation(),"en"));
 
         saveCafe(cafe);
     }

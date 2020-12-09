@@ -7,6 +7,7 @@ import com.example.uorders.exception.MenuNotFoundException;
 import com.example.uorders.repository.CafeRepository;
 import com.example.uorders.repository.MenuRepository;
 import com.example.uorders.dto.menu.UpdateMenuRequest;
+import com.example.uorders.util.Translator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,8 @@ public class MenuService {
     @Transactional
     public void UpdateMenu(Menu menu, UpdateMenuRequest request) {
         menu.setName(request.getMenuName());
+        menu.setName_chinese(Translator.translate(request.getMenuName(),"zh"));
+        menu.setName_english(Translator.translate(request.getMenuName(),"en"));
         menu.setSizeSelect(request.isMenuSize());
         menu.setTemperatureSelect(request.isMenuTemperature());
         menu.setPrice(request.getMenuPrice());
