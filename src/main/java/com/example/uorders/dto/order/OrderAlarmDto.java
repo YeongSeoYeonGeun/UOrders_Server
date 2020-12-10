@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class OrderAlarmDto {
-    private String userName;
+    private String userId;
     private int totalPrice;
     private List<OrderAlarm_menuDto> menuInfo;
 
