@@ -20,6 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import static com.example.uorders.domain.OrderStatus.PLACED;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/owner")
@@ -49,10 +54,19 @@ public class OwnerController {
 
     /** 주문 도착알람 */
     @GetMapping("/alarm")
-    public ResponseEntity<Message> readAlarm(@RequestHeader("orderIndex") Long orderId){
-        Order order = orderService.findById(orderId);
+    public ResponseEntity<Message> readAlarm(@RequestHeader("ownerIndex") Long ownerId){
+        Owner owner = ownerService.findById(ownerId);
+        OrderAlarmDto result = null;
+        LocalDateTime tempTime = LocalDateTime.of(2020,12,1,00,00,00);
 
-        OrderAlarmDto result = OrderAlarmDto.of(order);
+        for(Order order : owner.getCafe().getOrderSet()){
+            if (order.getStatus() == PLACED) {
+                if(order.getOrderTime().isAfter(tempTime)){
+                    result = OrderAlarmDto.of(order);
+                    tempTime = order.getOrderTime();
+                }
+            }
+        }
         Message message = new Message(StatusCode.OK, ResponseMessage.READ_CAFE, result);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
