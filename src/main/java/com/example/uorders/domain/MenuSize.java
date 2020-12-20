@@ -1,5 +1,5 @@
 package com.example.uorders.domain;
 
 public enum MenuSize {
-    SMALL, REGULAR, LARGE
+    SMALL, REGULAR, LARGE, NONE
 }

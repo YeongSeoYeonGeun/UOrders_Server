@@ -1,18 +1,15 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Table(name = "USER")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id @GeneratedValue
@@ -21,13 +18,28 @@ public class User {
 
     private String name;
 
+    private String code;
+
+    private String languageCode;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orderSet = new HashSet<>();
 
-
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Favorite> favorites = new HashSet<>();
+    private Set<Favorite> favoriteSet = new HashSet<>();
+
+    //== 빌더 ==//
+    @Builder
+    public User(String name, String code, Set<Order> orderSet, Cart cart, Set<Favorite> favoriteSet, String languageCode){
+
+        this.name = name;
+        this.code = code;
+        this.orderSet = orderSet;
+        this.cart = cart;
+        this.favoriteSet = favoriteSet;
+        this.languageCode = languageCode;
+    }
 }

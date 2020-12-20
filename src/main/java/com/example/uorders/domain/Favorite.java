@@ -1,7 +1,6 @@
 package com.example.uorders.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -9,6 +8,7 @@ import javax.persistence.*;
 @Getter @Setter
 @IdClass(FavoriteId.class)
 @Table(name = "FAVORITE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Favorite {
 
     @Id
@@ -21,23 +21,12 @@ public class Favorite {
     @JoinColumn(name = "cafe_id")
     private Cafe cafe;
 
-    //== 연관관계 메서드 ==//
-    public void setUser(User user){
+    //== 빌더 ==//
+    @Builder
+    public Favorite(User user, Cafe cafe) {
         this.user = user;
-        user.getFavorites().add(this);
-    }
-
-    public void setCafe(Cafe cafe){
+        user.getFavoriteSet().add(this);
         this.cafe = cafe;
-        cafe.getFavorites().add(this);
-    }
-
-    //== 생성 메서드 ==//
-    public static Favorite createFavorite(User user, Cafe cafe) {
-        Favorite favorite = new Favorite();
-        favorite.setUser(user);
-        favorite.setCafe(cafe);
-
-        return favorite;
+        cafe.getFavoriteSet().add(this);
     }
 }

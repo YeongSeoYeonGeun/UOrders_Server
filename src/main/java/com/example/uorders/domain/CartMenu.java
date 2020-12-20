@@ -1,15 +1,13 @@
 package com.example.uorders.domain;
 
-import com.example.uorders.Service.MenuService;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
 @Table(name = "CART_MENU")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartMenu {
 
     @Id @GeneratedValue
@@ -33,32 +31,33 @@ public class CartMenu {
     @Enumerated(EnumType.STRING)
     private MenuSize menuSize; // SMALL, REGULAR, LARGE
 
-    @Enumerated(EnumType.STRING)
-    private MenuTakeType menuTakeType; // HERE, TO_GO
+    private String menuTakeType; // HERE, TO GO
 
     //==연관관계 메서드==//
     public void setCart(Cart cart) {
         this.cart = cart;
-        cart.getCartMenus().add(this);
+        cart.getCartMenuSet().add(this);
     }
 
     public void setMenu(Menu menu) {
         this.menu = menu;
-        menu.getCartMenus().add(this);
+        menu.getCartMenuSet().add(this);
     }
 
-    //==생성 메서드//
-    public static CartMenu createCartMenu(Menu menu, int orderPrice, int count, MenuTemperature menuTemperature, MenuSize menuSize, MenuTakeType menuTakeType, Cart cart) {
-        CartMenu cartMenu = new CartMenu();
-        cartMenu.setMenu(menu);
-        cartMenu.setOrderPrice(orderPrice);
-        cartMenu.setCount(count);
-        cartMenu.setMenuTemperature(menuTemperature);
-        cartMenu.setMenuSize(menuSize);
-        cartMenu.setMenuTakeType(menuTakeType);
 
-        cartMenu.setCart(cart);
-        return cartMenu;
+    //== 빌더 ==//
+    @Builder
+    public CartMenu(Cart cart, Menu menu, int count, int orderPrice, MenuTemperature menuTemperature, MenuSize menuSize, String menuTakeType) {
+        this.cart = cart;
+        cart.getCartMenuSet().add(this); //== 연관관계 ==//
+
+        this.menu = menu;
+        menu.getCartMenuSet().add(this); //== 연관관계 ==//
+
+        this.count = count;
+        this.orderPrice = orderPrice;
+        this.menuTemperature = menuTemperature;
+        this.menuSize = menuSize;
+        this.menuTakeType = menuTakeType;
     }
-
 }

@@ -1,13 +1,11 @@
 package com.example.uorders.Service;
 
 import com.example.uorders.domain.CartMenu;
-import com.example.uorders.domain.CartMenuId;
+import com.example.uorders.exception.CartMenuNotFoundException;
 import com.example.uorders.repository.CartMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -16,8 +14,8 @@ public class CartMenuService {
 
     private final CartMenuRepository cartMenuRepository;
 
-    public Optional<CartMenu> findOne(Long cartMenuId) {
-        return cartMenuRepository.findById(cartMenuId);
+    public CartMenu findById(Long cartMenuId) {
+        return cartMenuRepository.findById(cartMenuId).orElseThrow(()-> new CartMenuNotFoundException(cartMenuId));
     }
 
     @Transactional
