@@ -25,7 +25,7 @@ dependencies {
 }
 ```
 
-## 서버 아키텍쳐* 
+## 서버 아키텍쳐
 ![그림1](https://user-images.githubusercontent.com/53558710/102711258-875a5200-42fb-11eb-8ed4-00298f4b3691.png)
 
 
